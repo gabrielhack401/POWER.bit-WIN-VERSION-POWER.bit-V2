@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Windows 12 | Hyper-Version - Modo Horizontal</title>
+  <title>Windows 12 Hyper-Version | Todos os Botões Funcionam</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
 
     body {
@@ -22,7 +21,6 @@
       position: fixed;
     }
 
-    /* Desktop - Windows 12 futuristic */
     .desktop {
       width: 100%;
       height: 100%;
@@ -41,7 +39,7 @@
       pointer-events: none;
     }
 
-    /* Desktop Icons - layout horizontal otimizado para mobile */
+    /* Desktop Icons */
     .desktop-icons {
       position: absolute;
       top: 20px;
@@ -49,9 +47,8 @@
       right: 16px;
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
       z-index: 10;
-      justify-content: flex-start;
     }
 
     .desktop-icon {
@@ -76,6 +73,7 @@
     .desktop-icon img {
       width: 36px;
       height: 36px;
+      pointer-events: none;
     }
 
     .desktop-icon span {
@@ -83,10 +81,10 @@
       font-size: 10px;
       margin-top: 5px;
       text-shadow: 0 1px 2px black;
-      text-align: center;
+      pointer-events: none;
     }
 
-    /* Taskbar Win12 horizontal */
+    /* Taskbar */
     .taskbar {
       position: absolute;
       bottom: 12px;
@@ -108,6 +106,426 @@
     .start-btn {
       background: linear-gradient(135deg, #00aaff22, #0066cc44);
       border-radius: 24px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 0.5px solid cyan;
+    }
+    .start-btn:active { transform: scale(0.95); background: rgba(0, 200, 255, 0.4); }
+    .start-btn svg { width: 18px; fill: cyan; pointer-events: none; }
+    .start-btn span { color: cyan; font-weight: bold; font-size: 12px; pointer-events: none; }
+
+    .taskbar-middle {
+      display: flex;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 16px;
+      border-radius: 40px;
+      overflow-x: auto;
+      max-width: 55%;
+    }
+
+    .taskbar-app {
+      width: 42px;
+      height: 42px;
+      background: rgba(0, 200, 255, 0.15);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .taskbar-app:active { background: rgba(0, 200, 255, 0.5); transform: scale(0.94); }
+    .taskbar-app img { width: 24px; height: 24px; pointer-events: none; }
+
+    .time-area {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 5px 12px;
+      border-radius: 28px;
+      color: cyan;
+      font-family: monospace;
+      font-weight: bold;
+      font-size: 13px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      cursor: default;
+    }
+
+    /* Start Menu */
+    .start-menu {
+      position: absolute;
+      bottom: 78px;
+      left: 12px;
+      right: 12px;
+      background: rgba(10, 14, 24, 0.98);
+      backdrop-filter: blur(48px);
+      border-radius: 28px;
+      padding: 16px;
+      z-index: 1100;
+      transition: 0.2s;
+      border: 1px solid cyan;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .start-menu.hide { display: none; }
+
+    .menu-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid cyan;
+      margin-bottom: 16px;
+    }
+    .avatar-win12 {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, cyan, #0066ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .menu-header-text { color: white; font-size: 14px; }
+
+    .apps-grid-full {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .menu-app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 200, 255, 0.1);
+      border-radius: 16px;
+      padding: 8px 4px;
+      cursor: pointer;
+    }
+    .menu-app:active { background: rgba(0, 200, 255, 0.3); }
+    .menu-app img { width: 32px; height: 32px; pointer-events: none; }
+    .menu-app span { color: #ccf; font-size: 10px; }
+
+    /* Janelas */
+    .app-window {
+      position: absolute;
+      top: 5%;
+      left: 3%;
+      width: 94%;
+      height: 86%;
+      background: #0f1320ee;
+      backdrop-filter: blur(40px);
+      border-radius: 28px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid cyan;
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
+    }
+    .app-window.hide { display: none; }
+
+    .win-header {
+      background: #0a0e18cc;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid cyan;
+      border-radius: 28px 28px 0 0;
+    }
+    .win-title {
+      color: cyan;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .win-title img { width: 22px; height: 22px; }
+    .close-win {
+      background: #ff4444;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 30px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .win-content {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      color: white;
+    }
+    iframe { width: 100%; height: 100%; border: none; background: white; border-radius: 16px; }
+
+    .internal-ui {
+      background: #1a1e2c;
+      border-radius: 24px;
+      padding: 20px;
+      text-align: center;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .toast {
+      position: absolute;
+      bottom: 85px;
+      left: 16px;
+      right: 16px;
+      background: #000000cc;
+      backdrop-filter: blur(24px);
+      padding: 10px 16px;
+      border-radius: 40px;
+      color: #00ffcc;
+      text-align: center;
+      z-index: 300;
+      transition: 0.2s;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="desktop">
+  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
+
+  <!-- Desktop Icons -->
+  <div class="desktop-icons" id="desktopIcons">
+    <div class="desktop-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
+    <div class="desktop-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>MS Store</span></div>
+    <div class="desktop-icon" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
+    <div class="desktop-icon" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"><span>Spotify</span></div>
+    <div class="desktop-icon" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"><span>YouTube</span></div>
+    <div class="desktop-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
+  </div>
+
+  <!-- Taskbar -->
+  <div class="taskbar">
+    <div class="start-btn" id="startBtn">
+      <svg viewBox="0 0 24 24" width="18"><path d="M4 4h16v16H4z" fill="cyan"/><rect x="8" y="8" width="3" height="3" fill="#000"/><rect x="13" y="8" width="3" height="3" fill="#000"/><rect x="8" y="13" width="3" height="3" fill="#000"/><rect x="13" y="13" width="3" height="3" fill="#000"/></svg>
+      <span>Win12</span>
+    </div>
+    <div class="taskbar-middle" id="taskbarApps">
+      <div class="taskbar-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
+      <div class="taskbar-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
+      <div class="taskbar-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"></div>
+      <div class="taskbar-app" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"></div>
+      <div class="taskbar-app" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></div>
+      <div class="taskbar-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"></div>
+    </div>
+    <div class="time-area" id="clock">--:--:--</div>
+  </div>
+
+  <!-- Start Menu -->
+  <div class="start-menu hide" id="startMenu">
+    <div class="menu-header">
+      <div class="avatar-win12">⚡</div>
+      <div class="menu-header-text">Windows 12 Hyper-Version<br><span style="font-size: 10px; color: cyan;">Pré-instalado</span></div>
+    </div>
+    <div class="apps-grid-full" id="menuApps">
+      <div class="menu-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
+      <div class="menu-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>MS Store</span></div>
+      <div class="menu-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
+      <div class="menu-app" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"><span>Spotify</span></div>
+      <div class="menu-app" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"><span>YouTube</span></div>
+      <div class="menu-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calculadora</span></div>
+    </div>
+  </div>
+
+  <!-- Windows dos Apps -->
+  <div class="app-window hide" id="chromeWindow">
+    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png">Google Chrome</div><button class="close-win" data-win="chrome">✕</button></div>
+    <div class="win-content"><iframe src="https://www.google.com/webhp?igu=1"></iframe></div>
+  </div>
+  <div class="app-window hide" id="edgeWindow">
+    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png">Microsoft Edge</div><button class="close-win" data-win="edge">✕</button></div>
+    <div class="win-content"><iframe src="https://www.bing.com"></iframe></div>
+  </div>
+  <div class="app-window hide" id="storeWindow">
+    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png">Microsoft Store</div><button class="close-win" data-win="store">✕</button></div>
+    <div class="win-content" id="storeContent"></div>
+  </div>
+  <div class="app-window hide" id="spotifyWindow">
+    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png">Spotify</div><button class="close-win" data-win="spotify">✕</button></div>
+    <div class="win-content"><iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"></iframe></div>
+  </div>
+  <div class="app-window hide" id="youtubeWindow">
+    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">YouTube</div><button class="close-win" data-win="youtube">✕</button></div>
+    <div class="win-content"><iframe src="https://www.youtube.com/embed?listType=search&query=windows12"></iframe></div>
+  </div>
+  <div class="app-window hide" id="calcWindow">
+    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png">Calculadora</div><button class="close-win" data-win="calc">✕</button></div>
+    <div class="win-content"><div class="internal-ui"><div style="font-size:48px; text-align:center;" id="calcDisplayCalc">0</div><div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:20px;"><button class="calc-num" data-num="7">7</button><button class="calc-num" data-num="8">8</button><button class="calc-num" data-num="9">9</button><button class="calc-op" data-op="/">/</button><button class="calc-num" data-num="4">4</button><button class="calc-num" data-num="5">5</button><button class="calc-num" data-num="6">6</button><button class="calc-op" data-op="*">*</button><button class="calc-num" data-num="1">1</button><button class="calc-num" data-num="2">2</button><button class="calc-num" data-num="3">3</button><button class="calc-op" data-op="-">-</button><button class="calc-num" data-num="0">0</button><button id="calcClear">C</button><button id="calcEqual">=</button><button class="calc-op" data-op="+">+</button></div></div></div></div>
+  </div>
+
+  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
+</div>
+
+<script>
+  // Toast
+  const toast = document.getElementById('toastMsg');
+  function showToast(msg, duration=2000) {
+    toast.style.opacity = '1';
+    toast.innerText = msg;
+    setTimeout(() => toast.style.opacity = '0', duration);
+  }
+
+  // Fechar todas janelas
+  function closeAllWindows() {
+    document.querySelectorAll('.app-window').forEach(w => w.classList.add('hide'));
+  }
+
+  // Abrir janela específica
+  function openWindow(windowId) {
+    closeAllWindows();
+    const win = document.getElementById(windowId);
+    if (win) win.classList.remove('hide');
+    document.getElementById('startMenu').classList.add('hide');
+    showToast(`✅ Abrindo ${windowId.replace('Window', '')}...`, 1000);
+  }
+
+  // Abrir app baseado no tipo
+  function openApp(appType) {
+    if (appType === 'chrome') openWindow('chromeWindow');
+    else if (appType === 'edge') openWindow('edgeWindow');
+    else if (appType === 'store') {
+      renderStore();
+      openWindow('storeWindow');
+    }
+    else if (appType === 'spotify') openWindow('spotifyWindow');
+    else if (appType === 'youtube') openWindow('youtubeWindow');
+    else if (appType === 'calc') openWindow('calcWindow');
+    else showToast(`📱 ${appType} abrindo...`);
+  }
+
+  // Renderizar Microsoft Store
+  function renderStore() {
+    const container = document.getElementById('storeContent');
+    if (!container) return;
+    container.innerHTML = `
+      <div class="internal-ui">
+        <h2 style="color:cyan;">📦 Microsoft Store</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:16px; margin-top:16px;">
+          <div style="background:#252540; border-radius:20px; padding:12px; text-align:center;"><img src="https://cdn-icons-png.flaticon.com/512/870/870910.png" width="50"><h4>Netflix</h4><button class="install-store" data-app="Netflix" style="background:cyan; border:none; margin-top:8px; padding:6px 12px; border-radius:20px;">Instalar</button></div>
+          <div style="background:#252540; border-radius:20px; padding:12px; text-align:center;"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="50"><h4>Instagram</h4><button class="install-store" data-app="Instagram" style="background:cyan; border:none; margin-top:8px; padding:6px 12px; border-radius:20px;">Instalar</button></div>
+          <div style="background:#252540; border-radius:20px; padding:12px; text-align:center;"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" width="50"><h4>TikTok</h4><button class="install-store" data-app="TikTok" style="background:cyan; border:none; margin-top:8px; padding:6px 12px; border-radius:20px;">Instalar</button></div>
+        </div>
+      </div>
+    `;
+    document.querySelectorAll('.install-store').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showToast(`✅ ${btn.getAttribute('data-app')} instalado com sucesso!`);
+      });
+    });
+  }
+
+  // ========== RELÓGIO FUNCIONAL ==========
+  function updateClock() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const clockElement = document.getElementById('clock');
+    if (clockElement) {
+      clockElement.innerText = `${hours}:${minutes}:${seconds}`;
+    }
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // ========== CALCULADORA ==========
+  let calcValue = '0';
+  let calcPrev = null;
+  let calcOp = null;
+  
+  function updateCalcDisplay() {
+    const display = document.getElementById('calcDisplayCalc');
+    if (display) display.innerText = calcValue;
+  }
+  
+  function attachCalcEvents() {
+    document.querySelectorAll('.calc-num').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const num = btn.getAttribute('data-num');
+        calcValue = calcValue === '0' ? num : calcValue + num;
+        updateCalcDisplay();
+      });
+    });
+    document.querySelectorAll('.calc-op').forEach(btn => {
+      btn.addEventListener('click', () => {
+        calcPrev = parseFloat(calcValue);
+        calcOp = btn.getAttribute('data-op');
+        calcValue = '0';
+      });
+    });
+    const clearBtn = document.getElementById('calcClear');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        calcValue = '0';
+        calcPrev = null;
+        calcOp = null;
+        updateCalcDisplay();
+      });
+    }
+    const equalBtn = document.getElementById('calcEqual');
+    if (equalBtn) {
+      equalBtn.addEventListener('click', () => {
+        if (calcOp && calcPrev !== null) {
+          const current = parseFloat(calcValue);
+          let result = 0;
+          if (calcOp === '+') result = calcPrev + current;
+          else if (calcOp === '-') result = calcPrev - current;
+          else if (calcOp === '*') result = calcPrev * current;
+          else if (calcOp === '/') result = calcPrev / current;
+          calcValue = result.toString();
+          updateCalcDisplay();
+          calcOp = null;
+          calcPrev = null;
+        }
+      });
+    }
+  }
+
+  // ========== EVENTOS DOS BOTÕES ==========
+  
+  // Botão Iniciar
+  const startBtn = document.getElementById('startBtn');
+  const startMenu = document.getElementById('startMenu');
+  if (startBtn) {
+    startBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      startMenu.classList.toggle('hide');
+    });
+  }
+
+  // Fechar menu ao clicar fora
+  document.addEventListener('click', (e) => {
+    if (startMenu && !startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
+      startMenu.classList.add('hide');
+    }
+  });
+
+  // Fechar janelas com botão X
+  document.querySelectorAll('.close-win').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const winId = btn.getAttribute('data-win');
+      const win = document.getElementById(`${winId}Window`);
+      if (win) win.classList.add('hide');
+    });
+  });
+
+  // Adicionar eventos a todos os elementos com data-app (desktop, taskbar, menu)
+  function bindAppEvents() {
+    document.querySelectorAll('[data-app]').forEach(el => {
+      // Remove eventos antigos para evitar duplicação
+      el.removeEventListener('click', el._clickHand      border-radius: 24px;
       padding: 6px 14px;
       display: flex;
       align-items: center;
