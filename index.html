@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Windows 12 Hyper-Version | Todos os Botões Funcionam</title>
+  <title>Fusion OS | Windows + Linux + Mac + iOS</title>
   <style>
     * {
       margin: 0;
@@ -13,101 +13,529 @@
     }
 
     body {
-      background: #05070c;
-      font-family: 'Segoe UI', system-ui, 'Roboto', sans-serif;
+      background: #000;
+      font-family: -apple-system, 'Segoe UI', 'Ubuntu', 'Roboto', sans-serif;
       overflow: hidden;
       height: 100vh;
       width: 100vw;
       position: fixed;
     }
 
+    /* Desktop Fusion */
     .desktop {
       width: 100%;
       height: 100%;
       position: relative;
-      background: radial-gradient(ellipse at 40% 30%, #121828, #05070c);
+      background: radial-gradient(ellipse at 30% 20%, #1a1a2e, #0a0a0f);
       overflow: hidden;
     }
 
+    /* Wallpaper */
     .wallpaper {
       position: absolute;
       width: 100%;
       height: 100%;
       object-fit: cover;
       z-index: 0;
-      opacity: 0.4;
+      opacity: 0.5;
       pointer-events: none;
     }
 
-    /* Desktop Icons */
-    .desktop-icons {
+    /* Dock estilo macOS/iOS */
+    .dock {
       position: absolute;
-      top: 20px;
-      left: 16px;
-      right: 16px;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30, 32, 44, 0.85);
+      backdrop-filter: blur(28px);
+      border-radius: 32px;
+      padding: 8px 20px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      z-index: 10;
+      gap: 16px;
+      z-index: 100;
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
     }
 
-    .desktop-icon {
+    .dock-icon {
+      width: 55px;
+      height: 55px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .dock-icon:active { transform: scale(0.92); background: rgba(255,255,255,0.25); }
+    .dock-icon img { width: 36px; height: 36px; pointer-events: none; }
+
+    /* Barra de status estilo iOS + Windows */
+    .status-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 44px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(20px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 100;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .time-status { font-family: monospace; font-size: 15px; }
+    .battery-status { display: flex; align-items: center; gap: 6px; }
+
+    /* Menu Iniciar estilo Windows + Linux */
+    .start-menu-fusion {
+      position: absolute;
+      bottom: 85px;
+      left: 20px;
+      width: 340px;
+      background: rgba(25, 28, 38, 0.96);
+      backdrop-filter: blur(40px);
+      border-radius: 24px;
+      padding: 16px;
+      z-index: 200;
+      border: 0.5px solid rgba(255,255,255,0.2);
+      transition: 0.2s;
+    }
+    .start-menu-fusion.hide { display: none; }
+
+    .menu-header-fusion {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 0.5px solid rgba(255,255,255,0.15);
+      margin-bottom: 12px;
+    }
+    .user-avatar-fusion {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #00b4d8, #0077b6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .apps-fusion-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .fusion-app {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 70px;
-      background: rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(12px);
-      border-radius: 16px;
-      padding: 8px 4px;
+      gap: 5px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 10px 4px;
       cursor: pointer;
-      transition: 0.1s;
-      border: 0.5px solid rgba(0, 200, 255, 0.4);
     }
+    .fusion-app:active { background: rgba(100,200,255,0.3); }
+    .fusion-app img { width: 32px; height: 32px; }
+    .fusion-app span { color: #ddd; font-size: 10px; }
 
-    .desktop-icon:active {
-      background: rgba(0, 200, 255, 0.3);
-      transform: scale(0.96);
-    }
-
-    .desktop-icon img {
-      width: 36px;
-      height: 36px;
-      pointer-events: none;
-    }
-
-    .desktop-icon span {
-      color: white;
-      font-size: 10px;
-      margin-top: 5px;
-      text-shadow: 0 1px 2px black;
-      pointer-events: none;
-    }
-
-    /* Taskbar */
-    .taskbar {
+    /* JANELAS FLUTUANTES - Estilo Fusion OS */
+    .window-fusion {
       position: absolute;
-      bottom: 12px;
-      left: 12px;
-      right: 12px;
-      background: rgba(12, 18, 28, 0.94);
+      min-width: 280px;
+      min-height: 300px;
+      background: rgba(28, 30, 40, 0.96);
       backdrop-filter: blur(32px);
-      border-radius: 32px;
-      height: 58px;
+      border-radius: 20px;
+      border: 1px solid rgba(100, 200, 255, 0.4);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: box-shadow 0.1s;
+    }
+    .window-fusion.hide { display: none; }
+
+    .window-bar {
+      background: rgba(20, 22, 32, 0.9);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: grab;
+      border-bottom: 0.5px solid rgba(100,200,255,0.3);
+    }
+    .window-bar:active { cursor: grabbing; }
+    .window-title-fusion {
+      color: #00b4d8;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      z-index: 1000;
-      border: 1px solid rgba(0, 200, 255, 0.5);
-      box-shadow: 0 0 12px rgba(0, 200, 255, 0.2);
+      gap: 8px;
+    }
+    .window-controls {
+      display: flex;
+      gap: 10px;
+    }
+    .win-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      background: rgba(255,255,255,0.1);
+    }
+    .win-btn.close { background: #ff5f5f; }
+    .win-btn.max { background: #2d8c5a; }
+    .win-btn.min { background: #ffa500; }
+    .win-content-fusion {
+      flex: 1;
+      padding: 16px;
+      overflow: auto;
+      color: white;
+    }
+    iframe { width: 100%; height: 100%; border: none; border-radius: 12px; background: white; }
+
+    /* Terminal estilo Linux */
+    .terminal-body {
+      background: #0a0e1a;
+      font-family: 'Courier New', monospace;
+      padding: 12px;
+      border-radius: 12px;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .terminal-line {
+      color: #0f0;
+      margin: 4px 0;
+      font-size: 12px;
+    }
+    .terminal-input-line {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .terminal-input {
+      background: #1a1e2a;
+      border: none;
+      color: #0f0;
+      font-family: monospace;
+      flex: 1;
+      padding: 6px;
+      border-radius: 8px;
     }
 
-    .start-btn {
-      background: linear-gradient(135deg, #00aaff22, #0066cc44);
-      border-radius: 24px;
-      padding: 6px 14px;
-      display: flex;
+    /* Toast */
+    .toast-fusion {
+      position: absolute;
+      bottom: 100px;
+      left: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(20px);
+      padding: 12px;
+      border-radius: 30px;
+      text-align: center;
+      color: #00ffcc;
+      z-index: 500;
+      transition: 0.2s;
+      font-size: 13px;
+    }
+
+    /* iOS Style Home Indicator */
+    .home-indicator {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 5px;
+      background: white;
+      border-radius: 10px;
+      opacity: 0.6;
+      z-index: 101;
+    }
+  </style>
+</head>
+<body>
+<div class="desktop">
+  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
+
+  <!-- Status Bar iOS style -->
+  <div class="status-bar">
+    <span>📶 Fusion OS</span>
+    <div class="time-status" id="fusionClock">--:--</div>
+    <div class="battery-status">🔋 100%</div>
+  </div>
+
+  <!-- Dock estilo macOS -->
+  <div class="dock">
+    <div class="dock-icon" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"></div>
+    <div class="dock-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
+    <div class="dock-icon" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"></div>
+    <div class="dock-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
+    <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"></div>
+  </div>
+
+  <!-- Menu Iniciar Fusion -->
+  <div class="start-menu-fusion hide" id="fusionStartMenu">
+    <div class="menu-header-fusion">
+      <div class="user-avatar-fusion">🐧</div>
+      <div><strong style="color:white;">Fusion User</strong><br><span style="font-size:10px; color:#00b4d8;">Windows • Linux • Mac • iOS</span></div>
+    </div>
+    <div class="apps-fusion-grid" id="startMenuApps">
+      <div class="fusion-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
+      <div class="fusion-app" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"><span>Terminal</span></div>
+      <div class="fusion-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Store</span></div>
+      <div class="fusion-app" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"><span>Settings</span></div>
+      <div class="fusion-app" data-app="notes"><img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png"><span>Notes</span></div>
+      <div class="fusion-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-fusion" id="fusionToast" style="opacity:0;">✅</div>
+
+  <!-- Home Indicator iOS -->
+  <div class="home-indicator"></div>
+</div>
+
+<script>
+  // Gerenciamento de janelas
+  let windows = [];
+  let nextZIndex = 300;
+  let activeWindow = null;
+
+  function showToast(msg, duration=2000) {
+    const toast = document.getElementById('fusionToast');
+    toast.style.opacity = '1';
+    toast.innerText = msg;
+    setTimeout(() => toast.style.opacity = '0', duration);
+  }
+
+  function bringToFront(winElement) {
+    nextZIndex++;
+    winElement.style.zIndex = nextZIndex;
+    activeWindow = winElement;
+  }
+
+  function createWindow(title, iconUrl, contentHtml, width=320, height=400) {
+    const desktop = document.querySelector('.desktop');
+    const winId = 'win_' + Date.now() + '_' + Math.random();
+    const winDiv = document.createElement('div');
+    winDiv.className = 'window-fusion';
+    winDiv.id = winId;
+    winDiv.style.width = width + 'px';
+    winDiv.style.height = height + 'px';
+    winDiv.style.left = (Math.random() * (window.innerWidth - width - 50) + 30) + 'px';
+    winDiv.style.top = (Math.random() * (window.innerHeight - height - 100) + 60) + 'px';
+    winDiv.style.zIndex = nextZIndex;
+    
+    winDiv.innerHTML = `
+      <div class="window-bar">
+        <div class="window-title-fusion"><img src="${iconUrl}" width="18"> ${title}</div>
+        <div class="window-controls">
+          <div class="win-btn min">─</div>
+          <div class="win-btn close">✕</div>
+        </div>
+      </div>
+      <div class="win-content-fusion">${contentHtml}</div>
+    `;
+    
+    desktop.appendChild(winDiv);
+    
+    // Eventos da janela
+    const bar = winDiv.querySelector('.window-bar');
+    const closeBtn = winDiv.querySelector('.close');
+    const minBtn = winDiv.querySelector('.min');
+    
+    closeBtn.addEventListener('click', () => winDiv.remove());
+    minBtn.addEventListener('click', () => winDiv.classList.toggle('hide'));
+    
+    // Arrastar
+    let isDragging = false;
+    let dragOffsetX = 0, dragOffsetY = 0;
+    bar.addEventListener('mousedown', (e) => {
+      if (e.target === closeBtn || e.target === minBtn) return;
+      isDragging = true;
+      dragOffsetX = e.clientX - winDiv.offsetLeft;
+      dragOffsetY = e.clientY - winDiv.offsetTop;
+      bringToFront(winDiv);
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      let newLeft = e.clientX - dragOffsetX;
+      let newTop = e.clientY - dragOffsetY;
+      newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - winDiv.offsetWidth));
+      newTop = Math.max(0, Math.min(newTop, window.innerHeight - winDiv.offsetHeight - 50));
+      winDiv.style.left = newLeft + 'px';
+      winDiv.style.top = newTop + 'px';
+    });
+    document.addEventListener('mouseup', () => isDragging = false);
+    
+    // Para mobile
+    bar.addEventListener('touchstart', (e) => {
+      if (e.target === closeBtn || e.target === minBtn) return;
+      const touch = e.touches[0];
+      isDragging = true;
+      dragOffsetX = touch.clientX - winDiv.offsetLeft;
+      dragOffsetY = touch.clientY - winDiv.offsetTop;
+      bringToFront(winDiv);
+      e.preventDefault();
+    });
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      let newLeft = touch.clientX - dragOffsetX;
+      let newTop = touch.clientY - dragOffsetY;
+      newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - winDiv.offsetWidth));
+      newTop = Math.max(0, Math.min(newTop, window.innerHeight - winDiv.offsetHeight - 50));
+      winDiv.style.left = newLeft + 'px';
+      winDiv.style.top = newTop + 'px';
+    });
+    document.addEventListener('touchend', () => isDragging = false);
+    
+    bringToFront(winDiv);
+    showToast(`📂 ${title} aberto`, 1000);
+    return winDiv;
+  }
+
+  // Conteúdo dos apps
+  function getAppContent(appType) {
+    if (appType === 'chrome') {
+      return `<iframe src="https://www.google.com/webhp?igu=1"></iframe>`;
+    }
+    if (appType === 'terminal') {
+      return `
+        <div class="terminal-body" id="terminalBody">
+          <div class="terminal-line">Fusion OS v1.0 - Linux Kernel 6.1</div>
+          <div class="terminal-line">Windows 11 + macOS Ventura + iOS 17 Fusion</div>
+          <div class="terminal-line">user@fusion:~$ <span id="terminalOutput">Bem-vindo ao sistema híbrido!</span></div>
+          <div class="terminal-input-line">
+            <span style="color:#0f0;">$&nbsp;</span>
+            <input type="text" id="terminalInput" class="terminal-input" placeholder="digite help ou ls">
+          </div>
+        </div>
+      `;
+    }
+    if (appType === 'store') {
+      return `
+        <div style="text-align:center;">
+          <h2 style="color:cyan;">📦 Fusion Store</h2>
+          <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+            <div style="background:#252540; padding:12px; border-radius:16px;">🐧 App 1 - Linux Tools <button class="install-fake" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
+            <div style="background:#252540; padding:12px; border-radius:16px;">🪟 App 2 - Windows Apps <button class="install-fake" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
+            <div style="background:#252540; padding:12px; border-radius:16px;">🍎 App 3 - macOS Utilities <button class="install-fake" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
+          </div>
+        </div>
+      `;
+    }
+    if (appType === 'settings') {
+      return `
+        <div>
+          <h3>⚙️ Configurações Fusion</h3>
+          <div style="margin-top:16px;">
+            <div>🎨 Tema: <span style="color:cyan;">Híbrido (Windows/Linux/Mac)</span></div>
+            <div>🔊 Sons: Ativado</div>
+            <div>📱 Modo iOS: Landscape</div>
+            <div>🐧 Terminal Linux: Integrado</div>
+            <button id="resetToastBtn" style="background:cyan; color:black; border:none; margin-top:16px; padding:8px; border-radius:20px;">Testar Notificação</button>
+          </div>
+        </div>
+      `;
+    }
+    if (appType === 'notes') {
+      return `
+        <textarea style="width:100%; height:200px; background:#1a1e2a; color:white; border:1px solid cyan; border-radius:12px; padding:12px;">📝 Notas Fusion OS - Windows + Linux + Mac + iOS</textarea>
+      `;
+    }
+    if (appType === 'calc') {
+      return `
+        <div style="text-align:center;">
+          <div style="font-size:42px; background:#0a0e18; padding:16px; border-radius:20px; margin-bottom:16px;" id="calcDisplayFusion">0</div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
+            <button class="calc-num-fusion" data-num="7">7</button><button class="calc-num-fusion" data-num="8">8</button><button class="calc-num-fusion" data-num="9">9</button><button class="calc-op-fusion" data-op="/">/</button>
+            <button class="calc-num-fusion" data-num="4">4</button><button class="calc-num-fusion" data-num="5">5</button><button class="calc-num-fusion" data-num="6">6</button><button class="calc-op-fusion" data-op="*">*</button>
+            <button class="calc-num-fusion" data-num="1">1</button><button class="calc-num-fusion" data-num="2">2</button><button class="calc-num-fusion" data-num="3">3</button><button class="calc-op-fusion" data-op="-">-</button>
+            <button class="calc-num-fusion" data-num="0">0</button><button id="calcClearFusion">C</button><button id="calcEqualFusion">=</button><button class="calc-op-fusion" data-op="+">+</button>
+          </div>
+        </div>
+      `;
+    }
+    if (appType === 'finder') {
+      return `
+        <div>
+          <h3>📁 Finder - Fusion OS</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:16px; margin-top:16px;">
+            <div>📄 Documentos</div>
+            <div>🖼️ Imagens</div>
+            <div>🎵 Músicas</div>
+            <div>💾 Aplicativos</div>
+          </div>
+        </div>
+      `;
+    }
+    return `<div>App em desenvolvimento</div>`;
+  }
+
+  // Abrir aplicativo
+  function openApp(appType) {
+    let title = '';
+    let icon = '';
+    let width = 400;
+    let height = 500;
+    
+    switch(appType) {
+      case 'chrome': title = 'Google Chrome'; icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png'; width = 420; height = 550; break;
+      case 'terminal': title = 'Terminal Linux'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; width = 500; height = 400; break;
+      case 'store': title = 'Fusion Store'; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png'; width = 420; height = 480; break;
+      case 'settings': title = 'Configurações Fusion'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; width = 380; height = 400; break;
+      case 'notes': title = 'Notas'; icon = 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png'; width = 350; height = 350; break;
+      case 'calc': title = 'Calculadora'; icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png'; width = 320; height = 450; break;
+      case 'finder': title = 'Finder'; icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; width = 380; height = 400; break;
+      default: title = appType; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png';
+    }
+    
+    const content = getAppContent(appType);
+    const win = createWindow(title, icon, content, width, height);
+    
+    // Configurar eventos específicos após criar
+    setTimeout(() => {
+      if (appType === 'terminal') {
+        const input = document.getElementById('terminalInput');
+        if (input) {
+          input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+              const output = document.getElementById('terminalOutput');
+              const cmd = input.value;
+              if (cmd === 'help') output.innerText = 'Comandos: help, ls, fusion, windows, linux, mac, ios';
+              else if (cmd === 'ls') output.innerText = 'Documentos/ Vídeos/ Músicas/ Apps/';
+              else if (cmd === 'fusion') output.innerText = 'Fusion OS - A fusão perfeita!';
+              else if (cmd === 'windows') output.innerText = 'Windows 11 mode: Ativo';
+              else if (cmd === 'linux') output.innerText = 'Ubuntu Kernel 6.1';
+              else if (cmd === 'mac') output.innerText = 'macOS Sonoma style';
+              else if (cmd === 'ios') output.innerText = 'iOS 17 widgets integrados';
+              else output.innerText = `Comando não reconhecido: ${cmd}`;
+              input.value = '';
+            }
+          });
+        }
+      }
+      
+      if (appType === 'calc') {
+        let calcVal = '0', calcPrev = null, calcOp = null;
+        const display = document.getElementB      display: flex;
       align-items: center;
       gap: 6px;
       cursor: pointer;
