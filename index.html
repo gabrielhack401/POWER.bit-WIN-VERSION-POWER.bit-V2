@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Windows 11 | POWER.bet Edition</title>
+  <title>Windows 11 | Apps Reais - Chrome + Store</title>
   <style>
     * {
       margin: 0;
@@ -22,7 +22,6 @@
       position: fixed;
     }
 
-    /* DESKTOP */
     .desktop {
       width: 100%;
       height: 100%;
@@ -31,7 +30,6 @@
       overflow: hidden;
     }
 
-    /* Wallpaper com efeito power */
     .wallpaper {
       position: absolute;
       width: 100%;
@@ -42,7 +40,6 @@
       pointer-events: none;
     }
 
-    /* Ícones da área de trabalho */
     .desktop-icons {
       position: absolute;
       top: 20px;
@@ -57,14 +54,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 72px;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(10px);
-      border-radius: 14px;
-      padding: 8px 4px;
+      width: 80px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 10px 4px;
       cursor: pointer;
       transition: 0.1s;
-      border: 0.5px solid rgba(255, 255, 255, 0.15);
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
     }
 
     .desktop-icon:active {
@@ -73,9 +70,8 @@
     }
 
     .desktop-icon img {
-      width: 40px;
-      height: 40px;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+      width: 42px;
+      height: 42px;
     }
 
     .desktop-icon span {
@@ -86,27 +82,26 @@
       font-weight: 500;
     }
 
-    /* TASKBAR - estilo power */
     .taskbar {
       position: absolute;
       bottom: 12px;
       left: 12px;
       right: 12px;
-      background: rgba(18, 22, 35, 0.85);
+      background: rgba(18, 22, 35, 0.9);
       backdrop-filter: blur(28px);
       border-radius: 28px;
-      height: 60px;
+      height: 62px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 20px;
       z-index: 1000;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), 0 8px 24px rgba(0,0,0,0.4);
-      border: 1px solid rgba(0, 255, 255, 0.3);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .start-btn {
-      background: linear-gradient(135deg, rgba(0, 200, 255, 0.2), rgba(0, 100, 255, 0.3));
+      background: rgba(0, 120, 212, 0.3);
       border-radius: 20px;
       padding: 8px 18px;
       display: flex;
@@ -114,24 +109,22 @@
       gap: 8px;
       cursor: pointer;
       transition: 0.1s;
-      border: 0.5px solid cyan;
     }
 
     .start-btn:active {
+      background: rgba(0, 120, 212, 0.6);
       transform: scale(0.95);
-      background: linear-gradient(135deg, cyan, #0066ff);
     }
 
     .start-btn svg {
       width: 20px;
-      fill: cyan;
+      fill: white;
     }
 
     .start-btn span {
-      color: cyan;
-      font-weight: bold;
+      color: white;
+      font-weight: 500;
       font-size: 14px;
-      text-shadow: 0 0 3px cyan;
     }
 
     .taskbar-middle {
@@ -143,56 +136,52 @@
     }
 
     .taskbar-app {
-      width: 44px;
-      height: 44px;
-      background: rgba(0, 255, 255, 0.1);
+      width: 46px;
+      height: 46px;
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: 0.1s;
-      border: 0.5px solid rgba(0, 255, 255, 0.4);
     }
 
     .taskbar-app:active {
-      background: rgba(0, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.3);
       transform: scale(0.92);
     }
 
     .taskbar-app img {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
     }
 
-    .time-battery {
-      background: rgba(0, 0, 0, 0.6);
+    .time-area {
+      background: rgba(0, 0, 0, 0.5);
       padding: 6px 16px;
       border-radius: 28px;
-      color: cyan;
+      color: white;
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 500;
       font-family: monospace;
-      letter-spacing: 1px;
-      box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
     }
 
-    /* START MENU POWER */
     .start-menu {
       position: absolute;
-      bottom: 80px;
+      bottom: 82px;
       left: 16px;
       width: 460px;
       max-width: calc(100% - 32px);
-      background: rgba(12, 16, 28, 0.95);
+      background: rgba(20, 24, 36, 0.96);
       backdrop-filter: blur(40px);
-      border-radius: 32px;
+      border-radius: 28px;
       padding: 20px 16px;
       z-index: 1100;
-      transition: 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      transition: 0.2s;
       transform-origin: bottom left;
-      border: 1px solid cyan;
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
     .start-menu.hide {
@@ -202,373 +191,291 @@
       pointer-events: none;
     }
 
-    .user-area {
+    .user-profile {
       display: flex;
       align-items: center;
       gap: 14px;
       padding-bottom: 16px;
-      border-bottom: 1px solid cyan;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
       margin-bottom: 18px;
     }
 
     .avatar {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, cyan, #0066ff);
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #0078d4, #2b5797);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: #0a0c16;
+      font-size: 22px;
+      color: white;
     }
 
-    .apps-power {
+    .apps-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
       margin-bottom: 20px;
     }
 
-    .power-app {
+    .app-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      background: rgba(0, 255, 255, 0.08);
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
       padding: 12px 4px;
       cursor: pointer;
       transition: 0.1s;
     }
 
-    .power-app:active {
-      background: rgba(0, 255, 255, 0.3);
+    .app-item:active {
+      background: rgba(255, 255, 255, 0.2);
     }
 
-    .power-app img {
-      width: 36px;
-      height: 36px;
+    .app-item img {
+      width: 38px;
+      height: 38px;
     }
 
-    .power-app span {
-      color: #ccf;
+    .app-item span {
+      color: #eef2ff;
       font-size: 11px;
-    }
-
-    /* MICROSOFT STORE */
-    .store-panel {
-      position: absolute;
-      top: 8%;
-      left: 5%;
-      width: 90%;
-      height: 84%;
-      background: rgba(10, 14, 26, 0.96);
-      backdrop-filter: blur(32px);
-      border-radius: 36px;
-      z-index: 1200;
-      border: 2px solid cyan;
-      box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
-      display: flex;
-      flex-direction: column;
-      transition: 0.2s;
-    }
-
-    .store-panel.hide-store {
-      transform: scale(0.8);
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .store-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 24px;
-      background: rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid cyan;
-    }
-
-    .store-header h2 {
-      color: cyan;
-      font-weight: bold;
-    }
-
-    .close-btn {
-      background: rgba(255, 0, 100, 0.6);
-      border: none;
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 30px;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .store-grid {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 20px;
-    }
-
-    .store-card {
-      background: rgba(0, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 16px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .store-card:active {
-      background: rgba(0, 255, 255, 0.3);
-    }
-
-    .store-card img {
-      width: 70px;
-      height: 70px;
-      border-radius: 20px;
-    }
-
-    .install-power {
-      margin-top: 10px;
-      background: linear-gradient(90deg, cyan, #0066ff);
-      border: none;
-      padding: 8px 16px;
-      border-radius: 30px;
-      color: #000;
-      font-weight: bold;
-    }
-
-    /* CONFIGURAÇÕES */
-    .settings-panel {
-      position: absolute;
-      top: 15%;
-      left: 10%;
-      width: 80%;
-      background: #11151fdd;
-      backdrop-filter: blur(30px);
-      border-radius: 32px;
-      z-index: 1200;
-      padding: 24px;
-      border: 1px solid cyan;
-    }
-
-    .settings-panel.hide {
-      display: none;
     }
 
     .toast {
       position: absolute;
       bottom: 90px;
+      left: 16px;
       right: 16px;
-      background: #000000cc;
+      background: #202020e6;
       backdrop-filter: blur(20px);
-      padding: 12px 24px;
-      border-radius: 40px;
-      color: cyan;
-      font-weight: bold;
+      padding: 14px 20px;
+      border-radius: 48px;
+      color: white;
+      font-size: 14px;
       z-index: 1300;
       transition: 0.2s;
-      border-left: 5px solid cyan;
-      pointer-events: none;
+      text-align: center;
+      border-left: 4px solid #0078d4;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
 <div class="desktop">
-  <!-- Wallpaper -->
   <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
 
   <div class="desktop-icons">
+    <div class="desktop-icon" id="chromeDesktopBtn">
+      <img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png" alt="Chrome">
+      <span>Google Chrome</span>
+    </div>
     <div class="desktop-icon" id="storeDesktopBtn">
-      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" alt="store">
+      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" alt="Store">
       <span>Microsoft Store</span>
     </div>
-    <div class="desktop-icon" id="settingsDesktopBtn">
-      <img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png" alt="settings">
-      <span>Configurações</span>
+    <div class="desktop-icon" id="edgeDesktopBtn">
+      <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Edge">
+      <span>Microsoft Edge</span>
     </div>
   </div>
 
   <div class="taskbar">
-    <div class="start-btn" id="startPowerBtn">
-      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 4h16v16H4z" fill="currentColor"/><rect x="8" y="8" width="3" height="3" fill="#000"/><rect x="13" y="8" width="3" height="3" fill="#000"/><rect x="8" y="13" width="3" height="3" fill="#000"/><rect x="13" y="13" width="3" height="3" fill="#000"/></svg>
-      <span>POWER START</span>
+    <div class="start-btn" id="startBtn">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 4h16v16H4z" fill="currentColor"/><rect x="8" y="8" width="3" height="3" fill="#fff"/><rect x="13" y="8" width="3" height="3" fill="#fff"/><rect x="8" y="13" width="3" height="3" fill="#fff"/><rect x="13" y="13" width="3" height="3" fill="#fff"/></svg>
+      <span>Iniciar</span>
     </div>
     <div class="taskbar-middle">
+      <div class="taskbar-app" id="chromeTaskBtn">
+        <img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png" alt="Chrome">
+      </div>
       <div class="taskbar-app" id="storeTaskBtn">
-        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" alt="store">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" alt="Store">
       </div>
-      <div class="taskbar-app" id="settingsTaskBtn">
-        <img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png" alt="settings">
+      <div class="taskbar-app" id="edgeTaskBtn">
+        <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Edge">
       </div>
     </div>
-    <div class="time-battery" id="powerClock">--:--</div>
+    <div class="time-area" id="clock">12:00</div>
   </div>
 
-  <!-- START MENU -->
-  <div class="start-menu hide" id="powerStartMenu">
-    <div class="user-area">
-      <div class="avatar">⚡</div>
-      <div style="color: white;">Hyper-Droid | POWER.bet</div>
+  <div class="start-menu hide" id="startMenu">
+    <div class="user-profile">
+      <div class="avatar">👤</div>
+      <div style="color: white; font-weight: 500;">Meu Windows 11</div>
     </div>
-    <div class="apps-power">
-      <div class="power-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Store</span></div>
-      <div class="power-app" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"><span>Settings</span></div>
-      <div class="power-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
-      <div class="power-app" data-app="game"><img src="https://cdn-icons-png.flaticon.com/512/1067/1067566.png"><span>Game Pass</span></div>
+    <div class="apps-grid">
+      <div class="app-item" data-app="chrome">
+        <img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png">
+        <span>Chrome</span>
+      </div>
+      <div class="app-item" data-app="store">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png">
+        <span>Microsoft Store</span>
+      </div>
+      <div class="app-item" data-app="edge">
+        <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png">
+        <span>Edge</span>
+      </div>
+      <div class="app-item" data-app="maps">
+        <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png">
+        <span>Mapas</span>
+      </div>
     </div>
+    <div style="padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 11px; color: #aaa;">⚡ Apps reais - Clique e abra</div>
   </div>
 
-  <!-- STORE PANEL -->
-  <div class="store-panel hide-store" id="storePowerPanel">
-    <div class="store-header">
-      <h2>📀 Microsoft Store POWER</h2>
-      <button class="close-btn" id="closePowerStore">✕</button>
-    </div>
-    <div class="store-grid" id="powerStoreGrid"></div>
-  </div>
-
-  <!-- SETTINGS -->
-  <div class="settings-panel hide" id="powerSettings">
-    <div style="display: flex; justify-content: space-between;">
-      <h3 style="color: cyan;">⚙️ POWER Config</h3>
-      <button id="closePowerSettings" style="background:red; border:none; color:white; width:36px; border-radius:30px;">✕</button>
-    </div>
-    <div style="margin-top: 20px; color: white;">
-      <p>✅ Windows 11 Hyper-Droid</p>
-      <p>✅ Modo POWER.bet: ATIVADO</p>
-      <p>✅ RGB Neon: ON</p>
-      <button id="toastPowerTest" style="margin-top: 20px; background:cyan; border:none; padding:10px; border-radius:20px;">🔔 Testar Notificação</button>
-    </div>
-  </div>
-
-  <div class="toast" id="powerToast" style="opacity:0;">✔️ Ação concluída</div>
+  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
 </div>
 
 <script>
   // Elementos
-  const startBtn = document.getElementById('startPowerBtn');
-  const startMenu = document.getElementById('powerStartMenu');
-  const storePanel = document.getElementById('storePowerPanel');
-  const settingsPanel = document.getElementById('powerSettings');
-  const toast = document.getElementById('powerToast');
-  
+  const startBtn = document.getElementById('startBtn');
+  const startMenu = document.getElementById('startMenu');
+  const toast = document.getElementById('toastMsg');
+
   function showToast(msg, duration = 2000) {
+    toast.style.transition = 'opacity 0.15s';
     toast.style.opacity = '1';
     toast.innerText = msg;
     setTimeout(() => {
       toast.style.opacity = '0';
     }, duration);
   }
+
+  // ==================== ABRIR APPS REAIS ====================
   
-  function closeAll() {
-    storePanel.classList.add('hide-store');
-    settingsPanel.classList.add('hide');
+  // Função para abrir Chrome (ou navegador padrão)
+  function openChrome() {
+    // Tenta abrir o Google Chrome diretamente
+    // No Android, isso abre o Chrome ou o navegador padrão
+    window.location.href = 'https://www.google.com/chrome/';
+    // Também tenta abrir o app do Chrome via intent (Android)
+    setTimeout(() => {
+      window.location.href = 'googlechrome://';
+    }, 100);
+    showToast('🌐 Abrindo Google Chrome...');
   }
-  
-  function openStore() {
-    closeAll();
-    storePanel.classList.remove('hide-store');
-    startMenu.classList.add('hide');
-    renderStoreApps();
+
+  // Função para abrir Microsoft Store OFICIAL
+  function openMicrosoftStore() {
+    // No Windows: ms-windows-store:
+    // No Android: market://details?id=com.microsoft.windowsstore ou link da loja
+    // Tenta múltiplos métodos para funcionar em qualquer dispositivo
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isAndroid = /android/.test(userAgent);
+    const isWindows = /win32|win64|windows/.test(userAgent);
+    
+    if (isAndroid) {
+      // Tenta abrir a Microsoft Store no Android (existe o app Microsoft Store)
+      window.location.href = 'market://details?id=com.microsoft.windowsstore';
+      setTimeout(() => {
+        window.location.href = 'https://play.google.com/store/apps/details?id=com.microsoft.windowsstore';
+      }, 200);
+      showToast('📱 Abrindo Microsoft Store...');
+    } else if (isWindows) {
+      // URI oficial da Microsoft Store no Windows
+      window.location.href = 'ms-windows-store://home';
+      showToast('🪟 Abrindo Microsoft Store...');
+    } else {
+      // Fallback: abre página oficial
+      window.open('https://apps.microsoft.com/', '_blank');
+      showToast('🌍 Abrindo Microsoft Store online...');
+    }
   }
-  
-  function openSettings() {
-    closeAll();
-    settingsPanel.classList.remove('hide');
-    startMenu.classList.add('hide');
+
+  // Função para abrir Microsoft Edge
+  function openEdge() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isAndroid = /android/.test(userAgent);
+    
+    if (isAndroid) {
+      window.location.href = 'microsoft-edge://';
+      setTimeout(() => {
+        window.location.href = 'https://play.google.com/store/apps/details?id=com.microsoft.emmx';
+      }, 200);
+      showToast('🌐 Abrindo Microsoft Edge...');
+    } else {
+      window.open('https://www.microsoft.com/edge', '_blank');
+      showToast('🌐 Abrindo Microsoft Edge...');
+    }
   }
-  
-  // Aplicativos da loja
-  const appsList = [
-    { name: "Hyper Terminal", icon: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", desc: "Terminal Power" },
-    { name: "Droid Launcher", icon: "https://cdn-icons-png.flaticon.com/512/906/906344.png", desc: "Launcher Hyper" },
-    { name: "Game Booster", icon: "https://cdn-icons-png.flaticon.com/512/1067/1067566.png", desc: "Acelera Games" },
-    { name: "RGB Control", icon: "https://cdn-icons-png.flaticon.com/512/3691/3691446.png", desc: "Led Sync" },
-    { name: "Windows Defender", icon: "https://cdn-icons-png.flaticon.com/512/886/886668.png", desc: "Proteção Máxima" },
-    { name: "POWER.bet Hub", icon: "https://cdn-icons-png.flaticon.com/512/1055/1055687.png", desc: "Central Gamer" }
-  ];
-  
-  function renderStoreApps() {
-    const container = document.getElementById('powerStoreGrid');
-    if (!container) return;
-    container.innerHTML = '';
-    appsList.forEach(app => {
-      const card = document.createElement('div');
-      card.className = 'store-card';
-      card.innerHTML = `
-        <img src="${app.icon}"><h4 style="color:white;">${app.name}</h4><p style="color:#aaa;">${app.desc}</p>
-        <button class="install-power">Instalar</button>
-      `;
-      card.querySelector('.install-power').addEventListener('click', (e) => {
-        e.stopPropagation();
-        showToast(`⚡ Instalando ${app.name}...`);
-        setTimeout(() => showToast(`✅ ${app.name} instalado com sucesso!`), 1000);
-      });
-      container.appendChild(card);
-    });
+
+  // Função para abrir Mapas
+  function openMaps() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isAndroid = /android/.test(userAgent);
+    
+    if (isAndroid) {
+      window.location.href = 'geo:0,0?q=mapas';
+      showToast('🗺️ Abrindo Google Maps...');
+    } else {
+      window.open('https://www.bing.com/maps', '_blank');
+      showToast('🗺️ Abrindo Mapas...');
+    }
   }
+
+  // ==================== EVENTOS DOS BOTÕES ====================
   
-  // Eventos
+  // Botão Iniciar
   startBtn.addEventListener('click', () => {
     if (startMenu.classList.contains('hide')) {
-      closeAll();
       startMenu.classList.remove('hide');
     } else {
       startMenu.classList.add('hide');
     }
   });
+
+  // Chrome - todos os lugares
+  document.getElementById('chromeDesktopBtn').addEventListener('click', openChrome);
+  document.getElementById('chromeTaskBtn').addEventListener('click', openChrome);
   
-  document.getElementById('storeTaskBtn').addEventListener('click', openStore);
-  document.getElementById('settingsTaskBtn').addEventListener('click', openSettings);
-  document.getElementById('storeDesktopBtn').addEventListener('click', openStore);
-  document.getElementById('settingsDesktopBtn').addEventListener('click', openSettings);
-  document.getElementById('closePowerStore').addEventListener('click', () => {
-    storePanel.classList.add('hide-store');
-  });
-  document.getElementById('closePowerSettings').addEventListener('click', () => {
-    settingsPanel.classList.add('hide');
-  });
-  document.getElementById('toastPowerTest')?.addEventListener('click', () => {
-    showToast('🔔 Modo POWER.bet ativado | Windows 11 pronto!');
-  });
+  // Microsoft Store
+  document.getElementById('storeDesktopBtn').addEventListener('click', openMicrosoftStore);
+  document.getElementById('storeTaskBtn').addEventListener('click', openMicrosoftStore);
   
-  // Apps do menu start
-  document.querySelectorAll('.power-app').forEach(app => {
+  // Microsoft Edge
+  document.getElementById('edgeDesktopBtn').addEventListener('click', openEdge);
+  document.getElementById('edgeTaskBtn').addEventListener('click', openEdge);
+
+  // Apps do menu Start
+  document.querySelectorAll('.app-item').forEach(app => {
     app.addEventListener('click', (e) => {
       const appName = app.getAttribute('data-app');
-      if (appName === 'store') openStore();
-      else if (appName === 'settings') openSettings();
-      else if (appName === 'edge') showToast('🌐 Microsoft Edge abrindo...');
-      else if (appName === 'game') showToast('🎮 Game Pass: Biblioteca de jogos disponível!');
+      if (appName === 'chrome') openChrome();
+      else if (appName === 'store') openMicrosoftStore();
+      else if (appName === 'edge') openEdge();
+      else if (appName === 'maps') openMaps();
       startMenu.classList.add('hide');
     });
   });
-  
-  // Relógio
-  function updatePowerClock() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    document.getElementById('powerClock').innerText = `${hours}:${minutes}`;
-  }
-  setInterval(updatePowerClock, 1000);
-  updatePowerClock();
-  
+
   // Fechar menu ao clicar fora
   document.addEventListener('click', (e) => {
     if (!startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
       startMenu.classList.add('hide');
     }
   });
-  
-  renderStoreApps();
-  showToast('⚡ Windows 11 POWER.bet | Todos os botões funcionam!', 2500);
+
+  // Relógio em tempo real
+  function updateClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    document.getElementById('clock').innerText = `${hours}:${minutes} ${ampm}`;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Mensagem de boas-vindas
+  setTimeout(() => {
+    showToast('✅ Windows 11 pronto! Clique no Chrome ou na Microsoft Store para abrir os apps REAIS', 4000);
+  }, 500);
 </script>
 </body>
 </html>
