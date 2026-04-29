@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>CyberOS Fusion - Windows + Linux + Mac + iOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CyberOS Fusion | Responsivo - Windows + Linux + Mac + iOS</title>
   <style>
     * {
       margin: 0;
@@ -12,7 +12,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     body {
-      background: black;
+      background: #000;
       font-family: 'Segoe UI', 'Courier New', monospace;
       overflow: hidden;
       height: 100vh;
@@ -26,43 +26,48 @@
       position: relative;
       overflow: hidden;
     }
-    /* Status bar */
+    /* Status bar responsiva */
     .status-bar {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 40px;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
+      height: max(40px, env(safe-area-inset-top, 40px));
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 20px;
-      color: cyan;
+      padding: 0 5%;
+      color: #0ff;
       font-family: monospace;
       z-index: 100;
-      border-bottom: 1px solid cyan;
+      border-bottom: 1px solid #0ff;
       font-weight: bold;
+      font-size: clamp(10px, 4vw, 14px);
     }
-    /* Dock */
+    /* Dock responsivo - sempre centralizado */
     .dock {
       position: absolute;
       bottom: 15px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,255,255,0.15);
+      background: rgba(0,255,255,0.12);
       backdrop-filter: blur(20px);
-      border-radius: 40px;
-      padding: 8px 20px;
+      border-radius: 60px;
+      padding: 8px 5%;
       display: flex;
-      gap: 20px;
+      gap: clamp(8px, 4vw, 20px);
       z-index: 100;
-      border: 1px solid cyan;
+      border: 1px solid #0ff;
+      width: auto;
+      max-width: 95%;
+      overflow-x: auto;
+      white-space: nowrap;
     }
     .dock-icon {
-      width: 55px;
-      height: 55px;
+      width: clamp(45px, 12vw, 55px);
+      height: clamp(45px, 12vw, 55px);
       background: rgba(0,255,255,0.2);
       border-radius: 18px;
       display: flex;
@@ -70,20 +75,22 @@
       justify-content: center;
       cursor: pointer;
       transition: 0.1s;
+      flex-shrink: 0;
     }
-    .dock-icon:active { transform: scale(0.92); background: cyan; }
-    .dock-icon img { width: 36px; height: 36px; pointer-events: none; }
-    /* Start menu */
+    .dock-icon:active { transform: scale(0.92); background: #0ff; }
+    .dock-icon img { width: 60%; height: 60%; pointer-events: none; }
+    /* Start menu responsivo */
     .start-menu {
       position: absolute;
       bottom: 85px;
-      left: 20px;
-      width: 280px;
-      background: rgba(10,15,25,0.95);
-      backdrop-filter: blur(20px);
+      left: 5%;
+      width: 90%;
+      max-width: 320px;
+      background: rgba(10,15,25,0.96);
+      backdrop-filter: blur(24px);
       border-radius: 24px;
       padding: 16px;
-      border: 1px solid cyan;
+      border: 1px solid #0ff;
       z-index: 200;
     }
     .start-menu.hide { display: none; }
@@ -91,23 +98,23 @@
       display: flex;
       gap: 12px;
       align-items: center;
-      border-bottom: 1px solid cyan;
+      border-bottom: 1px solid #0ff;
       padding-bottom: 10px;
       margin-bottom: 12px;
     }
     .avatar {
-      width: 40px;
-      height: 40px;
-      background: cyan;
+      width: clamp(36px, 10vw, 48px);
+      height: clamp(36px, 10vw, 48px);
+      background: linear-gradient(135deg, #0ff, #0066ff);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: clamp(18px, 5vw, 24px);
     }
     .apps-grid {
       display: grid;
-      grid-template-columns: repeat(3,1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
     .menu-app {
@@ -117,38 +124,48 @@
       text-align: center;
       cursor: pointer;
     }
-    .menu-app img { width: 28px; height: 28px; }
-    .menu-app span { color: cyan; font-size: 10px; display: block; }
-    /* Janelas flutuantes */
+    .menu-app:active { background: rgba(0,255,255,0.3); }
+    .menu-app img { width: clamp(24px, 7vw, 32px); height: auto; }
+    .menu-app span { color: #0ff; font-size: clamp(9px, 3vw, 11px); display: block; margin-top: 4px; }
+    /* JANELAS RESPONSIVAS */
     .window {
       position: absolute;
-      min-width: 280px;
-      min-height: 280px;
-      background: #0e121fd9;
+      background: #0e121fe8;
       backdrop-filter: blur(28px);
       border-radius: 20px;
-      border: 1px solid cyan;
-      box-shadow: 0 0 20px cyan;
+      border: 1.5px solid #0ff;
+      box-shadow: 0 0 20px #0ff6;
       display: flex;
       flex-direction: column;
       z-index: 300;
+      /* Tamanhos responsivos */
+      width: 85% !important;
+      max-width: 450px !important;
+      min-width: 260px !important;
+      height: auto !important;
+      max-height: 70vh !important;
+      min-height: 280px !important;
+      left: 7.5% !important;
+      top: 15% !important;
     }
     .window.hide { display: none; }
     .window-bar {
       background: #000000aa;
-      padding: 10px 12px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       cursor: grab;
       border-radius: 20px 20px 0 0;
-      border-bottom: 1px solid cyan;
+      border-bottom: 1px solid #0ff;
     }
+    .window-bar:active { cursor: grabbing; }
     .window-title {
-      color: cyan;
+      color: #0ff;
       font-weight: bold;
       display: flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
+      font-size: clamp(12px, 4vw, 14px);
     }
     .win-btn {
       width: 28px;
@@ -158,86 +175,142 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      margin-left: 6px;
+      margin-left: 8px;
+      font-weight: bold;
     }
-    .close { background: red; color: white; }
-    .min { background: orange; }
+    .close { background: #ff3366; color: white; }
+    .min { background: #ffaa33; color: black; }
     .window-content {
       flex: 1;
-      padding: 12px;
+      padding: 16px;
       overflow: auto;
       color: white;
+      min-height: 200px;
     }
-    iframe { width: 100%; height: 100%; border: none; background: white; border-radius: 12px; }
-    .terminal-body {
-      background: #000;
-      font-family: monospace;
-      padding: 10px;
+    iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 250px;
+      border: none;
+      background: white;
       border-radius: 12px;
-      height: 200px;
-      overflow-y: auto;
     }
-    .terminal-line { color: #0f0; margin: 4px 0; }
+    /* Terminal responsivo */
+    .terminal-body {
+      background: #03060c;
+      font-family: monospace;
+      padding: 12px;
+      border-radius: 16px;
+      height: 100%;
+      overflow-y: auto;
+      border: 0.5px solid #0ff;
+    }
+    .terminal-line {
+      color: #0f0;
+      margin: 6px 0;
+      font-size: clamp(10px, 3.5vw, 13px);
+      word-break: break-word;
+    }
     .terminal-input {
       background: #111;
-      border: 1px solid cyan;
+      border: 1px solid #0ff;
       color: #0f0;
       width: 100%;
-      padding: 6px;
+      padding: 8px;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: clamp(11px, 3.5vw, 13px);
+      margin-top: 8px;
     }
+    /* Calculadora responsiva */
     .calc-display {
       background: #000;
       padding: 16px;
       text-align: right;
-      font-size: 32px;
-      margin-bottom: 12px;
-      border-radius: 12px;
+      font-size: clamp(28px, 8vw, 42px);
+      margin-bottom: 16px;
+      border-radius: 16px;
+      border: 1px solid #0ff;
+      word-break: break-all;
     }
     .calc-buttons {
       display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
     }
     .calc-btn {
-      background: cyan;
+      background: #0ff;
       text-align: center;
-      padding: 12px;
+      padding: clamp(10px, 4vw, 14px);
       border-radius: 40px;
       font-weight: bold;
+      font-size: clamp(16px, 5vw, 20px);
       cursor: pointer;
+    }
+    .calc-btn:active { background: white; transform: scale(0.95); }
+    /* Store / Configurações responsivo */
+    .store-btn, .config-item {
+      background: rgba(0,255,255,0.2);
+      border: none;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 24px;
+      color: white;
+      width: 100%;
+      text-align: center;
+      font-size: clamp(12px, 4vw, 14px);
     }
     .toast {
       position: absolute;
       bottom: 90px;
-      left: 20px;
-      right: 20px;
-      background: cyan;
+      left: 5%;
+      right: 5%;
+      width: 90%;
+      background: #0ff;
       color: black;
-      padding: 10px;
-      border-radius: 40px;
+      padding: 12px;
+      border-radius: 60px;
       text-align: center;
       font-weight: bold;
       z-index: 500;
       transition: 0.2s;
+      font-size: clamp(12px, 4vw, 14px);
+    }
+    /* Ajustes para landscape */
+    @media (orientation: landscape) {
+      .window {
+        max-width: 500px !important;
+        max-height: 80vh !important;
+        left: calc(50% - 250px) !important;
+        top: 10% !important;
+      }
+      .dock {
+        gap: 15px;
+        padding: 6px 3%;
+      }
     }
   </style>
 </head>
 <body>
 <div class="desktop">
   <div class="status-bar">
-    <span>🔮 CYBER FUSION</span>
+    <span>🌀 CYBER FUSION</span>
     <span id="liveClock">--:--:--</span>
     <span id="batteryDisplay">🔋 --%</span>
   </div>
   <div class="dock">
-    <div class="dock-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
-    <div class="dock-icon" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"></div>
-    <div class="dock-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
-    <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"></div>
-    <div class="dock-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"></div>
+    <div class="dock-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png" alt="Chrome"></div>
+    <div class="dock-icon" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png" alt="Terminal"></div>
+    <div class="dock-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" alt="Store"></div>
+    <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png" alt="Settings"></div>
+    <div class="dock-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png" alt="Calc"></div>
+    <div class="dock-icon" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="Finder"></div>
   </div>
   <div class="start-menu hide" id="startMenu">
-    <div class="menu-header"><div class="avatar">🐧</div><div style="color:white;">Fusion OS</div></div>
+    <div class="menu-header">
+      <div class="avatar">🐧</div>
+      <div style="color:white;">Fusion OS<br><span style="font-size:10px; color:#0ff;">Cyberpunk Edition</span></div>
+    </div>
     <div class="apps-grid">
       <div class="menu-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
       <div class="menu-app" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"><span>Terminal</span></div>
@@ -264,32 +337,34 @@
     document.querySelectorAll('.window').forEach(w => w.remove());
   }
 
-  // ========== CRIAR JANELA FLUTUANTE (MÓVEL + ARRASTÁVEL) ==========
+  // ========== CRIAR JANELA RESPONSIVA (COM ARRASTO) ==========
   let currentZ = 500;
-  function createWindow(title, iconUrl, contentHtml, width = 360, height = 400) {
+  function createWindow(title, iconUrl, contentHtml) {
     closeAllWindows();
     const desktop = document.querySelector('.desktop');
     const win = document.createElement('div');
     win.className = 'window';
-    win.style.width = width + 'px';
-    win.style.height = height + 'px';
-    win.style.left = (window.innerWidth/2 - width/2) + 'px';
-    win.style.top = (window.innerHeight/2 - height/2) + 'px';
+    // Posicionamento centralizado responsivo
+    win.style.left = '7.5%';
+    win.style.top = '15%';
     win.style.zIndex = currentZ++;
     win.innerHTML = `
       <div class="window-bar">
-        <div class="window-title"><img src="${iconUrl}" width="18"> ${title}</div>
+        <div class="window-title"><img src="${iconUrl}" width="20" height="20"> ${title}</div>
         <div><div class="win-btn min">─</div><div class="win-btn close">✕</div></div>
       </div>
       <div class="window-content">${contentHtml}</div>
     `;
     desktop.appendChild(win);
+    
     const bar = win.querySelector('.window-bar');
     const closeBtn = win.querySelector('.close');
     const minBtn = win.querySelector('.min');
+    
     closeBtn.onclick = () => win.remove();
     minBtn.onclick = () => win.classList.toggle('hide');
-    // arrastar
+    
+    // Arrastar (suporte mobile + desktop)
     let drag = false, startX, startY, left0, top0;
     function onStart(e) {
       if (e.target === closeBtn || e.target === minBtn) return;
@@ -306,10 +381,12 @@
       const cy = e.clientY ?? e.touches[0].clientY;
       let nl = left0 + (cx - startX);
       let nt = top0 + (cy - startY);
+      // limites para não sair da tela
       nl = Math.min(Math.max(0, nl), window.innerWidth - win.offsetWidth);
       nt = Math.min(Math.max(0, nt), window.innerHeight - win.offsetHeight - 50);
       win.style.left = nl + 'px';
       win.style.top = nt + 'px';
+      win.style.width = ''; // remove override inline
     }
     function onEnd() { drag = false; }
     bar.addEventListener('mousedown', onStart);
@@ -318,35 +395,39 @@
     bar.addEventListener('touchstart', onStart);
     document.addEventListener('touchmove', onMove);
     document.addEventListener('touchend', onEnd);
+    
     showToast(`📂 ${title} aberto`);
     return win;
   }
 
   // ========== CONTEÚDO DE CADA APP ==========
   function getContent(app) {
-    if (app === 'chrome') return `<iframe src="https://www.google.com/webhp?igu=1"></iframe>`;
+    if (app === 'chrome') return `<iframe src="https://www.google.com/webhp?igu=1" title="Google Chrome"></iframe>`;
     if (app === 'terminal') return `
       <div class="terminal-body" id="termBody">
-        <div class="terminal-line">CyberOS Terminal - Linux 6.1</div>
-        <div class="terminal-line">Digite help para comandos</div>
-        <div id="termOut" class="terminal-line">$ Bem-vindo</div>
+        <div class="terminal-line">> CyberOS Terminal v2.0</div>
+        <div class="terminal-line">> Digite 'help' para comandos</div>
+        <div id="termOut" class="terminal-line">$ Bem-vindo ao Fusion OS</div>
         <input type="text" id="termInput" class="terminal-input" placeholder="comando...">
       </div>
     `;
     if (app === 'store') return `
       <div style="text-align:center;">
-        <h3 style="color:cyan;">🌀 Cyber Store</h3>
-        <div style="margin-top:12px;"><button class="storeBtn" data-name="Hacker Tool">📀 Hacker Tool - Instalar</button></div>
-        <div style="margin-top:8px;"><button class="storeBtn" data-name="Fusion Wallpapers">🖼️ Fusion Wallpapers - Instalar</button></div>
-        <div style="margin-top:8px;"><button class="storeBtn" data-name="Neon Game">🎮 Neon Game - Instalar</button></div>
+        <h3 style="color:#0ff; margin-bottom:16px;">🌀 Cyber Store</h3>
+        <button class="store-btn" data-name="Hacker Tool Pro">📀 Hacker Tool Pro - Instalar</button>
+        <button class="store-btn" data-name="Fusion Wallpapers">🖼️ Fusion Wallpapers - Instalar</button>
+        <button class="store-btn" data-name="Neon Game Pack">🎮 Neon Game Pack - Instalar</button>
+        <button class="store-btn" data-name="Cyber Security Kit">🛡️ Cyber Security Kit - Instalar</button>
       </div>
     `;
     if (app === 'settings') return `
       <div>
-        <h3>⚙️ Configurações</h3>
-        <p id="settingsBatt">🔋 Bateria: --%</p>
-        <p>🎨 Tema: Cyberpunk</p>
-        <button id="testNotif" style="background:cyan; border:none; padding:6px 12px; border-radius:20px;">Testar Notificação</button>
+        <h3 style="color:#0ff;">⚙️ Configurações</h3>
+        <p id="settingsBatt" style="margin:12px 0;">🔋 Bateria: --%</p>
+        <p>🎨 Tema: Cyberpunk Neon</p>
+        <p>📱 Modo Responsivo: Ativo</p>
+        <p>🐧 Fusão: Windows + Linux + Mac + iOS</p>
+        <button id="testNotif" style="background:#0ff; border:none; padding:10px 20px; border-radius:30px; margin-top:16px; font-weight:bold;">🔔 Testar Notificação</button>
       </div>
     `;
     if (app === 'calc') return `
@@ -358,38 +439,48 @@
         <div class="calc-btn" data-val="0">0</div><div class="calc-btn" id="calcC">C</div><div class="calc-btn" id="calcEq">=</div><div class="calc-btn" data-op="+">+</div>
       </div>
     `;
-    if (app === 'finder') return `<div><h3>📁 Finder</h3><p>Documentos<br>Downloads<br>Imagens</p></div>`;
+    if (app === 'finder') return `
+      <div>
+        <h3 style="color:#0ff;">📁 Finder</h3>
+        <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:16px;">
+          <div>📄 Documentos</div><div>🖼️ Imagens</div><div>🎵 Músicas</div><div>💾 Apps</div><div>🐧 Linux</div><div>🪟 Windows</div>
+        </div>
+      </div>
+    `;
     return `<div>App ${app}</div>`;
   }
 
   // ========== ABRIR APP ==========
   function openApp(appName) {
-    let title = '', icon = '', w = 380, h = 420;
-    if (appName === 'chrome') { title = 'Google Chrome'; icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png'; w=420; h=500; }
-    else if (appName === 'terminal') { title = 'Terminal Linux'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; w=460; h=380; }
-    else if (appName === 'store') { title = 'Cyber Store'; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png'; w=380; h=420; }
-    else if (appName === 'settings') { title = 'Configurações'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; w=360; h=380; }
-    else if (appName === 'calc') { title = 'Calculadora'; icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png'; w=340; h=460; }
-    else if (appName === 'finder') { title = 'Finder'; icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; w=350; h=350; }
+    let title = '', icon = '';
+    if (appName === 'chrome') { title = 'Google Chrome'; icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png'; }
+    else if (appName === 'terminal') { title = 'Terminal Linux'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; }
+    else if (appName === 'store') { title = 'Cyber Store'; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png'; }
+    else if (appName === 'settings') { title = 'Configurações'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; }
+    else if (appName === 'calc') { title = 'Calculadora'; icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png'; }
+    else if (appName === 'finder') { title = 'Finder'; icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; }
     else return;
+    
     const content = getContent(appName);
-    const win = createWindow(title, icon, content, w, h);
-    // Eventos específicos pós-criação
+    const win = createWindow(title, icon, content);
+    
+    // Eventos específicos após criar a janela
     setTimeout(() => {
       if (appName === 'terminal') {
         const input = document.getElementById('termInput');
         if (input) {
           input.onkeypress = (e) => {
             if (e.key === 'Enter') {
-              const cmd = input.value.trim();
+              const cmd = input.value.trim().toLowerCase();
               const out = document.getElementById('termOut');
-              if (cmd === 'help') out.innerText = 'Comandos: help, ls, cyber, windows, linux, mac, ios';
-              else if (cmd === 'ls') out.innerText = 'Desktop/   Downloads/   Documents/';
-              else if (cmd === 'cyber') out.innerText = '💀 CyberOS Fusion ativo';
-              else if (cmd === 'windows') out.innerText = 'Modo Windows 11 integrado';
-              else if (cmd === 'linux') out.innerText = 'Kernel 6.1 + Ubuntu core';
-              else if (cmd === 'mac') out.innerText = 'macOS Dock e blur';
-              else if (cmd === 'ios') out.innerText = 'iOS status bar + gestures';
+              if (cmd === 'help') out.innerText = 'Comandos: help, ls, cyber, windows, linux, mac, ios, fusion';
+              else if (cmd === 'ls') out.innerText = 'Desktop/   Downloads/   Documents/   Videos/';
+              else if (cmd === 'cyber') out.innerText = '💀 CyberOS Fusion - Modo Hack ativado';
+              else if (cmd === 'windows') out.innerText = '🪟 Windows 11 mode: Interface integrada';
+              else if (cmd === 'linux') out.innerText = '🐧 Kernel 6.1 + Ubuntu 24.04';
+              else if (cmd === 'mac') out.innerText = '🍎 macOS Sonoma - Dock e Blur';
+              else if (cmd === 'ios') out.innerText = '📱 iOS 17 - Status bar e gestures';
+              else if (cmd === 'fusion') out.innerText = '🌀 Fusion OS: Windows + Linux + Mac + iOS';
               else out.innerText = `Comando desconhecido: ${cmd}`;
               input.value = '';
             }
@@ -397,14 +488,16 @@
         }
       }
       if (appName === 'store') {
-        document.querySelectorAll('.storeBtn').forEach(btn => {
-          btn.onclick = () => showToast(`✅ ${btn.getAttribute('data-name')} instalado!`);
+        document.querySelectorAll('.store-btn').forEach(btn => {
+          btn.onclick = () => showToast(`✅ ${btn.getAttribute('data-name')} instalado com sucesso!`);
         });
       }
       if (appName === 'settings') {
         const battSpan = document.getElementById('settingsBatt');
-        if (battSpan && window.currentBatteryLevel) battSpan.innerText = `🔋 Bateria: ${window.currentBatteryLevel}%`;
-        document.getElementById('testNotif')?.addEventListener('click', () => showToast('🔔 Notificação: Sistema Fusion OK'));
+        if (battSpan && window.currentBatteryLevel !== undefined) {
+          battSpan.innerText = `🔋 Bateria: ${window.currentBatteryLevel}% ${window.batteryCharging ? '⚡ Carregando' : ''}`;
+        }
+        document.getElementById('testNotif')?.addEventListener('click', () => showToast('🔔 Notificação: Sistema Fusion funcionando perfeitamente!'));
       }
       if (appName === 'calc') {
         let val = '0', prev = null, op = null;
@@ -416,8 +509,10 @@
         document.querySelectorAll('.calc-btn[data-op]').forEach(btn => {
           btn.onclick = () => { prev = parseFloat(val); op = btn.getAttribute('data-op'); val = '0'; };
         });
-        document.getElementById('calcC').onclick = () => { val = '0'; prev = null; op = null; update(); };
-        document.getElementById('calcEq').onclick = () => {
+        const clearBtn = document.getElementById('calcC');
+        if (clearBtn) clearBtn.onclick = () => { val = '0'; prev = null; op = null; update(); };
+        const equalBtn = document.getElementById('calcEq');
+        if (equalBtn) equalBtn.onclick = () => {
           if (op && prev !== null) {
             const cur = parseFloat(val);
             let res = 0;
@@ -434,7 +529,7 @@
     }, 50);
   }
 
-  // ========== RELÓGIO E BATERIA REAIS ==========
+  // ========== RELÓGIO EM TEMPO REAL ==========
   function updateClock() {
     const now = new Date();
     const h = now.getHours().toString().padStart(2,'0');
@@ -446,28 +541,29 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // Bateria real (se disponível)
+  // ========== BATERIA REAL ==========
+  window.currentBatteryLevel = 87;
+  window.batteryCharging = false;
   if ('getBattery' in navigator) {
     navigator.getBattery().then(battery => {
       function updateBatt() {
-        let level = Math.floor(battery.level * 100);
-        window.currentBatteryLevel = level;
+        window.currentBatteryLevel = Math.floor(battery.level * 100);
+        window.batteryCharging = battery.charging;
         const battSpan = document.getElementById('batteryDisplay');
-        if (battSpan) battSpan.innerText = battery.charging ? `⚡ ${level}%` : `🔋 ${level}%`;
+        if (battSpan) battSpan.innerText = battery.charging ? `⚡ ${window.currentBatteryLevel}%` : `🔋 ${window.currentBatteryLevel}%`;
         const settingsBatt = document.getElementById('settingsBatt');
-        if (settingsBatt) settingsBatt.innerText = `🔋 Bateria: ${level}% ${battery.charging ? '(Carregando)' : ''}`;
+        if (settingsBatt) settingsBatt.innerText = `🔋 Bateria: ${window.currentBatteryLevel}% ${battery.charging ? '(Carregando)' : ''}`;
       }
       updateBatt();
       battery.addEventListener('levelchange', updateBatt);
       battery.addEventListener('chargingchange', updateBatt);
     }).catch(() => {
-      document.getElementById('batteryDisplay').innerText = '🔋 84%';
+      document.getElementById('batteryDisplay').innerText = '🔋 92%';
     });
   } else {
-    // simulação
-    let fakeBatt = 92;
-    setInterval(() => { fakeBatt = Math.max(0, fakeBatt-1); document.getElementById('batteryDisplay').innerText = `🔋 ${fakeBatt}%`; }, 60000);
-    document.getElementById('batteryDisplay').innerText = '🔋 87%';
+    let fakeBatt = 94;
+    setInterval(() => { fakeBatt = Math.max(0, fakeBatt-0.5); document.getElementById('batteryDisplay').innerText = `🔋 ${Math.floor(fakeBatt)}%`; }, 30000);
+    document.getElementById('batteryDisplay').innerText = '🔋 94%';
   }
 
   // ========== EVENTOS GLOBAIS (todos os botões) ==========
@@ -483,452 +579,22 @@
   }
   bindAllButtons();
 
-  // Botão iniciar (primeiro ícone do dock)
+  // Botão Iniciar (primeiro ícone do dock)
   const startDockBtn = document.querySelector('.dock-icon:first-child');
   const startMenuDiv = document.getElementById('startMenu');
-  startDockBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    startMenuDiv.classList.toggle('hide');
-  });
+  if (startDockBtn) {
+    startDockBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      startMenuDiv.classList.toggle('hide');
+    });
+  }
   document.addEventListener('click', (e) => {
-    if (!startMenuDiv.contains(e.target) && !startDockBtn.contains(e.target) && !startMenuDiv.classList.contains('hide')) {
+    if (startMenuDiv && !startMenuDiv.contains(e.target) && !startDockBtn.contains(e.target) && !startMenuDiv.classList.contains('hide')) {
       startMenuDiv.classList.add('hide');
     }
   });
 
-  showToast('🚀 CyberOS Fusion pronto! Toque nos ícones.');
+  showToast('🚀 CyberOS Fusion responsivo! Toque nos ícones - Janelas se ajustam a qualquer tela');
 </script>
 </body>
-</html>      backdrop-filter: blur(32px);
-      border-radius: 28px;
-      padding: 16px;
-      z-index: 200;
-      border: 1px solid #0ff;
-      box-shadow: 0 0 28px #0ff3;
-    }
-    .start-menu.hide { display: none; }
-
-    .menu-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #0ff;
-      margin-bottom: 14px;
-    }
-    .avatar {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #0ff, #00a);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      box-shadow: 0 0 8px cyan;
-    }
-    .apps-cyber {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    .cyber-app {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      background: rgba(0, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 10px 4px;
-      cursor: pointer;
-      border: 0.5px solid #0ff4;
-    }
-    .cyber-app:active { background: #0ff3; transform: scale(0.96); }
-    .cyber-app img { width: 34px; height: 34px; filter: drop-shadow(0 0 2px cyan); }
-    .cyber-app span { color: #0ff; font-size: 11px; font-weight: bold; text-shadow: 0 0 2px black; }
-
-    /* JANELAS FLUTUANTES CYBER */
-    .window {
-      position: absolute;
-      min-width: 300px;
-      min-height: 280px;
-      background: rgba(10, 15, 25, 0.96);
-      backdrop-filter: blur(32px);
-      border-radius: 24px;
-      border: 1.5px solid #0ff;
-      box-shadow: 0 0 24px #0ff6;
-      z-index: 300;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .window.hide { display: none; }
-
-    .window-bar {
-      background: rgba(0, 30, 40, 0.9);
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: grab;
-      border-bottom: 1px solid #0ff;
-    }
-    .window-bar:active { cursor: grabbing; }
-    .window-title {
-      color: #0ff;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-shadow: 0 0 3px cyan;
-    }
-    .window-controls {
-      display: flex;
-      gap: 12px;
-    }
-    .win-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-      background: rgba(255,255,255,0.2);
-    }
-    .win-btn.close { background: #ff3366; box-shadow: 0 0 5px red; }
-    .win-btn.min { background: #ffaa33; }
-    .window-content {
-      flex: 1;
-      padding: 16px;
-      overflow: auto;
-      color: #ccf;
-    }
-    iframe { width: 100%; height: 100%; border: none; border-radius: 16px; background: #fff; }
-
-    /* Terminal */
-    .terminal-body {
-      background: #03060c;
-      font-family: monospace;
-      padding: 12px;
-      border-radius: 16px;
-      height: 100%;
-      overflow-y: auto;
-      border: 0.5px solid #0ff;
-    }
-    .terminal-line { color: #0f0; margin: 4px 0; font-size: 12px; text-shadow: 0 0 2px #0f0; }
-    .terminal-input-line {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .terminal-input {
-      background: #111;
-      border: 1px solid #0ff;
-      color: #0f0;
-      font-family: monospace;
-      flex: 1;
-      padding: 6px;
-      border-radius: 8px;
-    }
-
-    /* Calculadora */
-    .calc-display {
-      font-size: 42px;
-      background: #000c;
-      padding: 12px;
-      border-radius: 16px;
-      text-align: right;
-      margin-bottom: 16px;
-      border: 1px solid cyan;
-    }
-    .calc-buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-    .calc-btn {
-      background: cyan;
-      color: black;
-      padding: 12px;
-      border-radius: 40px;
-      text-align: center;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 4px cyan;
-    }
-    .calc-btn:active { background: white; transform: scale(0.94); }
-
-    /* Toast */
-    .toast {
-      position: absolute;
-      bottom: 100px;
-      left: 20px;
-      right: 20px;
-      background: #0ffc;
-      backdrop-filter: blur(20px);
-      padding: 12px;
-      border-radius: 40px;
-      text-align: center;
-      color: black;
-      font-weight: bold;
-      z-index: 500;
-      transition: 0.2s;
-    }
-  </style>
-</head>
-<body>
-<div class="desktop">
-  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
-
-  <!-- Status Bar com bateria REAL -->
-  <div class="status-bar">
-    <span>⚡ CYBERPUNK OS</span>
-    <div class="time-status" id="cyberClock">--:--:--</div>
-    <div class="battery-status" id="batteryArea">🔋 --%</div>
-  </div>
-
-  <!-- DOCK -->
-  <div class="dock">
-    <div class="dock-icon" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"></div>
-    <div class="dock-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
-    <div class="dock-icon" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"></div>
-    <div class="dock-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
-    <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"></div>
-    <div class="dock-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"></div>
-  </div>
-
-  <!-- MENU INICIAR -->
-  <div class="start-menu hide" id="startMenu">
-    <div class="menu-header">
-      <div class="avatar">🤘</div>
-      <div><strong style="color:cyan;">CYBER USER</strong><br><span style="font-size:10px;">FUSION EDITION</span></div>
-    </div>
-    <div class="apps-cyber">
-      <div class="cyber-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-      <div class="cyber-app" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"><span>Terminal</span></div>
-      <div class="cyber-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Store</span></div>
-      <div class="cyber-app" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"><span>Settings</span></div>
-      <div class="cyber-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
-      <div class="cyber-app" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"><span>Finder</span></div>
-    </div>
-  </div>
-
-  <div class="toast" id="cyberToast" style="opacity:0;">✅</div>
-</div>
-
-<script>
-  // ==================== UTILITÁRIOS ====================
-  const toast = document.getElementById('cyberToast');
-  function showToast(msg, duration=2000) {
-    toast.style.opacity = '1';
-    toast.innerText = msg;
-    setTimeout(() => toast.style.opacity = '0', duration);
-  }
-
-  // Fechar todas as janelas
-  function closeAllWindows() {
-    document.querySelectorAll('.window').forEach(w => w.remove());
-  }
-
-  // Criar janela flutuante (apenas uma por vez)
-  function createWindow(title, iconUrl, contentHtml, width=380, height=450) {
-    closeAllWindows();
-    const desktop = document.querySelector('.desktop');
-    const winDiv = document.createElement('div');
-    winDiv.className = 'window';
-    winDiv.style.width = width + 'px';
-    winDiv.style.height = height + 'px';
-    winDiv.style.left = Math.max(20, (window.innerWidth/2 - width/2)) + 'px';
-    winDiv.style.top = Math.max(40, (window.innerHeight/2 - height/2)) + 'px';
-    winDiv.style.zIndex = 500;
-    
-    winDiv.innerHTML = `
-      <div class="window-bar">
-        <div class="window-title"><img src="${iconUrl}" width="22"> ${title}</div>
-        <div class="window-controls">
-          <div class="win-btn min">─</div>
-          <div class="win-btn close">✕</div>
-        </div>
-      </div>
-      <div class="window-content">${contentHtml}</div>
-    `;
-    
-    desktop.appendChild(winDiv);
-    
-    // Eventos da janela
-    const bar = winDiv.querySelector('.window-bar');
-    const closeBtn = winDiv.querySelector('.close');
-    const minBtn = winDiv.querySelector('.min');
-    
-    closeBtn.addEventListener('click', () => winDiv.remove());
-    minBtn.addEventListener('click', () => winDiv.classList.toggle('hide'));
-    
-    // Arrastar (mouse + toque)
-    let drag = false, startX, startY, startLeft, startTop;
-    function onStart(e) {
-      if (e.target === closeBtn || e.target === minBtn) return;
-      drag = true;
-      const cx = e.clientX ?? e.touches[0].clientX;
-      const cy = e.clientY ?? e.touches[0].clientY;
-      startX = cx;
-      startY = cy;
-      startLeft = winDiv.offsetLeft;
-      startTop = winDiv.offsetTop;
-      winDiv.style.cursor = 'grabbing';
-      e.preventDefault();
-    }
-    function onMove(e) {
-      if (!drag) return;
-      const cx = e.clientX ?? e.touches[0].clientX;
-      const cy = e.clientY ?? e.touches[0].clientY;
-      let newLeft = startLeft + (cx - startX);
-      let newTop = startTop + (cy - startY);
-      newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - winDiv.offsetWidth));
-      newTop = Math.max(0, Math.min(newTop, window.innerHeight - winDiv.offsetHeight - 50));
-      winDiv.style.left = newLeft + 'px';
-      winDiv.style.top = newTop + 'px';
-    }
-    function onEnd() { drag = false; winDiv.style.cursor = ''; }
-    bar.addEventListener('mousedown', onStart);
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onEnd);
-    bar.addEventListener('touchstart', onStart);
-    document.addEventListener('touchmove', onMove);
-    document.addEventListener('touchend', onEnd);
-    
-    showToast(`🔓 ${title} aberto`, 800);
-    return winDiv;
-  }
-
-  // ==================== CONTEÚDO DOS APPS ====================
-  function getAppContent(appType) {
-    if (appType === 'chrome') {
-      return `<iframe src="https://www.google.com/webhp?igu=1" title="Chrome"></iframe>`;
-    }
-    if (appType === 'terminal') {
-      return `
-        <div class="terminal-body" id="termBody">
-          <div class="terminal-line">> CyberOS Terminal v2.0 [Fusion Kernel]</div>
-          <div class="terminal-line">> Windows 11 + Linux 6.1 + macOS + iOS</div>
-          <div class="terminal-line">> Digite 'help' para comandos</div>
-          <div class="terminal-line" id="terminalOutput">user@cyber:~$ Bem-vindo</div>
-          <div class="terminal-input-line">
-            <span style="color:#0f0;">➜</span>
-            <input type="text" id="termInput" class="terminal-input" placeholder="comando...">
-          </div>
-        </div>
-      `;
-    }
-    if (appType === 'store') {
-      return `
-        <div style="text-align:center;">
-          <h2 style="color:cyan;">🌀 CYBER STORE</h2>
-          <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
-            <div style="background:#000c; padding:12px; border-radius:20px; border:0.5px solid cyan;">💾 NEO-TOOLKIT <button class="installBtn" data-app="Neo Toolkit" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
-            <div style="background:#000c; padding:12px; border-radius:20px; border:0.5px solid cyan;">🔥 HACKER SUITE <button class="installBtn" data-app="Hacker Suite" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
-            <div style="background:#000c; padding:12px; border-radius:20px; border:0.5px solid cyan;">🎮 CYBER GAME PACK <button class="installBtn" data-app="Cyber Game" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
-          </div>
-        </div>
-      `;
-    }
-    if (appType === 'settings') {
-      return `
-        <div>
-          <h3 style="color:cyan;">⚙️ CONFIGURAÇÕES CYBER</h3>
-          <div style="margin-top:16px;">
-            <div>🔋 <span id="settingsBattery">Bateria: ...</span></div>
-            <div>🧠 Tema: Cyberpunk Neon</div>
-            <div>🐧 Modo Fusion: Ativo</div>
-            <div>📱 Interface Híbrida</div>
-            <button id="testNotifyBtn" style="margin-top:16px; background:cyan; border:none; padding:8px; border-radius:28px;">🔔 Testar Notificação</button>
-          </div>
-        </div>
-      `;
-    }
-    if (appType === 'calc') {
-      return `
-        <div class="calc-display" id="calcDisplayCyber">0</div>
-        <div class="calc-buttons">
-          <div class="calc-btn" data-val="7">7</div><div class="calc-btn" data-val="8">8</div><div class="calc-btn" data-val="9">9</div><div class="calc-btn" data-op="/">/</div>
-          <div class="calc-btn" data-val="4">4</div><div class="calc-btn" data-val="5">5</div><div class="calc-btn" data-val="6">6</div><div class="calc-btn" data-op="*">*</div>
-          <div class="calc-btn" data-val="1">1</div><div class="calc-btn" data-val="2">2</div><div class="calc-btn" data-val="3">3</div><div class="calc-btn" data-op="-">-</div>
-          <div class="calc-btn" data-val="0">0</div><div class="calc-btn" id="calcClearCyber">C</div><div class="calc-btn" id="calcEqualCyber">=</div><div class="calc-btn" data-op="+">+</div>
-        </div>
-      `;
-    }
-    if (appType === 'finder') {
-      return `
-        <div>
-          <h3>📁 FINDER FUSION</h3>
-          <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:14px;">
-            <div>📄 Documentos</div><div>🖼️ Wallpapers</div><div>🎵 Músicas</div><div>💾 Apps</div><div>🐧 Linux FS</div>
-          </div>
-        </div>
-      `;
-    }
-    return `<div>App em desenvolvimento</div>`;
-  }
-
-  // ==================== ABRIR APPS ====================
-  function openApp(appType) {
-    let title = '', icon = '', w = 400, h = 480;
-    switch(appType) {
-      case 'chrome': title = 'Chrome Cyber'; icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png'; w=420; h=520; break;
-      case 'terminal': title = 'Terminal Linux'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; w=480; h=400; break;
-      case 'store': title = 'Cyber Store'; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png'; w=420; h=460; break;
-      case 'settings': title = 'Config Cyber'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; w=380; h=420; break;
-      case 'calc': title = 'Cyber Calc'; icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png'; w=360; h=460; break;
-      case 'finder': title = 'Finder'; icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; w=380; h=400; break;
-      default: return;
-    }
-    const content = getAppContent(appType);
-    const win = createWindow(title, icon, content, w, h);
-    
-    // Configurar eventos específicos após janela criada
-    setTimeout(() => {
-      if (appType === 'terminal') {
-        const input = document.getElementById('termInput');
-        if (input) {
-          input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-              const cmd = input.value;
-              const output = document.getElementById('terminalOutput');
-              if (cmd === 'help') output.innerText = 'Comandos: help, ls, cyber, windows, linux, mac, ios, fusion';
-              else if (cmd === 'ls') output.innerText = 'Desktop/ Downloads/ Documents/';
-              else if (cmd === 'cyber') output.innerText = '💀 CyberOS Fusion - Modo punk ativado';
-              else if (cmd === 'windows') output.innerText = 'Windows 11 mode: GUI integrada';
-              else if (cmd === 'linux') output.innerText = 'Kernel 6.1 - Arch + Ubuntu mix';
-              else if (cmd === 'mac') output.innerText = 'macOS Sonoma style dock';
-              else if (cmd === 'ios') output.innerText = 'iOS 17 status bar + gestures';
-              else if (cmd === 'fusion') output.innerText = 'Fusion OS: Win+Linux+Mac+iOS';
-              else output.innerText = `Comando inválido: ${cmd}`;
-              input.value = '';
-            }
-          });
-        }
-      }
-      if (appType === 'calc') {
-        let calcVal = '0', prev = null, op = null;
-        const disp = document.getElementById('calcDisplayCyber');
-        const update = () => { if(disp) disp.innerText = calcVal; };
-        document.querySelectorAll('.calc-btn[data-val]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const v = btn.getAttribute('data-val');
-            calcVal = calcVal === '0' ? v : calcVal + v;
-            update();
-          });
-        });
-        document.querySelectorAll('.calc-btn[data-op]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            prev = parseFloat(calcVal);
-            op = btn.getAttribute('data-op');
-            calcVal = '0';
-          });
-        });
-        document.getElementById('calcClearCyber')?.addEventListener('click', () => {
-          calcVal = '0'; prev = null; op = null; update();
-        });
-        document.getElementById('calcEqualCyber')?.addEventListener('click', () => {
-          if (op &&
+</html>
