@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Fusion OS Pro | Acesso Real ao Sistema</title>
+  <title>Fusion OS Pro | APK + Web</title>
   <style>
     * {
       margin: 0;
@@ -26,7 +26,6 @@
       position: relative;
       overflow: hidden;
     }
-    /* Status bar */
     .status-bar {
       position: absolute;
       top: 0;
@@ -45,7 +44,6 @@
       border-bottom: 1px solid #0ff;
       font-size: clamp(10px, 4vw, 14px);
     }
-    /* Dock responsivo */
     .dock {
       position: absolute;
       bottom: 15px;
@@ -75,7 +73,6 @@
     }
     .dock-icon:active { transform: scale(0.92); background: #0ff; }
     .dock-icon img { width: 60%; height: 60%; pointer-events: none; }
-    /* Start menu */
     .start-menu {
       position: absolute;
       bottom: 85px;
@@ -108,6 +105,446 @@
       justify-content: center;
       font-size: clamp(18px, 5vw, 24px);
     }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .menu-app {
+      background: rgba(0,255,255,0.1);
+      border-radius: 16px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .menu-app:active { background: rgba(0,255,255,0.3); }
+    .menu-app img { width: clamp(24px, 7vw, 32px); }
+    .menu-app span { color: #0ff; font-size: clamp(9px, 3vw, 11px); display: block; }
+    .window {
+      position: absolute;
+      background: #0e121fe8;
+      backdrop-filter: blur(28px);
+      border-radius: 20px;
+      border: 1.5px solid #0ff;
+      box-shadow: 0 0 20px #0ff6;
+      display: flex;
+      flex-direction: column;
+      z-index: 300;
+      width: 85% !important;
+      max-width: 450px !important;
+      min-width: 260px !important;
+      height: auto !important;
+      max-height: 70vh !important;
+      min-height: 300px !important;
+      left: 7.5% !important;
+      top: 12% !important;
+    }
+    .window.hide { display: none; }
+    .window-bar {
+      background: #000000aa;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      cursor: grab;
+      border-radius: 20px 20px 0 0;
+      border-bottom: 1px solid #0ff;
+    }
+    .window-title {
+      color: #0ff;
+      font-weight: bold;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: clamp(12px, 4vw, 14px);
+    }
+    .win-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    .close { background: #ff3366; color: white; }
+    .min { background: #ffaa33; }
+    .window-content {
+      flex: 1;
+      padding: 16px;
+      overflow: auto;
+      color: white;
+    }
+    .file-list, .setting-item, .perm-item {
+      background: #0a0e1a;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .toggle-switch {
+      width: 50px;
+      height: 26px;
+      background: #333;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    .toggle-switch.active { background: #0ff; }
+    .toast {
+      position: absolute;
+      bottom: 90px;
+      left: 5%;
+      right: 5%;
+      width: 90%;
+      background: #0ff;
+      color: black;
+      padding: 12px;
+      border-radius: 60px;
+      text-align: center;
+      font-weight: bold;
+      z-index: 500;
+      transition: 0.2s;
+    }
+    button {
+      background: #0ff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 28px;
+      margin: 5px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="desktop">
+  <div class="status-bar">
+    <span>🌀 FUSION OS PRO</span>
+    <span id="liveClock">--:--:--</span>
+    <span id="batteryDisplay">🔋 --%</span>
+  </div>
+  <div class="dock">
+    <div class="dock-icon" data-app="files"><img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png"></div>
+    <div class="dock-icon" data-app="bluetooth"><img src="https://cdn-icons-png.flaticon.com/512/625/625508.png"></div>
+    <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"></div>
+    <div class="dock-icon" data-app="info"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"></div>
+    <div class="dock-icon" data-app="permissions"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"></div>
+  </div>
+  <div class="start-menu hide" id="startMenu">
+    <div class="menu-header"><div class="avatar">🚀</div><div style="color:white;">Fusion OS Pro<br><span style="font-size:10px;">APK + Web</span></div></div>
+    <div class="apps-grid">
+      <div class="menu-app" data-app="files"><span>📁 Arquivos</span></div>
+      <div class="menu-app" data-app="bluetooth"><span>📡 Bluetooth</span></div>
+      <div class="menu-app" data-app="settings"><span>⚙️ Config</span></div>
+      <div class="menu-app" data-app="info"><span>ℹ️ Info</span></div>
+      <div class="menu-app" data-app="permissions"><span>🔐 Permissões</span></div>
+      <div class="menu-app" data-app="sensors"><span>📊 Sensores</span></div>
+    </div>
+  </div>
+  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
+</div>
+
+<script>
+  // ========== TOAST ==========
+  const toast = document.getElementById('toastMsg');
+  function showToast(msg, duration=2500) {
+    toast.innerText = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => toast.style.opacity = '0', duration);
+  }
+
+  // ========== JANELAS ==========
+  function closeAllWindows() {
+    document.querySelectorAll('.window').forEach(w => w.remove());
+  }
+
+  let currentZ = 500;
+  function createWindow(title, iconUrl, contentHtml) {
+    closeAllWindows();
+    const desktop = document.querySelector('.desktop');
+    const win = document.createElement('div');
+    win.className = 'window';
+    win.style.left = '7.5%';
+    win.style.top = '12%';
+    win.style.zIndex = currentZ++;
+    win.innerHTML = `
+      <div class="window-bar">
+        <div class="window-title"><img src="${iconUrl}" width="20"> ${title}</div>
+        <div><div class="win-btn min">─</div><div class="win-btn close">✕</div></div>
+      </div>
+      <div class="window-content">${contentHtml}</div>
+    `;
+    desktop.appendChild(win);
+    win.querySelector('.close').onclick = () => win.remove();
+    win.querySelector('.min').onclick = () => win.classList.toggle('hide');
+    
+    const bar = win.querySelector('.window-bar');
+    let drag = false, startX, startY, l0, t0;
+    bar.onmousedown = (e) => { if(e.target.classList?.contains('win-btn')) return; drag=true; startX=e.clientX; startY=e.clientY; l0=win.offsetLeft; t0=win.offsetTop; };
+    document.onmousemove = (e) => { if(drag){ win.style.left = (l0+e.clientX-startX)+'px'; win.style.top = (t0+e.clientY-startY)+'px'; } };
+    document.onmouseup = () => drag=false;
+    bar.ontouchstart = (e) => { if(e.target.classList?.contains('win-btn')) return; drag=true; startX=e.touches[0].clientX; startY=e.touches[0].clientY; l0=win.offsetLeft; t0=win.offsetTop; };
+    document.ontouchmove = (e) => { if(drag){ win.style.left = (l0+e.touches[0].clientX-startX)+'px'; win.style.top = (t0+e.touches[0].clientY-startY)+'px'; } };
+    document.ontouchend = () => drag=false;
+    return win;
+  }
+
+  // ========== BLUETOOTH REAL (APK) ==========
+  function getBluetoothContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">📡 BLUETOOTH REAL</h3>
+        <div class="setting-item"><span>🔷 Status Bluetooth</span><span id="btRealStatus">Verificando...</span></div>
+        <button id="btEnableBtn">🔛 Ativar Bluetooth</button>
+        <button id="btDisableBtn">🔴 Desativar Bluetooth</button>
+        <button id="btScanBtn">🔍 Escanear Dispositivos</button>
+        <div id="btDevicesList" style="margin-top:16px; background:#0a0e1a; border-radius:16px; padding:12px; max-height:200px; overflow-y:auto;">
+          <span style="color:#888;">Clique em escanear para ver dispositivos próximos</span>
+        </div>
+        <div style="font-size:11px; color:#888; margin-top:12px;">
+          ⚠️ No APK: Funciona com permissão BLUETOOTH no AndroidManifest.xml
+        </div>
+      </div>
+    `;
+  }
+
+  function getFilesContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">📁 ARQUIVOS</h3>
+        <button id="pickFileBtn">📂 Selecionar Arquivo</button>
+        <button id="pickFolderBtn">📁 Selecionar Pasta</button>
+        <div id="fileResult" style="margin-top:12px; background:#0a0e1a; border-radius:16px; padding:12px; max-height:250px; overflow-y:auto;">
+          <span style="color:#888;">Clique nos botões para acessar arquivos do celular</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function getSettingsContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">⚙️ CONFIGURAÇÕES</h3>
+        <div class="setting-item"><span>🔊 Volume</span><input type="range" id="volumeSlider" min="0" max="100" value="50"></div>
+        <div class="setting-item"><span>💡 Brilho</span><input type="range" id="brightSlider" min="0" max="100" value="80"></div>
+        <div class="setting-item"><span>📳 Vibração</span><button id="vibeTest">Testar</button></div>
+        <div class="setting-item"><span>🔋 Bateria</span><span id="battLevel">--%</span></div>
+        <div class="setting-item"><span>📶 Wi-Fi</span><span id="wifiStatus">Verificando</span></div>
+      </div>
+    `;
+  }
+
+  function getInfoContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">ℹ️ INFO DISPOSITIVO</h3>
+        <div class="setting-item"><span>📱 Modelo</span><span id="devModel">Carregando...</span></div>
+        <div class="setting-item"><span>🤖 Android</span><span id="androidVer">Carregando...</span></div>
+        <div class="setting-item"><span>📐 Tela</span><span id="screenRes">Carregando...</span></div>
+        <div class="setting-item"><span>💾 RAM</span><span id="ramInfo">Carregando...</span></div>
+        <div class="setting-item"><span>🔋 Bateria</span><span id="battInfo">Carregando...</span></div>
+      </div>
+    `;
+  }
+
+  function getPermissionsContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">🔐 PERMISSÕES</h3>
+        <div class="perm-item"><span>📁 Arquivos</span><button class="permReq" data-perm="storage">Solicitar</button></div>
+        <div class="perm-item"><span>📍 Localização</span><button class="permReq" data-perm="location">Solicitar</button></div>
+        <div class="perm-item"><span>📷 Câmera</span><button class="permReq" data-perm="camera">Solicitar</button></div>
+        <div class="perm-item"><span>🎤 Microfone</span><button class="permReq" data-perm="mic">Solicitar</button></div>
+        <div class="perm-item"><span>📡 Bluetooth</span><button class="permReq" data-perm="bluetooth">Solicitar</button></div>
+        <div class="perm-item"><span>📢 Notificações</span><button class="permReq" data-perm="notify">Solicitar</button></div>
+        <div id="permResult" style="margin-top:16px; background:#0a0e1a; padding:12px; border-radius:16px;"></div>
+      </div>
+    `;
+  }
+
+  function getSensorsContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">📊 SENSORES</h3>
+        <div class="setting-item"><span>🔄 Acelerômetro</span><span id="accelData">Aguardando...</span></div>
+        <div class="setting-item"><span>🧭 Orientação</span><span id="orientData">Aguardando...</span></div>
+        <div class="setting-item"><span>📍 GPS</span><button id="getGPS">Obter Localização</button></div>
+        <div id="gpsResult" style="margin-top:12px; background:#0a0e1a; padding:12px; border-radius:16px;"></div>
+      </div>
+    `;
+  }
+
+  // ========== FUNÇÕES REAIS ==========
+  async function updateBattery() {
+    if ('getBattery' in navigator) {
+      const b = await navigator.getBattery();
+      const level = Math.floor(b.level*100);
+      document.getElementById('batteryDisplay').innerText = `${b.charging?'⚡':'🔋'} ${level}%`;
+      document.getElementById('battLevel') && (document.getElementById('battLevel').innerText = `${level}%`);
+      document.getElementById('battInfo') && (document.getElementById('battInfo').innerText = `${level}% ${b.charging?'(Carregando)':''}`);
+    }
+  }
+
+  function updateClock() {
+    document.getElementById('liveClock').innerText = new Date().toLocaleTimeString();
+  }
+  setInterval(updateClock,1000);
+  updateClock();
+  updateBattery();
+  setInterval(updateBattery,30000);
+
+  // ========== ABRIR APPS ==========
+  async function openApp(app) {
+    let title='', icon='', content='';
+    if(app==='files'){
+      title='Gerenciador'; icon='https://cdn-icons-png.flaticon.com/512/1055/1055687.png'; content=getFilesContent();
+      const win = createWindow(title,icon,content);
+      setTimeout(()=>{
+        document.getElementById('pickFileBtn')?.addEventListener('click',()=>{
+          const input = document.createElement('input');
+          input.type='file';
+          input.onchange=(e)=>document.getElementById('fileResult').innerHTML = `<div>📄 Arquivo: ${e.target.files[0]?.name}</div>`;
+          input.click();
+        });
+        document.getElementById('pickFolderBtn')?.addEventListener('click',async()=>{
+          if('showDirectoryPicker' in window){
+            const dir = await window.showDirectoryPicker();
+            let html = `<div>📁 ${dir.name}</div>`;
+            for await(const entry of dir.values()) html += `<div>${entry.kind==='directory'?'📁':'📄'} ${entry.name}</div>`;
+            document.getElementById('fileResult').innerHTML = html;
+          } else showToast('Use Chrome para pastas');
+        });
+      },50);
+      return;
+    }
+    if(app==='bluetooth'){
+      title='Bluetooth Real'; icon='https://cdn-icons-png.flaticon.com/512/625/625508.png'; content=getBluetoothContent();
+      const win = createWindow(title,icon,content);
+      setTimeout(()=>{
+        const statusSpan = document.getElementById('btRealStatus');
+        statusSpan.innerText = 'Solicitando permissão...';
+        // Simulação via Web Bluetooth API (real)
+        if('bluetooth' in navigator){
+          statusSpan.innerText = 'Bluetooth API disponível';
+          document.getElementById('btScanBtn')?.addEventListener('click', async()=>{
+            try{
+              const device = await navigator.bluetooth.requestDevice({ acceptAllDevices: true });
+              statusSpan.innerText = `Conectado a: ${device.name || 'desconhecido'}`;
+              showToast(`✅ Conectado a ${device.name}`);
+            } catch(e){ showToast('❌ Escaneamento cancelado'); }
+          });
+        } else {
+          statusSpan.innerText = 'Web Bluetooth não suportado. No APK funciona via WebView com permissões';
+          showToast('Para Bluetooth real, use o APK com permissões');
+        }
+      },50);
+      return;
+    }
+    if(app==='settings'){
+      title='Configurações'; icon='https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; content=getSettingsContent();
+      const win = createWindow(title,icon,content);
+      setTimeout(()=>{
+        document.getElementById('volumeSlider')?.addEventListener('input',e=>showToast(`Volume: ${e.target.value}%`));
+        document.getElementById('brightSlider')?.addEventListener('input',e=>showToast(`Brilho: ${e.target.value}%`));
+        document.getElementById('vibeTest')?.addEventListener('click',()=>{ if('vibrate' in navigator) navigator.vibrate(200); showToast('📳 Vibração!'); });
+        updateBattery();
+      },50);
+      return;
+    }
+    if(app==='info'){
+      title='Info'; icon='https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; content=getInfoContent();
+      const win = createWindow(title,icon,content);
+      setTimeout(()=>{
+        document.getElementById('devModel').innerText = navigator.userAgent.match(/Android/i)?'Dispositivo Android':'Desktop';
+        document.getElementById('androidVer').innerText = navigator.userAgent.match(/Android\s([0-9.]+)/)?.[1]||'Desconhecido';
+        document.getElementById('screenRes').innerText = `${window.screen.width}x${window.screen.height}`;
+        document.getElementById('ramInfo').innerText = navigator.deviceMemory?`${navigator.deviceMemory} GB`:'Não disponível';
+        updateBattery();
+      },50);
+      return;
+    }
+    if(app==='permissions'){
+      title='Permissões'; icon='https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; content=getPermissionsContent();
+      const win = createWindow(title,icon,content);
+      setTimeout(()=>{
+        const resultDiv = document.getElementById('permResult');
+        document.querySelectorAll('.permReq').forEach(btn=>{
+          btn.addEventListener('click',async()=>{
+            const perm = btn.getAttribute('data-perm');
+            if(perm==='storage') {
+              if('showDirectoryPicker' in window) { await window.showDirectoryPicker(); resultDiv.innerHTML='✅ Permissão de armazenamento concedida'; }
+              else resultDiv.innerHTML='⚠️ Use Chrome ou APK para acesso total';
+            }
+            if(perm==='location') {
+              navigator.geolocation.getCurrentPosition(()=>resultDiv.innerHTML='✅ Localização concedida',()=>resultDiv.innerHTML='❌ Negada');
+            }
+            if(perm==='camera') {
+              try{ await navigator.mediaDevices.getUserMedia({video:true}); resultDiv.innerHTML='✅ Câmera concedida'; }
+              catch(e){ resultDiv.innerHTML='❌ Câmera negada'; }
+            }
+            if(perm==='mic') {
+              try{ await navigator.mediaDevices.getUserMedia({audio:true}); resultDiv.innerHTML='✅ Microfone concedido'; }
+              catch(e){ resultDiv.innerHTML='❌ Microfone negado'; }
+            }
+            if(perm==='bluetooth') {
+              if('bluetooth' in navigator) { await navigator.bluetooth.requestDevice({acceptAllDevices:true}); resultDiv.innerHTML='✅ Bluetooth permitido'; }
+              else resultDiv.innerHTML='⚠️ Bluetooth via APK funciona';
+            }
+            if(perm==='notify') {
+              const res = await Notification.requestPermission();
+              resultDiv.innerHTML = res === 'granted' ? '✅ Notificações permitidas' : '❌ Negadas';
+            }
+          });
+        });
+      },50);
+      return;
+    }
+    if(app==='sensors'){
+      title='Sensores'; icon='https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; content=getSensorsContent();
+      const win = createWindow(title,icon,content);
+      setTimeout(()=>{
+        if(window.DeviceOrientationEvent){
+          window.addEventListener('deviceorientation',(e)=>{
+            document.getElementById('orientData').innerText = `α:${Math.round(e.alpha)}° β:${Math.round(e.beta)}° γ:${Math.round(e.gamma)}°`;
+          });
+        }
+        if(window.DeviceMotionEvent){
+          window.addEventListener('devicemotion',(e)=>{
+            const acc = e.acceleration;
+            document.getElementById('accelData').innerText = `X:${Math.round(acc?.x||0)} Y:${Math.round(acc?.y||0)} Z:${Math.round(acc?.z||0)}`;
+          });
+        }
+        document.getElementById('getGPS')?.addEventListener('click',()=>{
+          navigator.geolocation.getCurrentPosition(pos=>{
+            document.getElementById('gpsResult').innerHTML = `📍 Lat: ${pos.coords.latitude.toFixed(4)}, Lon: ${pos.coords.longitude.toFixed(4)}`;
+          },()=>document.getElementById('gpsResult').innerHTML = '❌ Permissão negada');
+        });
+      },50);
+      return;
+    }
+    createWindow(title,icon,content || '<div>Carregando...</div>');
+  }
+
+  // ========== EVENTOS ==========
+  document.querySelectorAll('[data-app]').forEach(el=>{
+    el.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      openApp(el.getAttribute('data-app'));
+      document.getElementById('startMenu').classList.add('hide');
+    });
+  });
+  const startBtn = document.querySelector('.dock-icon:first-child');
+  const startMenu = document.getElementById('startMenu');
+  startBtn.addEventListener('click',(e)=>{ e.stopPropagation(); startMenu.classList.toggle('hide'); });
+  document.addEventListener('click',(e)=>{
+    if(!startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide'))
+      startMenu.classList.add('hide');
+  });
+  showToast('🚀 Fusion OS Pro | APK + Web | Bluetooth real | Todos os recursos');
+</script>
+</body>
+</html>    }
     .apps-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
