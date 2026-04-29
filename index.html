@@ -2,112 +2,121 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>POWER.bit - Fusion OS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Fusion OS - POWER.bit</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { background: #0a0c12; font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; height: 100vh; width: 100vw; position: fixed; }
-    .desktop { width: 100%; height: 100%; background: radial-gradient(circle at 30% 20%, #0f1420, #05070c); position: relative; overflow: hidden; }
-    .status-bar { position: absolute; top: 0; left: 0; right: 0; height: 45px; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; color: #0ff; font-family: monospace; z-index: 100; border-bottom: 1px solid #0ff; font-size: 13px; }
-    .dock { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,255,255,0.15); backdrop-filter: blur(20px); border-radius: 40px; padding: 8px 20px; display: flex; gap: 15px; z-index: 100; border: 1px solid #0ff; }
-    .dock-icon { width: 55px; height: 55px; background: rgba(0,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.1s; }
-    .dock-icon:active { transform: scale(0.92); background: #0ff; }
-    .dock-icon img { width: 32px; height: 32px; pointer-events: none; }
-    .start-btn { position: absolute; bottom: 25px; left: 20px; background: rgba(0,255,255,0.2); backdrop-filter: blur(15px); border-radius: 30px; padding: 8px 18px; display: flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid #0ff; z-index: 100; }
-    .start-btn:active { transform: scale(0.96); background: rgba(0,255,255,0.4); }
-    .start-btn span { color: #0ff; font-weight: bold; font-size: 13px; }
-    .start-menu { position: absolute; bottom: 90px; left: 20px; width: 310px; max-width: calc(100% - 40px); background: rgba(10,15,25,0.96); backdrop-filter: blur(20px); border-radius: 20px; padding: 15px; border: 1px solid #0ff; z-index: 200; max-height: 60vh; overflow-y: auto; }
-    .start-menu.hide { display: none; }
-    .menu-header { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #0ff; padding-bottom: 10px; margin-bottom: 12px; }
-    .avatar { width: 45px; height: 45px; background: linear-gradient(135deg, #0ff, #0066ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-    .apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .app-item { background: rgba(0,255,255,0.08); border-radius: 14px; padding: 8px 4px; text-align: center; cursor: pointer; }
-    .app-item:active { background: rgba(0,255,255,0.3); }
-    .app-item img { width: 28px; height: 28px; pointer-events: none; }
-    .app-item span { color: #0ff; font-size: 11px; display: block; margin-top: 4px; }
-    .window { position: absolute; background: #0e121fe8; backdrop-filter: blur(25px); border-radius: 20px; border: 1.5px solid #0ff; display: flex; flex-direction: column; z-index: 300; width: 85%; max-width: 380px; left: 7.5%; top: 15%; }
-    .window.hide { display: none; }
-    .window-bar { background: #000000aa; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; cursor: grab; border-bottom: 1px solid #0ff; border-radius: 20px 20px 0 0; }
-    .window-title { color: #0ff; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 14px; }
-    .window-title img { width: 18px; height: 18px; }
-    .window-controls { display: flex; gap: 8px; }
-    .win-close, .win-min { width: 28px; height: 28px; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: bold; }
-    .win-close { background: #ff3366; color: white; }
-    .win-min { background: #ffaa33; color: black; }
-    .window-content { flex: 1; padding: 15px; overflow: auto; color: white; min-height: 200px; }
-    .toast { position: absolute; bottom: 100px; left: 20px; right: 20px; background: #0ff; color: black; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; z-index: 500; transition: 0.2s; font-size: 13px; }
-    button { background: #0ff; border: none; padding: 12px; border-radius: 25px; font-weight: bold; margin: 5px 0; width: 100%; cursor: pointer; }
-    input, textarea { background: #1a1e2a; border: 1px solid #0ff; color: white; padding: 10px; border-radius: 20px; width: 100%; margin: 5px 0; }
-    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .calc-btn { background: #0ff; padding: 12px; text-align: center; border-radius: 12px; font-weight: bold; cursor: pointer; margin: 2px; }
-    .term-line { color: #0f0; margin: 8px 0; font-family: monospace; }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{background:#05070c;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;width:100vw;position:fixed}
+    .desktop{width:100%;height:100%;background:radial-gradient(ellipse at 30% 20%,#121828,#05070c);position:relative;overflow:hidden}
+    .status-bar{position:absolute;top:0;left:0;right:0;height:44px;background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);display:flex;justify-content:space-between;align-items:center;padding:0 20px;color:#0ff;font-family:monospace;z-index:100;border-bottom:1px solid #0ff;font-size:13px}
+    .dock{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);background:rgba(0,255,255,0.12);backdrop-filter:blur(24px);border-radius:50px;padding:8px 24px;display:flex;gap:18px;z-index:100;border:1px solid #0ff;box-shadow:0 0 15px rgba(0,255,255,0.2)}
+    .dock-icon{width:55px;height:55px;background:rgba(0,255,255,0.15);border-radius:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.1s}
+    .dock-icon:active{transform:scale(0.92);background:#0ff}
+    .dock-icon img{width:32px;height:32px;pointer-events:none}
+    .start-btn{position:absolute;bottom:20px;left:20px;background:rgba(0,255,255,0.2);backdrop-filter:blur(18px);border-radius:32px;padding:8px 20px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid #0ff;z-index:100}
+    .start-btn:active{transform:scale(0.96);background:rgba(0,255,255,0.4)}
+    .start-btn span{color:#0ff;font-weight:bold;font-size:14px}
+    .start-menu{position:absolute;bottom:88px;left:20px;width:330px;max-width:calc(100% - 40px);background:rgba(10,15,25,0.96);backdrop-filter:blur(28px);border-radius:24px;padding:18px;border:1px solid #0ff;z-index:200;max-height:65vh;overflow-y:auto}
+    .start-menu.hide{display:none}
+    .menu-header{display:flex;align-items:center;gap:14px;border-bottom:1px solid #0ff;padding-bottom:12px;margin-bottom:14px}
+    .avatar{width:50px;height:50px;background:linear-gradient(135deg,#0ff,#0066ff);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+    .apps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .app-item{background:rgba(0,255,255,0.08);border-radius:16px;padding:10px 4px;text-align:center;cursor:pointer}
+    .app-item:active{background:rgba(0,255,255,0.3)}
+    .app-item img{width:32px;height:32px;pointer-events:none}
+    .app-item span{color:#0ff;font-size:11px;display:block;margin-top:5px}
+    .window{position:absolute;background:#0e121fe8;backdrop-filter:blur(30px);border-radius:24px;border:1.5px solid #0ff;box-shadow:0 0 30px rgba(0,255,255,0.3);display:flex;flex-direction:column;z-index:300;width:88%;max-width:420px;left:6%;top:12%}
+    .window.hide{display:none}
+    .window-bar{background:#000000aa;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;cursor:grab;border-bottom:1px solid #0ff;border-radius:24px 24px 0 0}
+    .window-title{color:#0ff;font-weight:bold;display:flex;align-items:center;gap:8px;font-size:14px}
+    .window-title img{width:20px;height:20px}
+    .window-controls{display:flex;gap:10px}
+    .win-close,.win-min{width:32px;height:32px;border-radius:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;font-weight:bold}
+    .win-close{background:#ff3366;color:white}
+    .win-min{background:#ffaa33;color:black}
+    .window-content{flex:1;padding:18px;overflow:auto;color:#fff;min-height:220px}
+    .toast{position:absolute;bottom:100px;left:20px;right:20px;background:#0ff;color:#000;padding:12px;border-radius:60px;text-align:center;font-weight:bold;z-index:500;transition:0.2s;font-size:13px}
+    button{background:#0ff;border:none;padding:12px;border-radius:28px;font-weight:bold;margin:6px 0;width:100%;cursor:pointer}
+    input,textarea{background:#1a1e2a;border:1px solid #0ff;color:#fff;padding:10px;border-radius:22px;width:100%;margin:6px 0}
+    .calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .calc-btn{background:#0ff;padding:14px;text-align:center;border-radius:16px;font-weight:bold;cursor:pointer;margin:2px}
+    .term-line{color:#0f0;margin:10px 0;font-family:monospace;font-size:13px}
   </style>
 </head>
 <body>
 <div class="desktop">
-  <div class="status-bar">
-    <span>⚡ POWER.bit</span>
-    <span id="clock">--:--:--</span>
-    <span id="battery">🔋 --%</span>
-  </div>
+  <div class="status-bar"><span>⚡ POWER.bit</span><span id="clock">--:--:--</span><span id="battery">🔋 --%</span></div>
   <div class="start-btn" id="startBtn"><span>❖</span><span>INICIAR</span></div>
   <div class="dock" id="dock"></div>
-  <div class="start-menu hide" id="startMenu">
-    <div class="menu-header"><div class="avatar">⚡</div><div><strong style="color:#0ff;">POWER.bit</strong><br><span style="font-size:10px;">Fusion OS</span></div></div>
-    <div class="apps-grid" id="appsGrid"></div>
-  </div>
+  <div class="start-menu hide" id="startMenu"><div class="menu-header"><div class="avatar">⚡</div><div><strong style="color:#0ff;">POWER.bit</strong><br><span style="font-size:10px;">Fusion OS</span></div></div><div class="apps-grid" id="appsGrid"></div></div>
   <div class="toast" id="toast" style="opacity:0;">✅</div>
 </div>
 
 <script>
-  // LISTA COMPLETA DE APPS
-  const APPS = [
-    { id: "chrome", nome: "Chrome", icone: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com" },
-    { id: "youtube", nome: "YouTube", icone: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://m.youtube.com" },
-    { id: "whatsapp", nome: "WhatsApp", icone: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com" },
-    { id: "instagram", nome: "Instagram", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com" },
-    { id: "facebook", nome: "Facebook", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png", url: "https://www.facebook.com" },
-    { id: "gmail", nome: "Gmail", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com" },
-    { id: "maps", nome: "Maps", icone: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://maps.google.com" },
-    { id: "spotify", nome: "Spotify", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com" },
-    { id: "netflix", nome: "Netflix", icone: "https://cdn-icons-png.flaticon.com/512/870/870910.png", url: "https://www.netflix.com" },
-    { id: "twitter", nome: "Twitter", icone: "https://cdn-icons-png.flaticon.com/512/733/733579.png", url: "https://twitter.com" },
-    { id: "tiktok", nome: "TikTok", icone: "https://cdn-icons-png.flaticon.com/512/3046/3046126.png", url: "https://www.tiktok.com" },
-    { id: "edge", nome: "Edge", icone: "https://cdn-icons-png.flaticon.com/512/732/732221.png", url: "https://www.bing.com" },
-    { id: "drive", nome: "Drive", icone: "https://cdn-icons-png.flaticon.com/512/2991/2991112.png", url: "https://drive.google.com" },
-    { id: "calc", nome: "Calculadora", icone: "https://cdn-icons-png.flaticon.com/512/3665/3665923.png", tipo: "calc" },
-    { id: "terminal", nome: "Terminal", icone: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "terminal" },
-    { id: "notas", nome: "Bloco de Notas", icone: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "notas" },
-    { id: "info", nome: "Info Sistema", icone: "https://cdn-icons-png.flaticon.com/512/1828/1828970.png", tipo: "info" }
-  ];
+const APPS=[
+{id:"chrome",nome:"Chrome",icone:"https://cdn-icons-png.flaticon.com/512/6124/6124999.png",url:"https://www.google.com"},
+{id:"youtube",nome:"YouTube",icone:"https://cdn-icons-png.flaticon.com/512/1384/1384060.png",url:"https://m.youtube.com"},
+{id:"whatsapp",nome:"WhatsApp",icone:"https://cdn-icons-png.flaticon.com/512/124/124034.png",url:"https://web.whatsapp.com"},
+{id:"instagram",nome:"Instagram",icone:"https://cdn-icons-png.flaticon.com/512/2111/2111463.png",url:"https://www.instagram.com"},
+{id:"facebook",nome:"Facebook",icone:"https://cdn-icons-png.flaticon.com/512/5968/5968764.png",url:"https://www.facebook.com"},
+{id:"gmail",nome:"Gmail",icone:"https://cdn-icons-png.flaticon.com/512/5968/5968534.png",url:"https://mail.google.com"},
+{id:"maps",nome:"Maps",icone:"https://cdn-icons-png.flaticon.com/512/854/854878.png",url:"https://maps.google.com"},
+{id:"spotify",nome:"Spotify",icone:"https://cdn-icons-png.flaticon.com/512/2111/2111624.png",url:"https://open.spotify.com"},
+{id:"netflix",nome:"Netflix",icone:"https://cdn-icons-png.flaticon.com/512/870/870910.png",url:"https://www.netflix.com"},
+{id:"twitter",nome:"Twitter",icone:"https://cdn-icons-png.flaticon.com/512/733/733579.png",url:"https://twitter.com"},
+{id:"tiktok",nome:"TikTok",icone:"https://cdn-icons-png.flaticon.com/512/3046/3046126.png",url:"https://www.tiktok.com"},
+{id:"edge",nome:"Edge",icone:"https://cdn-icons-png.flaticon.com/512/732/732221.png",url:"https://www.bing.com"},
+{id:"drive",nome:"Drive",icone:"https://cdn-icons-png.flaticon.com/512/2991/2991112.png",url:"https://drive.google.com"},
+{id:"calc",nome:"Calculadora",icone:"https://cdn-icons-png.flaticon.com/512/3665/3665923.png",tipo:"calc"},
+{id:"terminal",nome:"Terminal",icone:"https://cdn-icons-png.flaticon.com/512/2997/2997922.png",tipo:"terminal"},
+{id:"notas",nome:"Bloco Notas",icone:"https://cdn-icons-png.flaticon.com/512/2997/2997922.png",tipo:"notas"},
+{id:"info",nome:"Info",icone:"https://cdn-icons-png.flaticon.com/512/1828/1828970.png",tipo:"info"}];
 
-  let janelaAtual = null;
+let winAtual=null;
+function toast(m){let t=document.getElementById('toast');t.innerText=m;t.style.opacity='1';setTimeout(()=>t.style.opacity='0',2000);}
+function fecharWin(){if(winAtual&&winAtual.remove){winAtual.remove();winAtual=null;}}
+function criarWin(titulo,icone,html){fecharWin();let d=document.querySelector('.desktop');let w=document.createElement('div');w.className='window';w.innerHTML=`<div class="window-bar"><div class="window-title"><img src="${icone}"> ${titulo}</div><div class="window-controls"><div class="win-min">─</div><div class="win-close">✕</div></div></div><div class="window-content">${html}</div>`;d.appendChild(w);winAtual=w;w.querySelector('.win-close').onclick=()=>{w.remove();winAtual=null;toast('Fechado');};w.querySelector('.win-min').onclick=()=>w.classList.toggle('hide');let b=w.querySelector('.window-bar');let dragging=false,sx,sy,l0,t0;b.onmousedown=(e)=>{if(e.target.classList?.contains('win-close')||e.target.classList?.contains('win-min'))return;dragging=true;sx=e.clientX;sy=e.clientY;l0=w.offsetLeft;t0=w.offsetTop;};document.onmousemove=(e)=>{if(dragging){w.style.left=(l0+e.clientX-sx)+'px';w.style.top=(t0+e.clientY-sy)+'px';}};document.onmouseup=()=>dragging=false;b.ontouchstart=(e)=>{if(e.target.classList?.contains('win-close')||e.target.classList?.contains('win-min'))return;dragging=true;sx=e.touches[0].clientX;sy=e.touches[0].clientY;l0=w.offsetLeft;t0=w.offsetTop;};document.ontouchmove=(e)=>{if(dragging){w.style.left=(l0+e.touches[0].clientX-sx)+'px';w.style.top=(t0+e.touches[0].clientY-sy)+'px';}};document.ontouchend=()=>dragging=false;}
 
-  function mostrarToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.innerText = msg;
-    toast.style.opacity = '1';
-    setTimeout(() => toast.style.opacity = '0', 2000);
+function abrirApp(a){
+  if(a.url){window.open(a.url,'_blank');toast(`🌐 ${a.nome}`);}
+  else if(a.tipo==='calc'){
+    criarWin(a.nome,a.icone,`<div id="calcD" style="background:#000;padding:20px;text-align:right;font-size:40px;border-radius:16px;margin-bottom:12px;">0</div><div class="calc-grid"><div class="calc-btn" data-n="7">7</div><div class="calc-btn" data-n="8">8</div><div class="calc-btn" data-n="9">9</div><div class="calc-btn" data-o="/">/</div><div class="calc-btn" data-n="4">4</div><div class="calc-btn" data-n="5">5</div><div class="calc-btn" data-n="6">6</div><div class="calc-btn" data-o="*">*</div><div class="calc-btn" data-n="1">1</div><div class="calc-btn" data-n="2">2</div><div class="calc-btn" data-n="3">3</div><div class="calc-btn" data-o="-">-</div><div class="calc-btn" data-n="0">0</div><div class="calc-btn" id="calcC">C</div><div class="calc-btn" id="calcEq">=</div><div class="calc-btn" data-o="+">+</div></div>`);
+    setTimeout(()=>{let v='0',p=null,o=null;let d=document.getElementById('calcD');let u=()=>{if(d)d.innerText=v;};document.querySelectorAll('.calc-btn[data-n]').forEach(btn=>btn.onclick=()=>{v=(v==='0')?btn.dataset.n:v+btn.dataset.n;u();});document.querySelectorAll('.calc-btn[data-o]').forEach(btn=>btn.onclick=()=>{p=parseFloat(v);o=btn.dataset.o;v='0';});document.getElementById('calcC')?.onclick=()=>{v='0';p=null;o=null;u();};document.getElementById('calcEq')?.onclick=()=>{if(o&&p!==null){let c=parseFloat(v);let r=0;if(o==='+')r=p+c;else if(o==='-')r=p-c;else if(o==='*')r=p*c;else if(o==='/')r=p/c;v=r.toString();u();p=null;o=null;}};},50);
   }
-
-  function fecharJanela() {
-    if (janelaAtual && janelaAtual.remove) { janelaAtual.remove(); janelaAtual = null; }
+  else if(a.tipo==='terminal'){
+    criarWin(a.nome,a.icone,`<div style="background:#000;padding:12px;border-radius:14px;"><div class="term-line">> Terminal POWER.bit</div><div class="term-line">> Comandos: help, ls, fusion, status</div><div id="termOut" class="term-line" style="background:#0a0e1a;padding:8px;">$ pronto</div><input type="text" id="termInp" placeholder="comando..." style="background:#111;border:1px solid #0f0;color:#0f0;"></div>`);
+    setTimeout(()=>{let inp=document.getElementById('termInp');inp.onkeypress=(e)=>{if(e.key==='Enter'){let out=document.getElementById('termOut');let cmd=inp.value.toLowerCase();if(cmd==='help')out.innerHTML='Comandos: help, ls, fusion, status, chrome, youtube';else if(cmd==='ls')out.innerHTML='Desktop/ Documents/ Downloads/ Videos/';else if(cmd==='fusion')out.innerHTML='🌀 POWER.bit Fusion OS funcionando!';else if(cmd==='status')out.innerHTML=`✅ OK | ${new Date().toLocaleTimeString()} | Bateria: ${document.getElementById('battery').innerText}`;else out.innerHTML=`❌ Comando: ${cmd}`;inp.value='';}};},50);
   }
+  else if(a.tipo==='notas'){
+    criarWin(a.nome,a.icone,`<textarea id="noteText" style="width:100%;height:150px;background:#0a0e1a;border:1px solid #0ff;border-radius:14px;padding:12px;"></textarea><button id="saveBtn">💾 SALVAR</button>`);
+    setTimeout(()=>{let s=localStorage.getItem('power_note');if(s)document.getElementById('noteText').value=s;document.getElementById('saveBtn').onclick=()=>{localStorage.setItem('power_note',document.getElementById('noteText').value);toast('✅ Salvo!');};},50);
+  }
+  else if(a.tipo==='info'){
+    criarWin(a.nome,a.icone,`<div>📱 Dispositivo: ${navigator.userAgent.includes('Android')?'Android':'PC'}<br>📐 Tela: ${window.screen.width}x${window.screen.height}<br>🔋 Bateria: <span id="infoBat">--%</span><br>🌐 Navegador: ${navigator.userAgent.split(' ').slice(-2).join(' ')}<br><button id="refInfo" style="margin-top:12px;">🔄 Atualizar</button></div>`);
+    setTimeout(()=>{if('getBattery'in navigator){navigator.getBattery().then(b=>{document.getElementById('infoBat').innerText=`${Math.floor(b.level*100)}%`;});}document.getElementById('refInfo')?.onclick=()=>location.reload();},50);
+  }
+  document.getElementById('startMenu').classList.add('hide');
+}
 
-  function criarJanela(titulo, iconeUrl, conteudo) {
-    fecharJanela();
-    const desktop = document.querySelector('.desktop');
-    const win = document.createElement('div');
-    win.className = 'window';
-    win.innerHTML = `
-      <div class="window-bar"><div class="window-title"><img src="${iconeUrl}"> ${titulo}</div><div class="window-controls"><div class="win-min">─</div><div class="win-close">✕</div></div></div>
-      <div class="window-content">${conteudo}</div>
-    `;
-    desktop.appendChild(win);
-    janelaAtual = win;
-    win.querySelector('.win-close').onclick = () => { win.remove(); janelaAtual = null; mostrarToast(`🔒 Fechado`); };
-    win.querySelector('.win-min').onclick = () => win.classList.toggle('hide');
-    const bar = win.querySelector('.window-bar');
+function relogio(){document.getElementById('clock').innerText=new Date().toLocaleTimeString();}
+setInterval(relogio,1000);relogio();
+if('getBattery'in navigator){navigator.getBattery().then(b=>{function up(){document.getElementById('battery').innerHTML=`${b.charging?'⚡':'🔋'} ${Math.floor(b.level*100)}%`;}up();b.addEventListener('levelchange',up);b.addEventListener('chargingchange',up);});}else{document.getElementById('battery').innerHTML='🔋 85%';}
+
+const DOCK_IDS=['chrome','youtube','whatsapp','instagram','gmail'];
+document.getElementById('dock').innerHTML=DOCK_IDS.map(id=>{let a=APPS.find(x=>x.id===id);return`<div class="dock-icon" data-id="${a.id}"><img src="${a.icone}"></div>`;}).join('');
+document.querySelectorAll('.dock-icon').forEach(el=>{el.onclick=()=>{let a=APPS.find(x=>x.id===el.dataset.id);if(a)abrirApp(a);};});
+
+document.getElementById('appsGrid').innerHTML=APPS.map(a=>`<div class="app-item" data-id="${a.id}"><img src="${a.icone}"><span>${a.nome}</span></div>`).join('');
+document.querySelectorAll('.app-item').forEach(el=>{el.onclick=()=>{let a=APPS.find(x=>x.id===el.dataset.id);if(a)abrirApp(a);};});
+
+let sb=document.getElementById('startBtn'),sm=document.getElementById('startMenu');
+sb.onclick=(e)=>{e.stopPropagation();sm.classList.toggle('hide');};
+document.addEventListener('click',(e)=>{if(!sm.contains(e.target)&&!sb.contains(e.target)&&!sm.classList.contains('hide'))sm.classList.add('hide');});
+
+toast('✅ POWER.bit pronto! 17 apps');
+</script>
+</body>
+</html>    const bar = win.querySelector('.window-bar');
     let drag = false, sx, sy, l0, t0;
     bar.onmousedown = (e) => { if(e.target.classList?.contains('win-close')||e.target.classList?.contains('win-min')) return; drag=true; sx=e.clientX; sy=e.clientY; l0=win.offsetLeft; t0=win.offsetTop; };
     document.onmousemove = (e) => { if(drag) { win.style.left = (l0+e.clientX-sx)+'px'; win.style.top = (t0+e.clientY-sy)+'px'; } };
