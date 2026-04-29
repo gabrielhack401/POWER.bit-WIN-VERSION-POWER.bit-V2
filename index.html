@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>CyberOS Fusion | Responsivo - Windows + Linux + Mac + iOS</title>
+  <title>Fusion OS Pro | Acesso Real ao Sistema</title>
   <style>
     * {
       margin: 0;
@@ -26,14 +26,14 @@
       position: relative;
       overflow: hidden;
     }
-    /* Status bar responsiva */
+    /* Status bar */
     .status-bar {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: max(40px, env(safe-area-inset-top, 40px));
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
       backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-between;
@@ -43,10 +43,9 @@
       font-family: monospace;
       z-index: 100;
       border-bottom: 1px solid #0ff;
-      font-weight: bold;
       font-size: clamp(10px, 4vw, 14px);
     }
-    /* Dock responsivo - sempre centralizado */
+    /* Dock responsivo */
     .dock {
       position: absolute;
       bottom: 15px;
@@ -60,10 +59,8 @@
       gap: clamp(8px, 4vw, 20px);
       z-index: 100;
       border: 1px solid #0ff;
-      width: auto;
       max-width: 95%;
       overflow-x: auto;
-      white-space: nowrap;
     }
     .dock-icon {
       width: clamp(45px, 12vw, 55px);
@@ -74,12 +71,11 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: 0.1s;
       flex-shrink: 0;
     }
     .dock-icon:active { transform: scale(0.92); background: #0ff; }
     .dock-icon img { width: 60%; height: 60%; pointer-events: none; }
-    /* Start menu responsivo */
+    /* Start menu */
     .start-menu {
       position: absolute;
       bottom: 85px;
@@ -125,9 +121,9 @@
       cursor: pointer;
     }
     .menu-app:active { background: rgba(0,255,255,0.3); }
-    .menu-app img { width: clamp(24px, 7vw, 32px); height: auto; }
-    .menu-app span { color: #0ff; font-size: clamp(9px, 3vw, 11px); display: block; margin-top: 4px; }
-    /* JANELAS RESPONSIVAS */
+    .menu-app img { width: clamp(24px, 7vw, 32px); }
+    .menu-app span { color: #0ff; font-size: clamp(9px, 3vw, 11px); display: block; }
+    /* Janelas responsivas */
     .window {
       position: absolute;
       background: #0e121fe8;
@@ -138,15 +134,14 @@
       display: flex;
       flex-direction: column;
       z-index: 300;
-      /* Tamanhos responsivos */
       width: 85% !important;
       max-width: 450px !important;
       min-width: 260px !important;
       height: auto !important;
       max-height: 70vh !important;
-      min-height: 280px !important;
+      min-height: 300px !important;
       left: 7.5% !important;
-      top: 15% !important;
+      top: 12% !important;
     }
     .window.hide { display: none; }
     .window-bar {
@@ -158,7 +153,6 @@
       border-radius: 20px 20px 0 0;
       border-bottom: 1px solid #0ff;
     }
-    .window-bar:active { cursor: grabbing; }
     .window-title {
       color: #0ff;
       font-weight: bold;
@@ -176,90 +170,50 @@
       justify-content: center;
       cursor: pointer;
       margin-left: 8px;
-      font-weight: bold;
     }
     .close { background: #ff3366; color: white; }
-    .min { background: #ffaa33; color: black; }
+    .min { background: #ffaa33; }
     .window-content {
       flex: 1;
       padding: 16px;
       overflow: auto;
       color: white;
-      min-height: 200px;
     }
-    iframe {
-      width: 100%;
-      height: 100%;
-      min-height: 250px;
-      border: none;
-      background: white;
-      border-radius: 12px;
-    }
-    /* Terminal responsivo */
-    .terminal-body {
-      background: #03060c;
-      font-family: monospace;
+    iframe { width: 100%; height: 250px; border: none; border-radius: 12px; background: white; }
+    /* Lista de arquivos */
+    .file-list {
+      background: #0a0e1a;
+      border-radius: 16px;
       padding: 12px;
-      border-radius: 16px;
-      height: 100%;
+      max-height: 300px;
       overflow-y: auto;
-      border: 0.5px solid #0ff;
     }
-    .terminal-line {
-      color: #0f0;
-      margin: 6px 0;
-      font-size: clamp(10px, 3.5vw, 13px);
-      word-break: break-word;
-    }
-    .terminal-input {
-      background: #111;
-      border: 1px solid #0ff;
-      color: #0f0;
-      width: 100%;
-      padding: 8px;
-      border-radius: 12px;
-      font-family: monospace;
-      font-size: clamp(11px, 3.5vw, 13px);
-      margin-top: 8px;
-    }
-    /* Calculadora responsiva */
-    .calc-display {
-      background: #000;
-      padding: 16px;
-      text-align: right;
-      font-size: clamp(28px, 8vw, 42px);
-      margin-bottom: 16px;
-      border-radius: 16px;
-      border: 1px solid #0ff;
-      word-break: break-all;
-    }
-    .calc-buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-    .calc-btn {
-      background: #0ff;
-      text-align: center;
-      padding: clamp(10px, 4vw, 14px);
-      border-radius: 40px;
-      font-weight: bold;
-      font-size: clamp(16px, 5vw, 20px);
+    .file-item {
+      padding: 10px;
+      border-bottom: 0.5px solid #0ff3;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       cursor: pointer;
     }
-    .calc-btn:active { background: white; transform: scale(0.95); }
-    /* Store / Configurações responsivo */
-    .store-btn, .config-item {
-      background: rgba(0,255,255,0.2);
-      border: none;
+    .file-item:active { background: #0ff2; }
+    .setting-item {
+      background: #0a0e1a;
       padding: 12px;
       margin: 8px 0;
-      border-radius: 24px;
-      color: white;
-      width: 100%;
-      text-align: center;
-      font-size: clamp(12px, 4vw, 14px);
+      border-radius: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    .toggle-switch {
+      width: 50px;
+      height: 26px;
+      background: #333;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    .toggle-switch.active { background: #0ff; }
     .toast {
       position: absolute;
       bottom: 90px;
@@ -276,48 +230,31 @@
       transition: 0.2s;
       font-size: clamp(12px, 4vw, 14px);
     }
-    /* Ajustes para landscape */
-    @media (orientation: landscape) {
-      .window {
-        max-width: 500px !important;
-        max-height: 80vh !important;
-        left: calc(50% - 250px) !important;
-        top: 10% !important;
-      }
-      .dock {
-        gap: 15px;
-        padding: 6px 3%;
-      }
-    }
   </style>
 </head>
 <body>
 <div class="desktop">
   <div class="status-bar">
-    <span>🌀 CYBER FUSION</span>
+    <span>🌀 FUSION OS PRO</span>
     <span id="liveClock">--:--:--</span>
     <span id="batteryDisplay">🔋 --%</span>
   </div>
   <div class="dock">
-    <div class="dock-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png" alt="Chrome"></div>
-    <div class="dock-icon" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png" alt="Terminal"></div>
-    <div class="dock-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" alt="Store"></div>
-    <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png" alt="Settings"></div>
-    <div class="dock-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png" alt="Calc"></div>
-    <div class="dock-icon" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" alt="Finder"></div>
+    <div class="dock-icon" data-app="files"><img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png"></div>
+    <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"></div>
+    <div class="dock-icon" data-app="info"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"></div>
+    <div class="dock-icon" data-app="test"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"></div>
+    <div class="dock-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
   </div>
   <div class="start-menu hide" id="startMenu">
-    <div class="menu-header">
-      <div class="avatar">🐧</div>
-      <div style="color:white;">Fusion OS<br><span style="font-size:10px; color:#0ff;">Cyberpunk Edition</span></div>
-    </div>
+    <div class="menu-header"><div class="avatar">🚀</div><div style="color:white;">Fusion OS Pro<br><span style="font-size:10px;">Acesso Real ao Sistema</span></div></div>
     <div class="apps-grid">
-      <div class="menu-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-      <div class="menu-app" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"><span>Terminal</span></div>
-      <div class="menu-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Store</span></div>
-      <div class="menu-app" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"><span>Settings</span></div>
-      <div class="menu-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
-      <div class="menu-app" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"><span>Finder</span></div>
+      <div class="menu-app" data-app="files"><span>📁 Arquivos</span></div>
+      <div class="menu-app" data-app="settings"><span>⚙️ Config</span></div>
+      <div class="menu-app" data-app="info"><span>ℹ️ Info</span></div>
+      <div class="menu-app" data-app="test"><span>🧪 Teste</span></div>
+      <div class="menu-app" data-app="chrome"><span>🌐 Chrome</span></div>
+      <div class="menu-app" data-app="permissions"><span>🔐 Permissões</span></div>
     </div>
   </div>
   <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
@@ -326,45 +263,43 @@
 <script>
   // ========== TOAST ==========
   const toast = document.getElementById('toastMsg');
-  function showToast(msg) {
+  function showToast(msg, duration=2500) {
     toast.innerText = msg;
     toast.style.opacity = '1';
-    setTimeout(() => toast.style.opacity = '0', 2000);
+    setTimeout(() => toast.style.opacity = '0', duration);
   }
 
-  // ========== FECHAR TODAS JANELAS ==========
+  // ========== FECHAR JANELAS ==========
   function closeAllWindows() {
     document.querySelectorAll('.window').forEach(w => w.remove());
   }
 
-  // ========== CRIAR JANELA RESPONSIVA (COM ARRASTO) ==========
+  // ========== CRIAR JANELA ==========
   let currentZ = 500;
   function createWindow(title, iconUrl, contentHtml) {
     closeAllWindows();
     const desktop = document.querySelector('.desktop');
     const win = document.createElement('div');
     win.className = 'window';
-    // Posicionamento centralizado responsivo
     win.style.left = '7.5%';
-    win.style.top = '15%';
+    win.style.top = '12%';
     win.style.zIndex = currentZ++;
     win.innerHTML = `
       <div class="window-bar">
-        <div class="window-title"><img src="${iconUrl}" width="20" height="20"> ${title}</div>
+        <div class="window-title"><img src="${iconUrl}" width="20"> ${title}</div>
         <div><div class="win-btn min">─</div><div class="win-btn close">✕</div></div>
       </div>
       <div class="window-content">${contentHtml}</div>
     `;
     desktop.appendChild(win);
     
-    const bar = win.querySelector('.window-bar');
     const closeBtn = win.querySelector('.close');
     const minBtn = win.querySelector('.min');
-    
     closeBtn.onclick = () => win.remove();
     minBtn.onclick = () => win.classList.toggle('hide');
     
-    // Arrastar (suporte mobile + desktop)
+    // Arrastar
+    const bar = win.querySelector('.window-bar');
     let drag = false, startX, startY, left0, top0;
     function onStart(e) {
       if (e.target === closeBtn || e.target === minBtn) return;
@@ -381,12 +316,10 @@
       const cy = e.clientY ?? e.touches[0].clientY;
       let nl = left0 + (cx - startX);
       let nt = top0 + (cy - startY);
-      // limites para não sair da tela
       nl = Math.min(Math.max(0, nl), window.innerWidth - win.offsetWidth);
       nt = Math.min(Math.max(0, nt), window.innerHeight - win.offsetHeight - 50);
       win.style.left = nl + 'px';
       win.style.top = nt + 'px';
-      win.style.width = ''; // remove override inline
     }
     function onEnd() { drag = false; }
     bar.addEventListener('mousedown', onStart);
@@ -396,205 +329,293 @@
     document.addEventListener('touchmove', onMove);
     document.addEventListener('touchend', onEnd);
     
-    showToast(`📂 ${title} aberto`);
     return win;
   }
 
-  // ========== CONTEÚDO DE CADA APP ==========
-  function getContent(app) {
-    if (app === 'chrome') return `<iframe src="https://www.google.com/webhp?igu=1" title="Google Chrome"></iframe>`;
-    if (app === 'terminal') return `
-      <div class="terminal-body" id="termBody">
-        <div class="terminal-line">> CyberOS Terminal v2.0</div>
-        <div class="terminal-line">> Digite 'help' para comandos</div>
-        <div id="termOut" class="terminal-line">$ Bem-vindo ao Fusion OS</div>
-        <input type="text" id="termInput" class="terminal-input" placeholder="comando...">
-      </div>
-    `;
-    if (app === 'store') return `
-      <div style="text-align:center;">
-        <h3 style="color:#0ff; margin-bottom:16px;">🌀 Cyber Store</h3>
-        <button class="store-btn" data-name="Hacker Tool Pro">📀 Hacker Tool Pro - Instalar</button>
-        <button class="store-btn" data-name="Fusion Wallpapers">🖼️ Fusion Wallpapers - Instalar</button>
-        <button class="store-btn" data-name="Neon Game Pack">🎮 Neon Game Pack - Instalar</button>
-        <button class="store-btn" data-name="Cyber Security Kit">🛡️ Cyber Security Kit - Instalar</button>
-      </div>
-    `;
-    if (app === 'settings') return `
+  // ========== PERMISSÕES ==========
+  async function requestFilePermission() {
+    if ('showDirectoryPicker' in window) {
+      try {
+        await window.showDirectoryPicker();
+        showToast('✅ Permissão de arquivos concedida!');
+        return true;
+      } catch(e) { showToast('⚠️ Permissão negada'); return false; }
+    } else {
+      showToast('📱 Use Chrome/Edge para acesso total a arquivos');
+      return false;
+    }
+  }
+
+  // ========== CONTEÚDO DOS APPS ==========
+  async function getFilesContent() {
+    let fileHtml = '<div class="file-list"><div style="color:#0ff; margin-bottom:12px;">📂 ARMAZENAMENTO</div>';
+    
+    if ('showDirectoryPicker' in window) {
+      fileHtml += `<button id="selectFolderBtn" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin-bottom:16px;">📁 SELECIONAR PASTA</button>
+                   <div id="folderContent" style="background:#0a0e1a; border-radius:16px; padding:12px; min-height:150px;">
+                     <span style="color:#888;">Clique no botão acima para selecionar uma pasta do seu celular</span>
+                   </div>`;
+    } else {
+      fileHtml += `<div style="background:#0a0e1a; padding:16px; border-radius:16px;">
+                    <p>⚠️ Seu navegador não suporta acesso direto a arquivos.</p>
+                    <p>📱 Recomendação: Use Chrome, Edge ou Opera no Android</p>
+                    <hr style="margin:12px 0; border-color:#333;">
+                    <p>📂 Diretórios simulados (demo):</p>
+                    <div class="file-item">📄 Documentos/</div>
+                    <div class="file-item">🖼️ Downloads/</div>
+                    <div class="file-item">🎵 Músicas/</div>
+                    <div class="file-item">📷 DCIM/</div>
+                   </div>`;
+    }
+    fileHtml += '</div>';
+    return fileHtml;
+  }
+
+  function getSettingsContent() {
+    return `
       <div>
-        <h3 style="color:#0ff;">⚙️ Configurações</h3>
-        <p id="settingsBatt" style="margin:12px 0;">🔋 Bateria: --%</p>
-        <p>🎨 Tema: Cyberpunk Neon</p>
-        <p>📱 Modo Responsivo: Ativo</p>
-        <p>🐧 Fusão: Windows + Linux + Mac + iOS</p>
-        <button id="testNotif" style="background:#0ff; border:none; padding:10px 20px; border-radius:30px; margin-top:16px; font-weight:bold;">🔔 Testar Notificação</button>
+        <h3 style="color:#0ff;">⚙️ CONFIGURAÇÕES REAIS</h3>
+        <div class="setting-item"><span>📶 Wi-Fi</span><span id="wifiStatus">Buscando...</span></div>
+        <div class="setting-item"><span>🔷 Bluetooth</span><span id="btStatus">Buscando...</span></div>
+        <div class="setting-item"><span>🔊 Volume</span><input type="range" id="volumeSlider" min="0" max="100" value="50" style="width:60%;"></div>
+        <div class="setting-item"><span>💡 Brilho</span><input type="range" id="brightnessSlider" min="0" max="100" value="80" style="width:60%;"></div>
+        <div class="setting-item"><span>🔋 Bateria</span><span id="realBattery">--%</span></div>
+        <div class="setting-item"><span>📱 Tela sempre ligada</span><div id="screenToggle" class="toggle-switch"></div></div>
+        <button id="testVibration" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin-top:16px;">📳 Testar Vibração</button>
+        <button id="checkPermissions" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin-top:12px;">🔐 Gerenciar Permissões</button>
       </div>
     `;
-    if (app === 'calc') return `
-      <div class="calc-display" id="calcDisplay">0</div>
-      <div class="calc-buttons">
-        <div class="calc-btn" data-val="7">7</div><div class="calc-btn" data-val="8">8</div><div class="calc-btn" data-val="9">9</div><div class="calc-btn" data-op="/">/</div>
-        <div class="calc-btn" data-val="4">4</div><div class="calc-btn" data-val="5">5</div><div class="calc-btn" data-val="6">6</div><div class="calc-btn" data-op="*">*</div>
-        <div class="calc-btn" data-val="1">1</div><div class="calc-btn" data-val="2">2</div><div class="calc-btn" data-val="3">3</div><div class="calc-btn" data-op="-">-</div>
-        <div class="calc-btn" data-val="0">0</div><div class="calc-btn" id="calcC">C</div><div class="calc-btn" id="calcEq">=</div><div class="calc-btn" data-op="+">+</div>
-      </div>
-    `;
-    if (app === 'finder') return `
+  }
+
+  function getInfoContent() {
+    return `
       <div>
-        <h3 style="color:#0ff;">📁 Finder</h3>
-        <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:16px;">
-          <div>📄 Documentos</div><div>🖼️ Imagens</div><div>🎵 Músicas</div><div>💾 Apps</div><div>🐧 Linux</div><div>🪟 Windows</div>
-        </div>
+        <h3 style="color:#0ff;">ℹ️ INFORMAÇÕES DO DISPOSITIVO</h3>
+        <div class="setting-item"><span>📱 Modelo</span><span id="deviceModel">Carregando...</span></div>
+        <div class="setting-item"><span>🤖 Sistema</span><span id="deviceOS">Carregando...</span></div>
+        <div class="setting-item"><span>🌐 Navegador</span><span id="browserInfo">Carregando...</span></div>
+        <div class="setting-item"><span>📐 Tela</span><span id="screenInfo">Carregando...</span></div>
+        <div class="setting-item"><span>⚡ Processador</span><span id="cpuInfo">Carregando...</span></div>
+        <div class="setting-item"><span>💾 Memória</span><span id="memoryInfo">Carregando...</span></div>
+        <div class="setting-item"><span>🔋 Bateria</span><span id="batteryInfo">Carregando...</span></div>
+        <div class="setting-item"><span>📡 Rede</span><span id="networkInfo">Carregando...</span></div>
       </div>
     `;
-    return `<div>App ${app}</div>`;
+  }
+
+  function getTestContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">🧪 TESTE DE HARDWARE</h3>
+        <button id="testDisplay" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin:8px 0;">🖥️ Teste de Tela (RGB)</button>
+        <button id="testSound" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin:8px 0;">🔊 Teste de Áudio</button>
+        <button id="testVibration2" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin:8px 0;">📳 Teste de Vibração</button>
+        <button id="testCamera" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin:8px 0;">📷 Teste de Câmera</button>
+        <button id="testGPS" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin:8px 0;">📍 Teste de GPS</button>
+        <div id="testResult" style="margin-top:16px; padding:12px; background:#0a0e1a; border-radius:16px;"></div>
+      </div>
+    `;
+  }
+
+  function getPermissionsContent() {
+    return `
+      <div>
+        <h3 style="color:#0ff;">🔐 PERMISSÕES DO SISTEMA</h3>
+        <div class="setting-item"><span>📁 Armazenamento</span><button id="permStorage" class="permBtn" style="background:#0ff; border:none; padding:8px 16px; border-radius:20px;">Solicitar</button></div>
+        <div class="setting-item"><span>📍 Localização</span><button id="permLocation" class="permBtn" style="background:#0ff; border:none; padding:8px 16px; border-radius:20px;">Solicitar</button></div>
+        <div class="setting-item"><span>📷 Câmera</span><button id="permCamera" class="permBtn" style="background:#0ff; border:none; padding:8px 16px; border-radius:20px;">Solicitar</button></div>
+        <div class="setting-item"><span>🎤 Microfone</span><button id="permMicrophone" class="permBtn" style="background:#0ff; border:none; padding:8px 16px; border-radius:20px;">Solicitar</button></div>
+        <div class="setting-item"><span>📢 Notificações</span><button id="permNotifications" class="permBtn" style="background:#0ff; border:none; padding:8px 16px; border-radius:20px;">Solicitar</button></div>
+      </div>
+    `;
+  }
+
+  // ========== FUNÇÕES REAIS ==========
+  async function updateDeviceInfo() {
+    const model = document.getElementById('deviceModel');
+    if (model) model.innerText = navigator.userAgent.match(/Android/i) ? 'Android Device' : navigator.platform;
+    const os = document.getElementById('deviceOS');
+    if (os) os.innerText = navigator.userAgent.includes('Android') ? 'Android ' + (navigator.userAgent.match(/Android\s([0-9.]+)/)?.[1] || '13+') : navigator.userAgent.includes('iOS') ? 'iOS' : 'Desktop';
+    const browser = document.getElementById('browserInfo');
+    if (browser) browser.innerText = navigator.userAgent.split(' ').slice(-2).join(' ');
+    const screen = document.getElementById('screenInfo');
+    if (screen) screen.innerText = `${window.screen.width}x${window.screen.height}`;
+    const memory = document.getElementById('memoryInfo');
+    if (memory && navigator.deviceMemory) memory.innerText = `${navigator.deviceMemory} GB RAM`;
+    else if (memory) memory.innerText = 'Não disponível';
+    const network = document.getElementById('networkInfo');
+    if (network && navigator.connection) network.innerText = `${navigator.connection.effectiveType} - ${navigator.connection.downlink} Mbps`;
+    else if (network) network.innerText = 'Não disponível';
+  }
+
+  async function updateBatteryReal() {
+    if ('getBattery' in navigator) {
+      const battery = await navigator.getBattery();
+      const level = Math.floor(battery.level * 100);
+      const status = battery.charging ? '⚡' : '🔋';
+      document.getElementById('batteryDisplay').innerText = `${status} ${level}%`;
+      document.getElementById('realBattery') && (document.getElementById('realBattery').innerText = `${level}% ${battery.charging ? '(Carregando)' : ''}`);
+      document.getElementById('batteryInfo') && (document.getElementById('batteryInfo').innerText = `${level}% ${battery.charging ? '⚡' : '🔋'}`);
+    }
+  }
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('liveClock').innerText = now.toLocaleTimeString();
   }
 
   // ========== ABRIR APP ==========
-  function openApp(appName) {
-    let title = '', icon = '';
-    if (appName === 'chrome') { title = 'Google Chrome'; icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png'; }
-    else if (appName === 'terminal') { title = 'Terminal Linux'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; }
-    else if (appName === 'store') { title = 'Cyber Store'; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png'; }
-    else if (appName === 'settings') { title = 'Configurações'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; }
-    else if (appName === 'calc') { title = 'Calculadora'; icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png'; }
-    else if (appName === 'finder') { title = 'Finder'; icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; }
-    else return;
+  async function openApp(appName) {
+    let title = '', icon = '', content = '';
     
-    const content = getContent(appName);
-    const win = createWindow(title, icon, content);
-    
-    // Eventos específicos após criar a janela
-    setTimeout(() => {
-      if (appName === 'terminal') {
-        const input = document.getElementById('termInput');
-        if (input) {
-          input.onkeypress = (e) => {
-            if (e.key === 'Enter') {
-              const cmd = input.value.trim().toLowerCase();
-              const out = document.getElementById('termOut');
-              if (cmd === 'help') out.innerText = 'Comandos: help, ls, cyber, windows, linux, mac, ios, fusion';
-              else if (cmd === 'ls') out.innerText = 'Desktop/   Downloads/   Documents/   Videos/';
-              else if (cmd === 'cyber') out.innerText = '💀 CyberOS Fusion - Modo Hack ativado';
-              else if (cmd === 'windows') out.innerText = '🪟 Windows 11 mode: Interface integrada';
-              else if (cmd === 'linux') out.innerText = '🐧 Kernel 6.1 + Ubuntu 24.04';
-              else if (cmd === 'mac') out.innerText = '🍎 macOS Sonoma - Dock e Blur';
-              else if (cmd === 'ios') out.innerText = '📱 iOS 17 - Status bar e gestures';
-              else if (cmd === 'fusion') out.innerText = '🌀 Fusion OS: Windows + Linux + Mac + iOS';
-              else out.innerText = `Comando desconhecido: ${cmd}`;
-              input.value = '';
-            }
-          };
-        }
-      }
-      if (appName === 'store') {
-        document.querySelectorAll('.store-btn').forEach(btn => {
-          btn.onclick = () => showToast(`✅ ${btn.getAttribute('data-name')} instalado com sucesso!`);
-        });
-      }
-      if (appName === 'settings') {
-        const battSpan = document.getElementById('settingsBatt');
-        if (battSpan && window.currentBatteryLevel !== undefined) {
-          battSpan.innerText = `🔋 Bateria: ${window.currentBatteryLevel}% ${window.batteryCharging ? '⚡ Carregando' : ''}`;
-        }
-        document.getElementById('testNotif')?.addEventListener('click', () => showToast('🔔 Notificação: Sistema Fusion funcionando perfeitamente!'));
-      }
-      if (appName === 'calc') {
-        let val = '0', prev = null, op = null;
-        const disp = document.getElementById('calcDisplay');
-        const update = () => { if(disp) disp.innerText = val; };
-        document.querySelectorAll('.calc-btn[data-val]').forEach(btn => {
-          btn.onclick = () => { val = (val === '0') ? btn.getAttribute('data-val') : val + btn.getAttribute('data-val'); update(); };
-        });
-        document.querySelectorAll('.calc-btn[data-op]').forEach(btn => {
-          btn.onclick = () => { prev = parseFloat(val); op = btn.getAttribute('data-op'); val = '0'; };
-        });
-        const clearBtn = document.getElementById('calcC');
-        if (clearBtn) clearBtn.onclick = () => { val = '0'; prev = null; op = null; update(); };
-        const equalBtn = document.getElementById('calcEq');
-        if (equalBtn) equalBtn.onclick = () => {
-          if (op && prev !== null) {
-            const cur = parseFloat(val);
-            let res = 0;
-            if (op === '+') res = prev + cur;
-            else if (op === '-') res = prev - cur;
-            else if (op === '*') res = prev * cur;
-            else if (op === '/') res = prev / cur;
-            val = res.toString();
-            update();
-            prev = null; op = null;
+    if (appName === 'files') {
+      title = 'Gerenciador de Arquivos';
+      icon = 'https://cdn-icons-png.flaticon.com/512/1055/1055687.png';
+      content = await getFilesContent();
+      const win = createWindow(title, icon, content);
+      setTimeout(() => {
+        const btn = document.getElementById('selectFolderBtn');
+        if (btn) btn.onclick = async () => {
+          if ('showDirectoryPicker' in window) {
+            try {
+              const dir = await window.showDirectoryPicker();
+              let fileList = '<div style="color:#0ff;">📁 ' + dir.name + '</div>';
+              for await (const entry of dir.values()) {
+                fileList += `<div class="file-item">${entry.kind === 'directory' ? '📁' : '📄'} ${entry.name}</div>`;
+              }
+              document.getElementById('folderContent').innerHTML = fileList;
+              showToast(`✅ Lendo: ${dir.name}`);
+            } catch(e) { showToast('Erro ao ler pasta'); }
           }
         };
-      }
-    }, 50);
+      }, 50);
+      return;
+    }
+    if (appName === 'settings') {
+      title = 'Configurações do Sistema';
+      icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png';
+      content = getSettingsContent();
+      const win = createWindow(title, icon, content);
+      setTimeout(() => {
+        updateBatteryReal();
+        document.getElementById('volumeSlider')?.addEventListener('input', (e) => showToast(`Volume: ${e.target.value}%`));
+        document.getElementById('brightnessSlider')?.addEventListener('input', (e) => showToast(`Brilho: ${e.target.value}%`));
+        document.getElementById('testVibration')?.addEventListener('click', () => { if('vibrate' in navigator) { navigator.vibrate(200); showToast('📳 Vibração acionada!'); } else showToast('⚠️ Vibração não suportada'); });
+        document.getElementById('checkPermissions')?.addEventListener('click', () => openApp('permissions'));
+        document.getElementById('wifiStatus').innerText = navigator.connection ? 'Conectado' : 'Verificar';
+        document.getElementById('btStatus').innerText = 'Não disponível via Web';
+      }, 50);
+      return;
+    }
+    if (appName === 'info') {
+      title = 'Informações do Dispositivo';
+      icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png';
+      content = getInfoContent();
+      const win = createWindow(title, icon, content);
+      setTimeout(() => { updateDeviceInfo(); updateBatteryReal(); }, 50);
+      return;
+    }
+    if (appName === 'test') {
+      title = 'Teste de Hardware';
+      icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png';
+      content = getTestContent();
+      const win = createWindow(title, icon, content);
+      setTimeout(() => {
+        const result = document.getElementById('testResult');
+        document.getElementById('testDisplay')?.addEventListener('click', () => {
+          document.body.style.background = 'red';
+          setTimeout(() => document.body.style.background = '', 1000);
+          result.innerHTML = '🖥️ Tela: OK - Você viu a tela piscar em vermelho?';
+        });
+        document.getElementById('testSound')?.addEventListener('click', () => {
+          const audio = new Audio('data:audio/wav;base64,U3RlYWx0aCBpcyBhIHRlc3Q=');
+          audio.play().catch(() => result.innerHTML = '🔊 Teste de áudio: Toque permitido?');
+          result.innerHTML = '🔊 Toque de teste reproduzido (se permitido)';
+        });
+        document.getElementById('testVibration2')?.addEventListener('click', () => {
+          if('vibrate' in navigator) { navigator.vibrate([200,100,200]); result.innerHTML = '📳 Vibração acionada!'; }
+          else result.innerHTML = '⚠️ Vibração não suportada';
+        });
+        document.getElementById('testCamera')?.addEventListener('click', async () => {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            stream.getTracks().forEach(t => t.stop());
+            result.innerHTML = '📷 Câmera: Permissão concedida!';
+          } catch(e) { result.innerHTML = '❌ Câmera: Permissão negada ou não suportada'; }
+        });
+        document.getElementById('testGPS')?.addEventListener('click', () => {
+          if('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(pos => {
+              result.innerHTML = `📍 GPS: Lat ${pos.coords.latitude.toFixed(4)}, Lon ${pos.coords.longitude.toFixed(4)}`;
+            }, err => result.innerHTML = '❌ GPS: Permissão negada');
+          } else result.innerHTML = '❌ GPS não suportado';
+        });
+      }, 50);
+      return;
+    }
+    if (appName === 'chrome') {
+      title = 'Google Chrome';
+      icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png';
+      content = '<iframe src="https://www.google.com/webhp?igu=1"></iframe>';
+      createWindow(title, icon, content);
+      return;
+    }
+    if (appName === 'permissions') {
+      title = 'Permissões';
+      icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png';
+      content = getPermissionsContent();
+      const win = createWindow(title, icon, content);
+      setTimeout(() => {
+        document.getElementById('permStorage')?.addEventListener('click', () => requestFilePermission());
+        document.getElementById('permLocation')?.addEventListener('click', () => {
+          navigator.geolocation.getCurrentPosition(() => showToast('✅ Localização concedida'), () => showToast('❌ Permissão negada'));
+        });
+        document.getElementById('permCamera')?.addEventListener('click', async () => {
+          try { await navigator.mediaDevices.getUserMedia({ video: true }); showToast('✅ Câmera concedida'); }
+          catch(e) { showToast('❌ Câmera negada'); }
+        });
+        document.getElementById('permMicrophone')?.addEventListener('click', async () => {
+          try { await navigator.mediaDevices.getUserMedia({ audio: true }); showToast('✅ Microfone concedido'); }
+          catch(e) { showToast('❌ Microfone negado'); }
+        });
+        document.getElementById('permNotifications')?.addEventListener('click', async () => {
+          if('Notification' in window) {
+            const perm = await Notification.requestPermission();
+            showToast(perm === 'granted' ? '✅ Notificações permitidas' : '❌ Notificações negadas');
+          }
+        });
+      }, 50);
+      return;
+    }
+    createWindow(title, icon, content || '<div>App em desenvolvimento</div>');
   }
 
-  // ========== RELÓGIO EM TEMPO REAL ==========
-  function updateClock() {
-    const now = new Date();
-    const h = now.getHours().toString().padStart(2,'0');
-    const m = now.getMinutes().toString().padStart(2,'0');
-    const s = now.getSeconds().toString().padStart(2,'0');
-    const clockSpan = document.getElementById('liveClock');
-    if (clockSpan) clockSpan.innerText = `${h}:${m}:${s}`;
-  }
+  // ========== INICIALIZAÇÃO ==========
   setInterval(updateClock, 1000);
   updateClock();
+  updateBatteryReal();
+  setInterval(updateBatteryReal, 30000);
 
-  // ========== BATERIA REAL ==========
-  window.currentBatteryLevel = 87;
-  window.batteryCharging = false;
-  if ('getBattery' in navigator) {
-    navigator.getBattery().then(battery => {
-      function updateBatt() {
-        window.currentBatteryLevel = Math.floor(battery.level * 100);
-        window.batteryCharging = battery.charging;
-        const battSpan = document.getElementById('batteryDisplay');
-        if (battSpan) battSpan.innerText = battery.charging ? `⚡ ${window.currentBatteryLevel}%` : `🔋 ${window.currentBatteryLevel}%`;
-        const settingsBatt = document.getElementById('settingsBatt');
-        if (settingsBatt) settingsBatt.innerText = `🔋 Bateria: ${window.currentBatteryLevel}% ${battery.charging ? '(Carregando)' : ''}`;
-      }
-      updateBatt();
-      battery.addEventListener('levelchange', updateBatt);
-      battery.addEventListener('chargingchange', updateBatt);
-    }).catch(() => {
-      document.getElementById('batteryDisplay').innerText = '🔋 92%';
-    });
-  } else {
-    let fakeBatt = 94;
-    setInterval(() => { fakeBatt = Math.max(0, fakeBatt-0.5); document.getElementById('batteryDisplay').innerText = `🔋 ${Math.floor(fakeBatt)}%`; }, 30000);
-    document.getElementById('batteryDisplay').innerText = '🔋 94%';
-  }
-
-  // ========== EVENTOS GLOBAIS (todos os botões) ==========
-  function bindAllButtons() {
+  function bindEvents() {
     document.querySelectorAll('[data-app]').forEach(el => {
       el.addEventListener('click', (e) => {
         e.stopPropagation();
-        const app = el.getAttribute('data-app');
-        openApp(app);
+        openApp(el.getAttribute('data-app'));
         document.getElementById('startMenu').classList.add('hide');
       });
     });
   }
-  bindAllButtons();
+  bindEvents();
 
-  // Botão Iniciar (primeiro ícone do dock)
   const startDockBtn = document.querySelector('.dock-icon:first-child');
-  const startMenuDiv = document.getElementById('startMenu');
-  if (startDockBtn) {
-    startDockBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      startMenuDiv.classList.toggle('hide');
-    });
-  }
+  const startMenu = document.getElementById('startMenu');
+  startDockBtn.addEventListener('click', (e) => { e.stopPropagation(); startMenu.classList.toggle('hide'); });
   document.addEventListener('click', (e) => {
-    if (startMenuDiv && !startMenuDiv.contains(e.target) && !startDockBtn.contains(e.target) && !startMenuDiv.classList.contains('hide')) {
-      startMenuDiv.classList.add('hide');
-    }
+    if (!startMenu.contains(e.target) && !startDockBtn.contains(e.target) && !startMenu.classList.contains('hide'))
+      startMenu.classList.add('hide');
   });
 
-  showToast('🚀 CyberOS Fusion responsivo! Toque nos ícones - Janelas se ajustam a qualquer tela');
+  showToast('🚀 Fusion OS Pro | Toque para acessar ARQUIVOS REAIS e CONFIGURAÇÕES', 4000);
 </script>
 </body>
 </html>
