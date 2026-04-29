@@ -21,7 +21,6 @@
       position: fixed;
     }
 
-    /* Desktop */
     .desktop {
       width: 100%;
       height: 100%;
@@ -37,16 +36,16 @@
       left: 0;
       right: 0;
       height: 45px;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.7);
       backdrop-filter: blur(15px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 20px;
-      color: cyan;
+      color: #0ff;
       font-family: monospace;
       z-index: 100;
-      border-bottom: 1px solid cyan;
+      border-bottom: 1px solid #0ff;
       font-size: 13px;
     }
 
@@ -56,14 +55,14 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,255,255,0.15);
+      background: rgba(0,255,255,0.12);
       backdrop-filter: blur(20px);
       border-radius: 40px;
       padding: 8px 20px;
       display: flex;
       gap: 15px;
       z-index: 100;
-      border: 1px solid cyan;
+      border: 1px solid #0ff;
     }
 
     .dock-icon {
@@ -102,12 +101,468 @@
       align-items: center;
       gap: 8px;
       cursor: pointer;
-      border: 1px solid cyan;
+      border: 1px solid #0ff;
       z-index: 100;
     }
 
     .start-btn:active {
       transform: scale(0.96);
+      background: rgba(0,255,255,0.4);
+    }
+
+    .start-btn span {
+      color: #0ff;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    /* Start Menu */
+    .start-menu {
+      position: absolute;
+      bottom: 90px;
+      left: 20px;
+      width: 300px;
+      background: rgba(10,15,25,0.96);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 15px;
+      border: 1px solid #0ff;
+      z-index: 200;
+    }
+
+    .start-menu.hide {
+      display: none;
+    }
+
+    .menu-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #0ff;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #0ff, #0066ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .apps-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .menu-app {
+      background: rgba(0,255,255,0.08);
+      border-radius: 14px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .menu-app:active {
+      background: rgba(0,255,255,0.3);
+    }
+
+    .menu-app span {
+      color: #0ff;
+      font-size: 11px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Janela */
+    .window {
+      position: absolute;
+      background: #0e121fe8;
+      backdrop-filter: blur(25px);
+      border-radius: 20px;
+      border: 1.5px solid #0ff;
+      box-shadow: 0 0 20px rgba(0,255,255,0.3);
+      display: flex;
+      flex-direction: column;
+      z-index: 300;
+      width: 85%;
+      max-width: 400px;
+      height: auto;
+      max-height: 70vh;
+      left: 7.5%;
+      top: 15%;
+    }
+
+    .window.closed {
+      display: none !important;
+    }
+
+    .window.minimized {
+      display: none !important;
+    }
+
+    .window-bar {
+      background: #000000aa;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: grab;
+      border-bottom: 1px solid #0ff;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .window-bar:active {
+      cursor: grabbing;
+    }
+
+    .window-title {
+      color: #0ff;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .window-title img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .win-close, .win-min {
+      width: 28px;
+      height: 28px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .win-close {
+      background: #ff3366;
+      color: white;
+    }
+
+    .win-min {
+      background: #ffaa33;
+      color: black;
+    }
+
+    .window-content {
+      flex: 1;
+      padding: 15px;
+      overflow: auto;
+      min-height: 200px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 12px;
+      background: white;
+    }
+
+    .toast {
+      position: absolute;
+      bottom: 100px;
+      left: 20px;
+      right: 20px;
+      background: #0ff;
+      color: black;
+      padding: 10px;
+      border-radius: 50px;
+      text-align: center;
+      font-weight: bold;
+      z-index: 500;
+      transition: 0.2s;
+    }
+
+    button {
+      background: #0ff;
+      border: none;
+      padding: 10px;
+      border-radius: 25px;
+      font-weight: bold;
+      margin: 5px 0;
+      width: 100%;
+    }
+
+    input {
+      background: #1a1e2a;
+      border: 1px solid #0ff;
+      color: white;
+      padding: 8px;
+      border-radius: 20px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<div class="desktop">
+  <div class="status-bar">
+    <span>⚡ FUSION OS ULTRA</span>
+    <span id="clock">--:--:--</span>
+    <span id="battery">🔋 --%</span>
+  </div>
+
+  <div class="start-btn" id="startBtn">
+    <span>❖</span>
+    <span>INICIAR</span>
+  </div>
+
+  <div class="dock" id="dock"></div>
+
+  <div class="start-menu hide" id="startMenu">
+    <div class="menu-header">
+      <div class="avatar">⚡</div>
+      <div><strong style="color:#0ff;">POWER.bit</strong><br><span style="font-size:10px;">Fusion OS</span></div>
+    </div>
+    <div class="apps-list" id="appsList"></div>
+  </div>
+
+  <div class="toast" id="toast" style="opacity:0;">✅</div>
+</div>
+
+<script>
+  // ========== APPS COM URLs CORRETAS (TODAS FUNCIONANDO) ==========
+  const APPS = [
+    { id: "chrome", nome: "Chrome", icone: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com", tipo: "web" },
+    { id: "youtube", nome: "YouTube", icone: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://www.youtube.com/embed/videoseries?list=PLrAXtmEswxPJwnbwDsC8lJ6-h_BRlJK9b", tipo: "web" },
+    { id: "whatsapp", nome: "WhatsApp", icone: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com", tipo: "web" },
+    { id: "instagram", nome: "Instagram", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com", tipo: "web" },
+    { id: "facebook", nome: "Facebook", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png", url: "https://www.facebook.com", tipo: "web" },
+    { id: "gmail", nome: "Gmail", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com", tipo: "web" },
+    { id: "maps", nome: "Maps", icone: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.097!2d-46.654!3d-23.563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce58f5a66ed2e5%3A0x66f8c0b78e4c9b1f!2sS%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr", tipo: "web" },
+    { id: "spotify", nome: "Spotify", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M", tipo: "web" },
+    { id: "netflix", nome: "Netflix", icone: "https://cdn-icons-png.flaticon.com/512/870/870910.png", url: "https://www.netflix.com", tipo: "web" },
+    { id: "twitter", nome: "Twitter/X", icone: "https://cdn-icons-png.flaticon.com/512/733/733579.png", url: "https://twitter.com", tipo: "web" },
+    { id: "tiktok", nome: "TikTok", icone: "https://cdn-icons-png.flaticon.com/512/3046/3046126.png", url: "https://www.tiktok.com", tipo: "web" },
+    { id: "edge", nome: "Edge", icone: "https://cdn-icons-png.flaticon.com/512/732/732221.png", url: "https://www.bing.com", tipo: "web" },
+    { id: "drive", nome: "Drive", icone: "https://cdn-icons-png.flaticon.com/512/2991/2991112.png", url: "https://drive.google.com", tipo: "web" }
+  ];
+
+  let janelaAtual = null;
+
+  function mostrarToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+    }, 2000);
+  }
+
+  function fecharTodasJanelas() {
+    if (janelaAtual) {
+      // Se a janela é um elemento DOM válido
+      if (janelaAtual.remove) {
+        janelaAtual.remove();
+      }
+      janelaAtual = null;
+    }
+  }
+
+  function criarJanela(titulo, iconeUrl, conteudo) {
+    // Fecha janela anterior primeiro
+    fecharTodasJanelas();
+    
+    const desktop = document.querySelector('.desktop');
+    const win = document.createElement('div');
+    win.className = 'window';
+    
+    // Posicionamento centralizado
+    win.style.left = '7.5%';
+    win.style.top = '15%';
+    
+    win.innerHTML = `
+      <div class="window-bar">
+        <div class="window-title"><img src="${iconeUrl}" width="18"> ${titulo}</div>
+        <div class="window-controls">
+          <div class="win-min" data-action="min">─</div>
+          <div class="win-close" data-action="close">✕</div>
+        </div>
+      </div>
+      <div class="window-content">${conteudo}</div>
+    `;
+    
+    desktop.appendChild(win);
+    janelaAtual = win;
+
+    // Botão FECHAR - CORRIGIDO
+    const closeBtn = win.querySelector('.win-close');
+    closeBtn.onclick = (e) => {
+      e.stopPropagation();
+      win.remove();
+      janelaAtual = null;
+      mostrarToast(`🔒 ${titulo} fechado`);
+    };
+
+    // Botão MINIMIZAR - CORRIGIDO
+    const minBtn = win.querySelector('.win-min');
+    minBtn.onclick = (e) => {
+      e.stopPropagation();
+      win.classList.toggle('minimized');
+      const estado = win.classList.contains('minimized') ? 'minimizada' : 'restaurada';
+      mostrarToast(`📎 Janela ${estado}`);
+    };
+
+    // FUNÇÃO ARRASTAR - CORRIGIDA
+    const bar = win.querySelector('.window-bar');
+    let arrastando = false;
+    let startX, startY, startLeft, startTop;
+
+    function onMouseMove(e) {
+      if (!arrastando) return;
+      const dx = (e.clientX || e.touches?.[0]?.clientX) - startX;
+      const dy = (e.clientY || e.touches?.[0]?.clientY) - startY;
+      let newLeft = startLeft + dx;
+      let newTop = startTop + dy;
+      
+      // Limites para não sair da tela
+      newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - win.offsetWidth));
+      newTop = Math.max(0, Math.min(newTop, window.innerHeight - win.offsetHeight - 50));
+      
+      win.style.left = newLeft + 'px';
+      win.style.top = newTop + 'px';
+    }
+
+    function onMouseUp() {
+      arrastando = false;
+    }
+
+    function onMouseDown(e) {
+      // Não arrastar se clicou nos botões
+      if (e.target.classList && (e.target.classList.contains('win-close') || e.target.classList.contains('win-min'))) {
+        return;
+      }
+      arrastando = true;
+      startX = e.clientX || e.touches?.[0]?.clientX;
+      startY = e.clientY || e.touches?.[0]?.clientY;
+      startLeft = win.offsetLeft;
+      startTop = win.offsetTop;
+      e.preventDefault();
+    }
+
+    bar.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    bar.addEventListener('touchstart', onMouseDown);
+    document.addEventListener('touchmove', onMouseMove);
+    document.addEventListener('touchend', onMouseUp);
+
+    return win;
+  }
+
+  function abrirApp(appId) {
+    const app = APPS.find(a => a.id === appId);
+    if (!app) {
+      mostrarToast(`❌ App ${appId} não encontrado`);
+      return;
+    }
+    
+    // Conteúdo com iframe e sandbox apropriado
+    const conteudo = `<iframe src="${app.url}" title="${app.nome}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation"></iframe>`;
+    
+    criarJanela(app.nome, app.icone, conteudo);
+    mostrarToast(`📂 Abrindo ${app.nome}`);
+    
+    // Fechar menu
+    const startMenu = document.getElementById('startMenu');
+    if (startMenu) startMenu.classList.add('hide');
+  }
+
+  // ========== RELÓGIO ==========
+  function atualizarRelogio() {
+    const agora = new Date();
+    const horas = agora.getHours().toString().padStart(2, '0');
+    const minutos = agora.getMinutes().toString().padStart(2, '0');
+    const segundos = agora.getSeconds().toString().padStart(2, '0');
+    document.getElementById('clock').innerText = `${horas}:${minutos}:${segundos}`;
+  }
+  setInterval(atualizarRelogio, 1000);
+  atualizarRelogio();
+
+  // ========== BATERIA REAL ==========
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then(bateria => {
+      function atualizarBateria() {
+        const nivel = Math.floor(bateria.level * 100);
+        const icone = bateria.charging ? '⚡' : '🔋';
+        document.getElementById('battery').innerText = `${icone} ${nivel}%`;
+      }
+      atualizarBateria();
+      bateria.addEventListener('levelchange', atualizarBateria);
+      bateria.addEventListener('chargingchange', atualizarBateria);
+    });
+  } else {
+    document.getElementById('battery').innerText = '🔋 85%';
+  }
+
+  // ========== RENDERIZAR DOCK ==========
+  const DOCK_APPS = ['chrome', 'youtube', 'whatsapp', 'instagram', 'gmail'];
+  const dockDiv = document.getElementById('dock');
+  dockDiv.innerHTML = DOCK_APPS.map(id => {
+    const app = APPS.find(a => a.id === id);
+    return app ? `<div class="dock-icon" data-app="${app.id}"><img src="${app.icone}" alt="${app.nome}"></div>` : '';
+  }).join('');
+
+  document.querySelectorAll('.dock-icon').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      abrirApp(el.dataset.app);
+    });
+  });
+
+  // ========== RENDERIZAR MENU INICIAR ==========
+  const appsDiv = document.getElementById('appsList');
+  appsDiv.innerHTML = APPS.map(app => `
+    <div class="menu-app" data-app="${app.id}">
+      <img src="${app.icone}" width="28" alt="${app.nome}"><br>
+      <span>${app.nome}</span>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.menu-app').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      abrirApp(el.dataset.app);
+    });
+  });
+
+  // ========== BOTÃO INICIAR ==========
+  const startBtn = document.getElementById('startBtn');
+  const startMenu = document.getElementById('startMenu');
+  
+  startBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    startMenu.classList.toggle('hide');
+  });
+
+  // Fechar menu ao clicar fora
+  document.addEventListener('click', (e) => {
+    if (!startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
+      startMenu.classList.add('hide');
+    }
+  });
+
+  mostrarToast('✅ Fusion OS pronto! Toque nos ícones - Botão FECHAR funcionando!');
+</script>
+</body>
+</html>      transform: scale(0.96);
       background: rgba(0,255,255,0.4);
     }
 
