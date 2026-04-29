@@ -5,298 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>POWER.bit - Fusion OS</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background: #0a0c12;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      overflow: hidden;
-      height: 100vh;
-      width: 100vw;
-      position: fixed;
-    }
-
-    .desktop {
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 30% 20%, #0f1420, #05070c);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Barra de status */
-    .status-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 45px;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(15px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      color: #0ff;
-      font-family: monospace;
-      z-index: 100;
-      border-bottom: 1px solid #0ff;
-      font-size: 13px;
-    }
-
-    /* Dock (barra de baixo) */
-    .dock {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,255,255,0.15);
-      backdrop-filter: blur(20px);
-      border-radius: 40px;
-      padding: 8px 20px;
-      display: flex;
-      gap: 15px;
-      z-index: 100;
-      border: 1px solid #0ff;
-    }
-
-    .dock-icon {
-      width: 55px;
-      height: 55px;
-      background: rgba(0,255,255,0.2);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.1s;
-    }
-
-    .dock-icon:active {
-      transform: scale(0.92);
-      background: #0ff;
-    }
-
-    .dock-icon img {
-      width: 32px;
-      height: 32px;
-      pointer-events: none;
-    }
-
-    /* Botão Iniciar */
-    .start-btn {
-      position: absolute;
-      bottom: 25px;
-      left: 20px;
-      background: rgba(0,255,255,0.2);
-      backdrop-filter: blur(15px);
-      border-radius: 30px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      border: 1px solid #0ff;
-      z-index: 100;
-    }
-
-    .start-btn:active {
-      transform: scale(0.96);
-      background: rgba(0,255,255,0.4);
-    }
-
-    .start-btn span {
-      color: #0ff;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
-    /* Menu Iniciar */
-    .start-menu {
-      position: absolute;
-      bottom: 90px;
-      left: 20px;
-      width: 300px;
-      background: rgba(10,15,25,0.96);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 15px;
-      border: 1px solid #0ff;
-      z-index: 200;
-    }
-
-    .start-menu.hide {
-      display: none;
-    }
-
-    .menu-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid #0ff;
-      padding-bottom: 10px;
-      margin-bottom: 12px;
-    }
-
-    .avatar {
-      width: 45px;
-      height: 45px;
-      background: linear-gradient(135deg, #0ff, #0066ff);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
-
-    .apps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .app-item {
-      background: rgba(0,255,255,0.08);
-      border-radius: 14px;
-      padding: 8px 4px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .app-item:active {
-      background: rgba(0,255,255,0.3);
-    }
-
-    .app-item span {
-      color: #0ff;
-      font-size: 11px;
-      display: block;
-      margin-top: 4px;
-    }
-
-    /* Janela */
-    .window {
-      position: absolute;
-      background: #0e121fe8;
-      backdrop-filter: blur(25px);
-      border-radius: 20px;
-      border: 1.5px solid #0ff;
-      display: flex;
-      flex-direction: column;
-      z-index: 300;
-      width: 85%;
-      max-width: 380px;
-      height: auto;
-      max-height: 70vh;
-      left: 7.5%;
-      top: 15%;
-    }
-
-    .window.hide {
-      display: none;
-    }
-
-    .window-bar {
-      background: #000000aa;
-      padding: 10px 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: grab;
-      border-bottom: 1px solid #0ff;
-      border-radius: 20px 20px 0 0;
-    }
-
-    .window-title {
-      color: #0ff;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .window-controls {
-      display: flex;
-      gap: 8px;
-    }
-
-    .win-close, .win-min {
-      width: 28px;
-      height: 28px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .win-close {
-      background: #ff3366;
-      color: white;
-    }
-
-    .win-min {
-      background: #ffaa33;
-      color: black;
-    }
-
-    .window-content {
-      flex: 1;
-      padding: 15px;
-      overflow: auto;
-      color: white;
-    }
-
-    .toast {
-      position: absolute;
-      bottom: 100px;
-      left: 20px;
-      right: 20px;
-      background: #0ff;
-      color: black;
-      padding: 10px;
-      border-radius: 50px;
-      text-align: center;
-      font-weight: bold;
-      z-index: 500;
-      transition: 0.2s;
-    }
-
-    button, .calc-btn {
-      background: #0ff;
-      border: none;
-      padding: 12px;
-      border-radius: 25px;
-      font-weight: bold;
-      margin: 4px;
-      cursor: pointer;
-    }
-
-    input, textarea {
-      background: #1a1e2a;
-      border: 1px solid #0ff;
-      color: white;
-      padding: 8px;
-      border-radius: 20px;
-      width: 100%;
-    }
-
-    .calc-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .term-line {
-      color: #0f0;
-      margin: 8px 0;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { background: #0a0c12; font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; height: 100vh; width: 100vw; position: fixed; }
+    .desktop { width: 100%; height: 100%; background: radial-gradient(circle at 30% 20%, #0f1420, #05070c); position: relative; overflow: hidden; }
+    .status-bar { position: absolute; top: 0; left: 0; right: 0; height: 45px; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; color: #0ff; font-family: monospace; z-index: 100; border-bottom: 1px solid #0ff; font-size: 13px; }
+    .dock { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,255,255,0.15); backdrop-filter: blur(20px); border-radius: 40px; padding: 8px 20px; display: flex; gap: 15px; z-index: 100; border: 1px solid #0ff; }
+    .dock-icon { width: 55px; height: 55px; background: rgba(0,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.1s; }
+    .dock-icon:active { transform: scale(0.92); background: #0ff; }
+    .dock-icon img { width: 32px; height: 32px; pointer-events: none; }
+    .start-btn { position: absolute; bottom: 25px; left: 20px; background: rgba(0,255,255,0.2); backdrop-filter: blur(15px); border-radius: 30px; padding: 8px 18px; display: flex; align-items: center; gap: 8px; cursor: pointer; border: 1px solid #0ff; z-index: 100; }
+    .start-btn:active { transform: scale(0.96); background: rgba(0,255,255,0.4); }
+    .start-btn span { color: #0ff; font-weight: bold; font-size: 13px; }
+    .start-menu { position: absolute; bottom: 90px; left: 20px; width: 310px; max-width: calc(100% - 40px); background: rgba(10,15,25,0.96); backdrop-filter: blur(20px); border-radius: 20px; padding: 15px; border: 1px solid #0ff; z-index: 200; max-height: 60vh; overflow-y: auto; }
+    .start-menu.hide { display: none; }
+    .menu-header { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #0ff; padding-bottom: 10px; margin-bottom: 12px; }
+    .avatar { width: 45px; height: 45px; background: linear-gradient(135deg, #0ff, #0066ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .app-item { background: rgba(0,255,255,0.08); border-radius: 14px; padding: 8px 4px; text-align: center; cursor: pointer; }
+    .app-item:active { background: rgba(0,255,255,0.3); }
+    .app-item img { width: 28px; height: 28px; pointer-events: none; }
+    .app-item span { color: #0ff; font-size: 11px; display: block; margin-top: 4px; }
+    .window { position: absolute; background: #0e121fe8; backdrop-filter: blur(25px); border-radius: 20px; border: 1.5px solid #0ff; display: flex; flex-direction: column; z-index: 300; width: 85%; max-width: 380px; left: 7.5%; top: 15%; }
+    .window.hide { display: none; }
+    .window-bar { background: #000000aa; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; cursor: grab; border-bottom: 1px solid #0ff; border-radius: 20px 20px 0 0; }
+    .window-title { color: #0ff; font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .window-title img { width: 18px; height: 18px; }
+    .window-controls { display: flex; gap: 8px; }
+    .win-close, .win-min { width: 28px; height: 28px; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: bold; }
+    .win-close { background: #ff3366; color: white; }
+    .win-min { background: #ffaa33; color: black; }
+    .window-content { flex: 1; padding: 15px; overflow: auto; color: white; min-height: 200px; }
+    .toast { position: absolute; bottom: 100px; left: 20px; right: 20px; background: #0ff; color: black; padding: 10px; border-radius: 50px; text-align: center; font-weight: bold; z-index: 500; transition: 0.2s; font-size: 13px; }
+    button { background: #0ff; border: none; padding: 12px; border-radius: 25px; font-weight: bold; margin: 5px 0; width: 100%; cursor: pointer; }
+    input, textarea { background: #1a1e2a; border: 1px solid #0ff; color: white; padding: 10px; border-radius: 20px; width: 100%; margin: 5px 0; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .calc-btn { background: #0ff; padding: 12px; text-align: center; border-radius: 12px; font-weight: bold; cursor: pointer; margin: 2px; }
+    .term-line { color: #0f0; margin: 8px 0; font-family: monospace; }
   </style>
 </head>
 <body>
@@ -306,27 +50,17 @@
     <span id="clock">--:--:--</span>
     <span id="battery">🔋 --%</span>
   </div>
-
-  <div class="start-btn" id="startBtn">
-    <span>❖</span>
-    <span>INICIAR</span>
-  </div>
-
+  <div class="start-btn" id="startBtn"><span>❖</span><span>INICIAR</span></div>
   <div class="dock" id="dock"></div>
-
   <div class="start-menu hide" id="startMenu">
-    <div class="menu-header">
-      <div class="avatar">⚡</div>
-      <div><strong style="color:#0ff;">POWER.bit</strong><br><span style="font-size:10px;">Fusion OS</span></div>
-    </div>
+    <div class="menu-header"><div class="avatar">⚡</div><div><strong style="color:#0ff;">POWER.bit</strong><br><span style="font-size:10px;">Fusion OS</span></div></div>
     <div class="apps-grid" id="appsGrid"></div>
   </div>
-
   <div class="toast" id="toast" style="opacity:0;">✅</div>
 </div>
 
 <script>
-  // ========== LISTA DE APPS ==========
+  // LISTA COMPLETA DE APPS
   const APPS = [
     { id: "chrome", nome: "Chrome", icone: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com" },
     { id: "youtube", nome: "YouTube", icone: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://m.youtube.com" },
@@ -344,7 +78,7 @@
     { id: "calc", nome: "Calculadora", icone: "https://cdn-icons-png.flaticon.com/512/3665/3665923.png", tipo: "calc" },
     { id: "terminal", nome: "Terminal", icone: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "terminal" },
     { id: "notas", nome: "Bloco de Notas", icone: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "notas" },
-    { id: "info", nome: "Info", icone: "https://cdn-icons-png.flaticon.com/512/1828/1828970.png", tipo: "info" }
+    { id: "info", nome: "Info Sistema", icone: "https://cdn-icons-png.flaticon.com/512/1828/1828970.png", tipo: "info" }
   ];
 
   let janelaAtual = null;
@@ -357,10 +91,7 @@
   }
 
   function fecharJanela() {
-    if (janelaAtual) {
-      janelaAtual.remove();
-      janelaAtual = null;
-    }
+    if (janelaAtual && janelaAtual.remove) { janelaAtual.remove(); janelaAtual = null; }
   }
 
   function criarJanela(titulo, iconeUrl, conteudo) {
@@ -369,54 +100,21 @@
     const win = document.createElement('div');
     win.className = 'window';
     win.innerHTML = `
-      <div class="window-bar">
-        <div class="window-title"><img src="${iconeUrl}" width="18"> ${titulo}</div>
-        <div class="window-controls">
-          <div class="win-min">─</div>
-          <div class="win-close">✕</div>
-        </div>
-      </div>
+      <div class="window-bar"><div class="window-title"><img src="${iconeUrl}"> ${titulo}</div><div class="window-controls"><div class="win-min">─</div><div class="win-close">✕</div></div></div>
       <div class="window-content">${conteudo}</div>
     `;
     desktop.appendChild(win);
     janelaAtual = win;
-
-    win.querySelector('.win-close').onclick = () => { win.remove(); janelaAtual = null; mostrarToast(`Fechado`); };
+    win.querySelector('.win-close').onclick = () => { win.remove(); janelaAtual = null; mostrarToast(`🔒 Fechado`); };
     win.querySelector('.win-min').onclick = () => win.classList.toggle('hide');
-
-    // Arrastar
     const bar = win.querySelector('.window-bar');
-    let dragging = false, startX, startY, left0, top0;
-    bar.onmousedown = (e) => {
-      if (e.target.classList?.contains('win-close') || e.target.classList?.contains('win-min')) return;
-      dragging = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      left0 = win.offsetLeft;
-      top0 = win.offsetTop;
-    };
-    document.onmousemove = (e) => {
-      if (dragging) {
-        win.style.left = (left0 + e.clientX - startX) + 'px';
-        win.style.top = (top0 + e.clientY - startY) + 'px';
-      }
-    };
-    document.onmouseup = () => dragging = false;
-    bar.ontouchstart = (e) => {
-      if (e.target.classList?.contains('win-close') || e.target.classList?.contains('win-min')) return;
-      dragging = true;
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      left0 = win.offsetLeft;
-      top0 = win.offsetTop;
-    };
-    document.ontouchmove = (e) => {
-      if (dragging) {
-        win.style.left = (left0 + e.touches[0].clientX - startX) + 'px';
-        win.style.top = (top0 + e.touches[0].clientY - startY) + 'px';
-      }
-    };
-    document.ontouchend = () => dragging = false;
+    let drag = false, sx, sy, l0, t0;
+    bar.onmousedown = (e) => { if(e.target.classList?.contains('win-close')||e.target.classList?.contains('win-min')) return; drag=true; sx=e.clientX; sy=e.clientY; l0=win.offsetLeft; t0=win.offsetTop; };
+    document.onmousemove = (e) => { if(drag) { win.style.left = (l0+e.clientX-sx)+'px'; win.style.top = (t0+e.clientY-sy)+'px'; } };
+    document.onmouseup = () => drag=false;
+    bar.ontouchstart = (e) => { if(e.target.classList?.contains('win-close')||e.target.classList?.contains('win-min')) return; drag=true; sx=e.touches[0].clientX; sy=e.touches[0].clientY; l0=win.offsetLeft; t0=win.offsetTop; };
+    document.ontouchmove = (e) => { if(drag) { win.style.left = (l0+e.touches[0].clientX-sx)+'px'; win.style.top = (t0+e.touches[0].clientY-sy)+'px'; } };
+    document.ontouchend = () => drag=false;
   }
 
   function abrirApp(app) {
@@ -424,153 +122,80 @@
       window.open(app.url, '_blank');
       mostrarToast(`🌐 Abrindo ${app.nome} no navegador`);
     } else if (app.tipo === 'calc') {
-      criarJanela(app.nome, app.icone, `
-        <div id="calcDisplay" style="background:#000; padding:20px; text-align:right; font-size:36px; border-radius:12px; margin-bottom:12px;">0</div>
-        <div class="calc-grid">
-          <button class="calc-num" data-num="7">7</button><button class="calc-num" data-num="8">8</button><button class="calc-num" data-num="9">9</button><button class="calc-op" data-op="/">/</button>
-          <button class="calc-num" data-num="4">4</button><button class="calc-num" data-num="5">5</button><button class="calc-num" data-num="6">6</button><button class="calc-op" data-op="*">*</button>
-          <button class="calc-num" data-num="1">1</button><button class="calc-num" data-num="2">2</button><button class="calc-num" data-num="3">3</button><button class="calc-op" data-op="-">-</button>
-          <button class="calc-num" data-num="0">0</button><button id="calcC">C</button><button id="calcEq">=</button><button class="calc-op" data-op="+">+</button>
-        </div>
-      `);
+      criarJanela(app.nome, app.icone, `<div id="calcDisplay" style="background:#000; padding:20px; text-align:right; font-size:36px; border-radius:12px; margin-bottom:12px;">0</div><div class="calc-grid"><div class="calc-btn" data-num="7">7</div><div class="calc-btn" data-num="8">8</div><div class="calc-btn" data-num="9">9</div><div class="calc-btn" data-op="/">/</div><div class="calc-btn" data-num="4">4</div><div class="calc-btn" data-num="5">5</div><div class="calc-btn" data-num="6">6</div><div class="calc-btn" data-op="*">*</div><div class="calc-btn" data-num="1">1</div><div class="calc-btn" data-num="2">2</div><div class="calc-btn" data-num="3">3</div><div class="calc-btn" data-op="-">-</div><div class="calc-btn" data-num="0">0</div><div class="calc-btn" id="calcC">C</div><div class="calc-btn" id="calcEq">=</div><div class="calc-btn" data-op="+">+</div></div>`);
       setTimeout(() => {
-        let val = '0', prev = null, op = null;
-        const disp = document.getElementById('calcDisplay');
-        const update = () => { if(disp) disp.innerText = val; };
-        document.querySelectorAll('.calc-num').forEach(btn => btn.onclick = () => { val = (val === '0') ? btn.dataset.num : val + btn.dataset.num; update(); });
-        document.querySelectorAll('.calc-op').forEach(btn => btn.onclick = () => { prev = parseFloat(val); op = btn.dataset.op; val = '0'; });
-        document.getElementById('calcC')?.onclick = () => { val = '0'; prev = null; op = null; update(); };
-        document.getElementById('calcEq')?.onclick = () => {
-          if (op && prev !== null) {
-            const cur = parseFloat(val);
-            let res = 0;
-            if (op === '+') res = prev + cur;
-            else if (op === '-') res = prev - cur;
-            else if (op === '*') res = prev * cur;
-            else if (op === '/') res = prev / cur;
-            val = res.toString(); update(); prev = null; op = null;
-          }
-        };
-      }, 50);
+        let val='0', prev=null, op=null;
+        const disp=document.getElementById('calcDisplay');
+        const upd=()=>{if(disp)disp.innerText=val;};
+        document.querySelectorAll('.calc-btn[data-num]').forEach(btn=>btn.onclick=()=>{val=(val==='0')?btn.dataset.num:val+btn.dataset.num;upd();});
+        document.querySelectorAll('.calc-btn[data-op]').forEach(btn=>btn.onclick=()=>{prev=parseFloat(val);op=btn.dataset.op;val='0';});
+        document.getElementById('calcC')?.onclick=()=>{val='0';prev=null;op=null;upd();};
+        document.getElementById('calcEq')?.onclick=()=>{if(op&&prev!==null){const cur=parseFloat(val);let res=0;if(op==='+')res=prev+cur;else if(op==='-')res=prev-cur;else if(op==='*')res=prev*cur;else if(op==='/')res=prev/cur;val=res.toString();upd();prev=null;op=null;}};
+      },50);
     } else if (app.tipo === 'terminal') {
-      criarJanela(app.nome, app.icone, `
-        <div style="background:#000; padding:10px; border-radius:12px;">
-          <div class="term-line">> Terminal POWER.bit</div>
-          <div class="term-line">> Digite help</div>
-          <div id="termOut" class="term-line" style="background:#0a0e1a; padding:8px;">$ pronto</div>
-          <input type="text" id="termInput" placeholder="comando..." style="background:#111; border:1px solid #0f0; color:#0f0;">
-        </div>
-      `);
-      setTimeout(() => {
-        const input = document.getElementById('termInput');
-        input.onkeypress = (e) => {
-          if (e.key === 'Enter') {
-            const out = document.getElementById('termOut');
-            const cmd = input.value.toLowerCase();
-            if (cmd === 'help') out.innerHTML = 'Comandos: help, ls, fusion, status';
-            else if (cmd === 'ls') out.innerHTML = 'Desktop/ Documents/ Downloads/';
-            else if (cmd === 'fusion') out.innerHTML = '🌀 Fusion OS - POWER.bit funcionando!';
-            else if (cmd === 'status') out.innerHTML = `✅ OK | Hora: ${new Date().toLocaleTimeString()}`;
-            else out.innerHTML = `❌ Comando: ${cmd}`;
-            input.value = '';
+      criarJanela(app.nome, app.icone, `<div style="background:#000; padding:12px; border-radius:12px;"><div class="term-line">> Terminal POWER.bit</div><div class="term-line">> Comandos: help, ls, fusion, status, chrome</div><div id="termOut" class="term-line" style="background:#0a0e1a; padding:8px;">$ pronto</div><input type="text" id="termInput" placeholder="digite um comando..." style="background:#111; border:1px solid #0f0; color:#0f0;"></div>`);
+      setTimeout(()=>{
+        const input=document.getElementById('termInput');
+        input.onkeypress=(e)=>{
+          if(e.key==='Enter'){
+            const out=document.getElementById('termOut');
+            const cmd=input.value.toLowerCase();
+            if(cmd==='help') out.innerHTML='Comandos: help, ls, fusion, status, chrome, youtube';
+            else if(cmd==='ls') out.innerHTML='Desktop/ Documents/ Downloads/ Videos/ Music/';
+            else if(cmd==='fusion') out.innerHTML='🌀 POWER.bit Fusion OS - funcionando!';
+            else if(cmd==='status') out.innerHTML=`✅ Sistema OK | ${new Date().toLocaleTimeString()} | Bateria: ${document.getElementById('battery').innerText}`;
+            else if(cmd==='chrome') out.innerHTML='🌐 Abrindo Chrome...'; else if(cmd==='youtube') out.innerHTML='📺 YouTube disponível';
+            else out.innerHTML=`❌ Comando desconhecido: ${cmd} | Digite help`;
+            input.value='';
           }
         };
-      }, 50);
+      },50);
     } else if (app.tipo === 'notas') {
-      criarJanela(app.nome, app.icone, `
-        <textarea id="noteText" style="width:100%; height:150px; background:#0a0e1a; border:1px solid #0ff; border-radius:12px; padding:10px;"></textarea>
-        <button id="saveNote">💾 Salvar</button>
-      `);
-      setTimeout(() => {
-        const saved = localStorage.getItem('note');
-        if (saved) document.getElementById('noteText').value = saved;
-        document.getElementById('saveNote').onclick = () => {
-          localStorage.setItem('note', document.getElementById('noteText').value);
-          mostrarToast('✅ Nota salva!');
-        };
-      }, 50);
+      criarJanela(app.nome, app.icone, `<textarea id="noteText" style="width:100%; height:150px; background:#0a0e1a; border:1px solid #0ff; border-radius:12px; padding:10px;"></textarea><button id="saveNote">💾 SALVAR NOTA</button>`);
+      setTimeout(()=>{
+        const saved=localStorage.getItem('powerbit_note');
+        if(saved) document.getElementById('noteText').value=saved;
+        document.getElementById('saveNote').onclick=()=>{localStorage.setItem('powerbit_note',document.getElementById('noteText').value);mostrarToast('✅ Nota salva!');};
+      },50);
     } else if (app.tipo === 'info') {
-      criarJanela(app.nome, app.icone, `
-        <div>📱 Dispositivo: Android</div>
-        <div>📐 Tela: ${window.screen.width}x${window.screen.height}</div>
-        <div>🔋 Bateria: <span id="infoBatt">--%</span></div>
-        <div>🌐 Navegador: ${navigator.userAgent.split(' ').slice(-2).join(' ')}</div>
-      `);
-      setTimeout(() => {
-        if ('getBattery' in navigator) {
-          navigator.getBattery().then(b => {
-            document.getElementById('infoBatt').innerText = `${Math.floor(b.level*100)}%`;
-          });
-        }
-      }, 50);
+      criarJanela(app.nome, app.icone, `<div style="padding:5px;">📱 Dispositivo: ${navigator.userAgent.includes('Android')?'Android':'Desconhecido'}<br>📐 Tela: ${window.screen.width}x${window.screen.height}<br>🔋 Bateria: <span id="infoBatt">--%</span><br>🌐 Navegador: ${navigator.userAgent.split(' ').slice(-2).join(' ')}<br>📶 Rede: ${navigator.connection?.effectiveType||'desconhecida'}<br><button id="refreshInfo" style="margin-top:10px;">🔄 Atualizar</button></div>`);
+      setTimeout(()=>{
+        if('getBattery' in navigator){navigator.getBattery().then(b=>{document.getElementById('infoBatt').innerText=`${Math.floor(b.level*100)}% ${b.charging?'⚡':''}`;});}
+        document.getElementById('refreshInfo')?.onclick=()=>location.reload();
+      },50);
     }
     document.getElementById('startMenu').classList.add('hide');
   }
 
-  // Relógio
-  function updateClock() {
-    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
+  // RELÓGIO
+  function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }
+  setInterval(updateClock, 1000); updateClock();
 
-  // Bateria
-  if ('getBattery' in navigator) {
-    navigator.getBattery().then(b => {
-      function updateBatt() {
-        document.getElementById('battery').innerHTML = `${b.charging ? '⚡' : '🔋'} ${Math.floor(b.level*100)}%`;
-      }
+  // BATERIA REAL
+  if('getBattery' in navigator){
+    navigator.getBattery().then(b=>{
+      function updateBatt(){ document.getElementById('battery').innerHTML = `${b.charging?'⚡':'🔋'} ${Math.floor(b.level*100)}%`; }
       updateBatt();
-      b.addEventListener('levelchange', updateBatt);
-      b.addEventListener('chargingchange', updateBatt);
+      b.addEventListener('levelchange',updateBatt);
+      b.addEventListener('chargingchange',updateBatt);
     });
-  } else {
-    document.getElementById('battery').innerHTML = '🔋 85%';
-  }
+  } else { document.getElementById('battery').innerHTML = '🔋 85%'; }
 
-  // Renderizar dock
-  const DOCK_IDS = ['chrome', 'youtube', 'whatsapp', 'instagram', 'gmail'];
-  const dockDiv = document.getElementById('dock');
-  dockDiv.innerHTML = DOCK_IDS.map(id => {
-    const app = APPS.find(a => a.id === id);
-    return `<div class="dock-icon" data-id="${app.id}"><img src="${app.icone}"></div>`;
-  }).join('');
-  document.querySelectorAll('.dock-icon').forEach(el => {
-    el.onclick = () => {
-      const app = APPS.find(a => a.id === el.dataset.id);
-      if (app) abrirApp(app);
-    };
-  });
+  // DOCK
+  const DOCK_IDS = ['chrome','youtube','whatsapp','instagram','gmail'];
+  document.getElementById('dock').innerHTML = DOCK_IDS.map(id=>{const a=APPS.find(x=>x.id===id); return `<div class="dock-icon" data-id="${a.id}"><img src="${a.icone}"></div>`;}).join('');
+  document.querySelectorAll('.dock-icon').forEach(el=>{el.onclick=()=>{const app=APPS.find(a=>a.id===el.dataset.id);if(app)abrirApp(app);};});
 
-  // Renderizar menu
-  const appsDiv = document.getElementById('appsGrid');
-  appsDiv.innerHTML = APPS.map(app => `
-    <div class="app-item" data-id="${app.id}">
-      <img src="${app.icone}" width="28"><br>
-      <span>${app.nome}</span>
-    </div>
-  `).join('');
-  document.querySelectorAll('.app-item').forEach(el => {
-    el.onclick = () => {
-      const app = APPS.find(a => a.id === el.dataset.id);
-      if (app) abrirApp(app);
-    };
-  });
+  // MENU
+  document.getElementById('appsGrid').innerHTML = APPS.map(app=>`<div class="app-item" data-id="${app.id}"><img src="${app.icone}"><span>${app.nome}</span></div>`).join('');
+  document.querySelectorAll('.app-item').forEach(el=>{el.onclick=()=>{const app=APPS.find(a=>a.id===el.dataset.id);if(app)abrirApp(app);};});
 
-  // Botão iniciar
-  const startBtn = document.getElementById('startBtn');
-  const startMenu = document.getElementById('startMenu');
-  startBtn.onclick = (e) => {
-    e.stopPropagation();
-    startMenu.classList.toggle('hide');
-  };
-  document.addEventListener('click', (e) => {
-    if (!startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
-      startMenu.classList.add('hide');
-    }
-  });
+  // BOTÃO INICIAR
+  const startBtn=document.getElementById('startBtn'), startMenu=document.getElementById('startMenu');
+  startBtn.onclick=(e)=>{e.stopPropagation(); startMenu.classList.toggle('hide');};
+  document.addEventListener('click',(e)=>{if(!startMenu.contains(e.target)&&!startBtn.contains(e.target)&&!startMenu.classList.contains('hide')) startMenu.classList.add('hide');});
 
-  mostrarToast('✅ POWER.bit pronto! Toque nos ícones');
+  mostrarToast('✅ POWER.bit pronto! 17 apps disponíveis');
 </script>
 </body>
 </html>
