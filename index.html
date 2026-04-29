@@ -29,7 +29,6 @@
       overflow: hidden;
     }
 
-    /* Status Bar */
     .status-bar {
       position: absolute;
       top: 0;
@@ -49,7 +48,6 @@
       font-size: 13px;
     }
 
-    /* Dock */
     .dock {
       position: absolute;
       bottom: 20px;
@@ -88,7 +86,6 @@
       pointer-events: none;
     }
 
-    /* Start Button */
     .start-btn {
       position: absolute;
       bottom: 25px;
@@ -116,18 +113,20 @@
       font-size: 13px;
     }
 
-    /* Start Menu */
     .start-menu {
       position: absolute;
       bottom: 90px;
       left: 20px;
-      width: 300px;
+      width: 310px;
+      max-width: calc(100% - 40px);
       background: rgba(10,15,25,0.96);
       backdrop-filter: blur(20px);
       border-radius: 20px;
       padding: 15px;
       border: 1px solid #0ff;
       z-index: 200;
+      max-height: 65vh;
+      overflow-y: auto;
     }
 
     .start-menu.hide {
@@ -179,7 +178,7 @@
       margin-top: 4px;
     }
 
-    /* Janela */
+    /* Janela para apps internos */
     .window {
       position: absolute;
       background: #0e121fe8;
@@ -191,7 +190,7 @@
       flex-direction: column;
       z-index: 300;
       width: 85%;
-      max-width: 400px;
+      max-width: 380px;
       height: auto;
       max-height: 70vh;
       left: 7.5%;
@@ -266,14 +265,7 @@
       padding: 15px;
       overflow: auto;
       min-height: 200px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 300px;
-      border: none;
-      border-radius: 12px;
-      background: white;
+      color: white;
     }
 
     .toast {
@@ -299,15 +291,17 @@
       font-weight: bold;
       margin: 5px 0;
       width: 100%;
+      cursor: pointer;
     }
 
-    input {
+    input, textarea {
       background: #1a1e2a;
       border: 1px solid #0ff;
       color: white;
       padding: 8px;
       border-radius: 20px;
       width: 100%;
+      margin: 5px 0;
     }
   </style>
 </head>
@@ -338,21 +332,30 @@
 </div>
 
 <script>
-  // ========== APPS COM URLs CORRETAS (TODAS FUNCIONANDO) ==========
-  const APPS = [
-    { id: "chrome", nome: "Chrome", icone: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com", tipo: "web" },
-    { id: "youtube", nome: "YouTube", icone: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://www.youtube.com/embed/videoseries?list=PLrAXtmEswxPJwnbwDsC8lJ6-h_BRlJK9b", tipo: "web" },
-    { id: "whatsapp", nome: "WhatsApp", icone: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com", tipo: "web" },
-    { id: "instagram", nome: "Instagram", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com", tipo: "web" },
-    { id: "facebook", nome: "Facebook", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png", url: "https://www.facebook.com", tipo: "web" },
-    { id: "gmail", nome: "Gmail", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com", tipo: "web" },
-    { id: "maps", nome: "Maps", icone: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.097!2d-46.654!3d-23.563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce58f5a66ed2e5%3A0x66f8c0b78e4c9b1f!2sS%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr", tipo: "web" },
-    { id: "spotify", nome: "Spotify", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M", tipo: "web" },
-    { id: "netflix", nome: "Netflix", icone: "https://cdn-icons-png.flaticon.com/512/870/870910.png", url: "https://www.netflix.com", tipo: "web" },
-    { id: "twitter", nome: "Twitter/X", icone: "https://cdn-icons-png.flaticon.com/512/733/733579.png", url: "https://twitter.com", tipo: "web" },
-    { id: "tiktok", nome: "TikTok", icone: "https://cdn-icons-png.flaticon.com/512/3046/3046126.png", url: "https://www.tiktok.com", tipo: "web" },
-    { id: "edge", nome: "Edge", icone: "https://cdn-icons-png.flaticon.com/512/732/732221.png", url: "https://www.bing.com", tipo: "web" },
-    { id: "drive", nome: "Drive", icone: "https://cdn-icons-png.flaticon.com/512/2991/2991112.png", url: "https://drive.google.com", tipo: "web" }
+  // ========== LISTA DE APPS ==========
+  // Apps externos (abrem no navegador real - sem erro de iframe)
+  const APPS_EXTERNOS = [
+    { id: "chrome", nome: "Chrome", icone: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com" },
+    { id: "youtube", nome: "YouTube", icone: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://m.youtube.com" },
+    { id: "whatsapp", nome: "WhatsApp", icone: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com" },
+    { id: "instagram", nome: "Instagram", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com" },
+    { id: "facebook", nome: "Facebook", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png", url: "https://www.facebook.com" },
+    { id: "gmail", nome: "Gmail", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com" },
+    { id: "maps", nome: "Google Maps", icone: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://maps.google.com" },
+    { id: "spotify", nome: "Spotify", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com" },
+    { id: "netflix", nome: "Netflix", icone: "https://cdn-icons-png.flaticon.com/512/870/870910.png", url: "https://www.netflix.com" },
+    { id: "twitter", nome: "Twitter/X", icone: "https://cdn-icons-png.flaticon.com/512/733/733579.png", url: "https://twitter.com" },
+    { id: "tiktok", nome: "TikTok", icone: "https://cdn-icons-png.flaticon.com/512/3046/3046126.png", url: "https://www.tiktok.com" },
+    { id: "edge", nome: "Edge", icone: "https://cdn-icons-png.flaticon.com/512/732/732221.png", url: "https://www.bing.com" },
+    { id: "drive", nome: "Drive", icone: "https://cdn-icons-png.flaticon.com/512/2991/2991112.png", url: "https://drive.google.com" }
+  ];
+
+  // Apps internos (abrem dentro do app com janela própria)
+  const APPS_INTERNOS = [
+    { id: "calc", nome: "Calculadora", icone: "https://cdn-icons-png.flaticon.com/512/3665/3665923.png", tipo: "calc" },
+    { id: "terminal", nome: "Terminal", icone: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "terminal" },
+    { id: "notas", nome: "Bloco de Notas", icone: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "notas" },
+    { id: "info", nome: "Info Sistema", icone: "https://cdn-icons-png.flaticon.com/512/1828/1828970.png", tipo: "info" }
   ];
 
   let janelaAtual = null;
@@ -361,137 +364,184 @@
     const toast = document.getElementById('toast');
     toast.innerText = msg;
     toast.style.opacity = '1';
-    setTimeout(() => {
-      toast.style.opacity = '0';
-    }, 2000);
+    setTimeout(() => toast.style.opacity = '0', 2000);
   }
 
   function fecharTodasJanelas() {
-    if (janelaAtual) {
-      // Se a janela é um elemento DOM válido
-      if (janelaAtual.remove) {
-        janelaAtual.remove();
-      }
+    if (janelaAtual && janelaAtual.remove) {
+      janelaAtual.remove();
       janelaAtual = null;
     }
   }
 
+  // Criar janela para apps internos
   function criarJanela(titulo, iconeUrl, conteudo) {
-    // Fecha janela anterior primeiro
     fecharTodasJanelas();
-    
     const desktop = document.querySelector('.desktop');
     const win = document.createElement('div');
     win.className = 'window';
-    
-    // Posicionamento centralizado
     win.style.left = '7.5%';
     win.style.top = '15%';
-    
     win.innerHTML = `
       <div class="window-bar">
         <div class="window-title"><img src="${iconeUrl}" width="18"> ${titulo}</div>
         <div class="window-controls">
-          <div class="win-min" data-action="min">─</div>
-          <div class="win-close" data-action="close">✕</div>
+          <div class="win-min">─</div>
+          <div class="win-close">✕</div>
         </div>
       </div>
       <div class="window-content">${conteudo}</div>
     `;
-    
     desktop.appendChild(win);
     janelaAtual = win;
 
-    // Botão FECHAR - CORRIGIDO
-    const closeBtn = win.querySelector('.win-close');
-    closeBtn.onclick = (e) => {
-      e.stopPropagation();
-      win.remove();
-      janelaAtual = null;
-      mostrarToast(`🔒 ${titulo} fechado`);
-    };
+    win.querySelector('.win-close').onclick = () => { win.remove(); janelaAtual = null; mostrarToast(`🔒 ${titulo} fechado`); };
+    win.querySelector('.win-min').onclick = () => win.classList.toggle('minimized');
 
-    // Botão MINIMIZAR - CORRIGIDO
-    const minBtn = win.querySelector('.win-min');
-    minBtn.onclick = (e) => {
-      e.stopPropagation();
-      win.classList.toggle('minimized');
-      const estado = win.classList.contains('minimized') ? 'minimizada' : 'restaurada';
-      mostrarToast(`📎 Janela ${estado}`);
-    };
-
-    // FUNÇÃO ARRASTAR - CORRIGIDA
+    // Arrastar
     const bar = win.querySelector('.window-bar');
-    let arrastando = false;
-    let startX, startY, startLeft, startTop;
-
-    function onMouseMove(e) {
-      if (!arrastando) return;
-      const dx = (e.clientX || e.touches?.[0]?.clientX) - startX;
-      const dy = (e.clientY || e.touches?.[0]?.clientY) - startY;
-      let newLeft = startLeft + dx;
-      let newTop = startTop + dy;
-      
-      // Limites para não sair da tela
-      newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - win.offsetWidth));
-      newTop = Math.max(0, Math.min(newTop, window.innerHeight - win.offsetHeight - 50));
-      
-      win.style.left = newLeft + 'px';
-      win.style.top = newTop + 'px';
-    }
-
-    function onMouseUp() {
-      arrastando = false;
-    }
-
-    function onMouseDown(e) {
-      // Não arrastar se clicou nos botões
-      if (e.target.classList && (e.target.classList.contains('win-close') || e.target.classList.contains('win-min'))) {
-        return;
-      }
-      arrastando = true;
-      startX = e.clientX || e.touches?.[0]?.clientX;
-      startY = e.clientY || e.touches?.[0]?.clientY;
-      startLeft = win.offsetLeft;
-      startTop = win.offsetTop;
-      e.preventDefault();
-    }
-
-    bar.addEventListener('mousedown', onMouseDown);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    bar.addEventListener('touchstart', onMouseDown);
-    document.addEventListener('touchmove', onMouseMove);
-    document.addEventListener('touchend', onMouseUp);
-
-    return win;
+    let arrastando = false, startX, startY, startLeft, startTop;
+    bar.onmousedown = (e) => { if(e.target.classList?.contains('win-close') || e.target.classList?.contains('win-min')) return; arrastando=true; startX=e.clientX; startY=e.clientY; startLeft=win.offsetLeft; startTop=win.offsetTop; };
+    document.onmousemove = (e) => { if(arrastando) { win.style.left = (startLeft+e.clientX-startX)+'px'; win.style.top = (startTop+e.clientY-startY)+'px'; } };
+    document.onmouseup = () => arrastando=false;
+    bar.ontouchstart = (e) => { if(e.target.classList?.contains('win-close') || e.target.classList?.contains('win-min')) return; arrastando=true; startX=e.touches[0].clientX; startY=e.touches[0].clientY; startLeft=win.offsetLeft; startTop=win.offsetTop; };
+    document.ontouchmove = (e) => { if(arrastando) { win.style.left = (startLeft+e.touches[0].clientX-startX)+'px'; win.style.top = (startTop+e.touches[0].clientY-startY)+'px'; } };
+    document.ontouchend = () => arrastando=false;
   }
 
+  // Conteúdo dos apps internos
+  function getConteudoInterno(tipo) {
+    if (tipo === 'calc') {
+      return `
+        <div id="calcDisplay" style="background:#000; padding:15px; text-align:right; font-size:32px; border-radius:12px; margin-bottom:12px;">0</div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;">
+          <button class="calc-num" data-num="7">7</button><button class="calc-num" data-num="8">8</button><button class="calc-num" data-num="9">9</button><button class="calc-op" data-op="/">/</button>
+          <button class="calc-num" data-num="4">4</button><button class="calc-num" data-num="5">5</button><button class="calc-num" data-num="6">6</button><button class="calc-op" data-op="*">*</button>
+          <button class="calc-num" data-num="1">1</button><button class="calc-num" data-num="2">2</button><button class="calc-num" data-num="3">3</button><button class="calc-op" data-op="-">-</button>
+          <button class="calc-num" data-num="0">0</button><button id="calcC">C</button><button id="calcEq">=</button><button class="calc-op" data-op="+">+</button>
+        </div>
+      `;
+    }
+    if (tipo === 'terminal') {
+      return `
+        <div style="background:#000; padding:10px; border-radius:12px; font-family:monospace;">
+          <div style="color:#0f0;">> Fusion OS Terminal</div>
+          <div style="color:#0f0;">> Comandos: help, ls, fusion, status</div>
+          <div id="termOut" style="color:#0f0; margin:10px 0; background:#0a0e1a; padding:8px; border-radius:8px;">$ Sistema pronto</div>
+          <input type="text" id="termInput" placeholder="digite help..." style="background:#111; border:1px solid #0f0; color:#0f0; padding:8px; border-radius:12px; width:100%;">
+        </div>
+      `;
+    }
+    if (tipo === 'notas') {
+      return `
+        <textarea id="noteText" style="width:100%; height:150px; background:#0a0e1a; border:1px solid #0ff; border-radius:12px; padding:10px; color:white;"></textarea>
+        <button id="saveNote">💾 Salvar Nota</button>
+      `;
+    }
+    if (tipo === 'info') {
+      return `
+        <div>📱 Modelo: ${navigator.userAgent.includes('Android') ? 'Android' : 'Desconhecido'}</div>
+        <div>🌐 Navegador: ${navigator.userAgent.split(' ').slice(-2).join(' ')}</div>
+        <div>📐 Tela: ${window.screen.width} x ${window.screen.height}</div>
+        <div>🔋 Bateria: <span id="infoBattery">--%</span></div>
+        <div>📶 Rede: ${navigator.connection?.effectiveType || 'desconhecida'}</div>
+        <button id="refreshInfo" style="margin-top:10px;">🔄 Atualizar</button>
+      `;
+    }
+    return '';
+  }
+
+  // Abrir app externo (no navegador)
+  function abrirAppExterno(url, nome) {
+    window.location.href = url;
+    mostrarToast(`🌐 Abrindo ${nome} no navegador...`);
+  }
+
+  // Abrir app interno (janela)
+  function abrirAppInterno(app) {
+    const conteudo = getConteudoInterno(app.tipo);
+    criarJanela(app.nome, app.icone, conteudo);
+
+    setTimeout(() => {
+      if (app.tipo === 'calc') {
+        let val = '0', prev = null, op = null;
+        const disp = document.getElementById('calcDisplay');
+        const update = () => { if(disp) disp.innerText = val; };
+        document.querySelectorAll('.calc-num').forEach(btn => btn.onclick = () => { val = (val === '0') ? btn.dataset.num : val + btn.dataset.num; update(); });
+        document.querySelectorAll('.calc-op').forEach(btn => btn.onclick = () => { prev = parseFloat(val); op = btn.dataset.op; val = '0'; });
+        document.getElementById('calcC')?.onclick = () => { val = '0'; prev = null; op = null; update(); };
+        document.getElementById('calcEq')?.onclick = () => {
+          if (op && prev !== null) {
+            const cur = parseFloat(val);
+            let res = 0;
+            if (op === '+') res = prev + cur;
+            else if (op === '-') res = prev - cur;
+            else if (op === '*') res = prev * cur;
+            else if (op === '/') res = prev / cur;
+            val = res.toString(); update(); prev = null; op = null;
+          }
+        };
+      }
+      if (app.tipo === 'terminal') {
+        const input = document.getElementById('termInput');
+        if (input) input.onkeypress = (e) => {
+          if (e.key === 'Enter') {
+            const out = document.getElementById('termOut');
+            const cmd = input.value.toLowerCase();
+            if (cmd === 'help') out.innerHTML = 'Comandos: help, ls, fusion, status';
+            else if (cmd === 'ls') out.innerHTML = 'Desktop/ Documents/ Downloads/';
+            else if (cmd === 'fusion') out.innerHTML = '🌀 Fusion OS - POWER.bit edition';
+            else if (cmd === 'status') out.innerHTML = `✅ Sistema OK | ${new Date().toLocaleTimeString()}`;
+            else out.innerHTML = `❌ Comando desconhecido: ${cmd}`;
+            input.value = '';
+          }
+        };
+      }
+      if (app.tipo === 'notas') {
+        const saved = localStorage.getItem('fusion_note');
+        if (saved && document.getElementById('noteText')) document.getElementById('noteText').value = saved;
+        document.getElementById('saveNote')?.onclick = () => {
+          const text = document.getElementById('noteText')?.value;
+          if (text) localStorage.setItem('fusion_note', text);
+          mostrarToast('✅ Nota salva!');
+        };
+      }
+      if (app.tipo === 'info') {
+        atualizarInfoBateria();
+        document.getElementById('refreshInfo')?.onclick = () => atualizarInfoBateria();
+      }
+    }, 50);
+  }
+
+  async function atualizarInfoBateria() {
+    if ('getBattery' in navigator) {
+      const b = await navigator.getBattery();
+      const infoBatt = document.getElementById('infoBattery');
+      if (infoBatt) infoBatt.innerText = `${Math.floor(b.level * 100)}% ${b.charging ? '⚡' : '🔋'}`;
+    }
+  }
+
+  // Função principal para abrir qualquer app
   function abrirApp(appId) {
-    const app = APPS.find(a => a.id === appId);
-    if (!app) {
-      mostrarToast(`❌ App ${appId} não encontrado`);
+    const appExterno = APPS_EXTERNOS.find(a => a.id === appId);
+    if (appExterno) {
+      abrirAppExterno(appExterno.url, appExterno.nome);
+      document.getElementById('startMenu')?.classList.add('hide');
       return;
     }
-    
-    // Conteúdo com iframe e sandbox apropriado
-    const conteudo = `<iframe src="${app.url}" title="${app.nome}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation"></iframe>`;
-    
-    criarJanela(app.nome, app.icone, conteudo);
-    mostrarToast(`📂 Abrindo ${app.nome}`);
-    
-    // Fechar menu
-    const startMenu = document.getElementById('startMenu');
-    if (startMenu) startMenu.classList.add('hide');
+    const appInterno = APPS_INTERNOS.find(a => a.id === appId);
+    if (appInterno) {
+      abrirAppInterno(appInterno);
+      document.getElementById('startMenu')?.classList.add('hide');
+      return;
+    }
+    mostrarToast(`❌ App não encontrado`);
   }
 
   // ========== RELÓGIO ==========
   function atualizarRelogio() {
     const agora = new Date();
-    const horas = agora.getHours().toString().padStart(2, '0');
-    const minutos = agora.getMinutes().toString().padStart(2, '0');
-    const segundos = agora.getSeconds().toString().padStart(2, '0');
-    document.getElementById('clock').innerText = `${horas}:${minutos}:${segundos}`;
+    document.getElementById('clock').innerText = agora.toLocaleTimeString();
   }
   setInterval(atualizarRelogio, 1000);
   atualizarRelogio();
@@ -516,360 +566,17 @@
   const DOCK_APPS = ['chrome', 'youtube', 'whatsapp', 'instagram', 'gmail'];
   const dockDiv = document.getElementById('dock');
   dockDiv.innerHTML = DOCK_APPS.map(id => {
-    const app = APPS.find(a => a.id === id);
-    return app ? `<div class="dock-icon" data-app="${app.id}"><img src="${app.icone}" alt="${app.nome}"></div>` : '';
-  }).join('');
-
-  document.querySelectorAll('.dock-icon').forEach(el => {
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      abrirApp(el.dataset.app);
-    });
-  });
-
-  // ========== RENDERIZAR MENU INICIAR ==========
-  const appsDiv = document.getElementById('appsList');
-  appsDiv.innerHTML = APPS.map(app => `
-    <div class="menu-app" data-app="${app.id}">
-      <img src="${app.icone}" width="28" alt="${app.nome}"><br>
-      <span>${app.nome}</span>
-    </div>
-  `).join('');
-
-  document.querySelectorAll('.menu-app').forEach(el => {
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      abrirApp(el.dataset.app);
-    });
-  });
-
-  // ========== BOTÃO INICIAR ==========
-  const startBtn = document.getElementById('startBtn');
-  const startMenu = document.getElementById('startMenu');
-  
-  startBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    startMenu.classList.toggle('hide');
-  });
-
-  // Fechar menu ao clicar fora
-  document.addEventListener('click', (e) => {
-    if (!startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
-      startMenu.classList.add('hide');
-    }
-  });
-
-  mostrarToast('✅ Fusion OS pronto! Toque nos ícones - Botão FECHAR funcionando!');
-</script>
-</body>
-</html>      transform: scale(0.96);
-      background: rgba(0,255,255,0.4);
-    }
-
-    .start-btn span {
-      color: cyan;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
-    /* Start Menu */
-    .start-menu {
-      position: absolute;
-      bottom: 90px;
-      left: 20px;
-      width: 300px;
-      background: rgba(10,15,25,0.96);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 15px;
-      border: 1px solid cyan;
-      z-index: 200;
-    }
-
-    .start-menu.hide {
-      display: none;
-    }
-
-    .menu-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid cyan;
-      padding-bottom: 10px;
-      margin-bottom: 12px;
-    }
-
-    .avatar {
-      width: 45px;
-      height: 45px;
-      background: linear-gradient(135deg, cyan, #0066ff);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
-
-    .apps-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .menu-app {
-      background: rgba(0,255,255,0.08);
-      border-radius: 14px;
-      padding: 8px 4px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .menu-app:active {
-      background: rgba(0,255,255,0.3);
-    }
-
-    .menu-app span {
-      color: cyan;
-      font-size: 11px;
-      display: block;
-      margin-top: 4px;
-    }
-
-    /* Janela */
-    .window {
-      position: absolute;
-      background: #0e121fe8;
-      backdrop-filter: blur(25px);
-      border-radius: 20px;
-      border: 1.5px solid cyan;
-      box-shadow: 0 0 20px cyan;
-      display: flex;
-      flex-direction: column;
-      z-index: 300;
-      width: 85%;
-      max-width: 400px;
-      height: auto;
-      max-height: 70vh;
-      left: 7.5%;
-      top: 15%;
-    }
-
-    .window.hide {
-      display: none;
-    }
-
-    .window-bar {
-      background: #000000aa;
-      padding: 10px 15px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid cyan;
-      border-radius: 20px 20px 0 0;
-    }
-
-    .window-title {
-      color: cyan;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .window-controls {
-      display: flex;
-      gap: 8px;
-    }
-
-    .win-close, .win-min {
-      width: 28px;
-      height: 28px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .win-close { background: #ff3366; }
-    .win-min { background: #ffaa33; }
-
-    .window-content {
-      flex: 1;
-      padding: 15px;
-      overflow: auto;
-    }
-
-    iframe {
-      width: 100%;
-      height: 300px;
-      border: none;
-      border-radius: 12px;
-      background: white;
-    }
-
-    .toast {
-      position: absolute;
-      bottom: 100px;
-      left: 20px;
-      right: 20px;
-      background: cyan;
-      color: black;
-      padding: 10px;
-      border-radius: 50px;
-      text-align: center;
-      font-weight: bold;
-      z-index: 500;
-      transition: 0.2s;
-    }
-
-    button {
-      background: cyan;
-      border: none;
-      padding: 10px;
-      border-radius: 25px;
-      font-weight: bold;
-      margin: 5px 0;
-      width: 100%;
-    }
-
-    input {
-      background: #1a1e2a;
-      border: 1px solid cyan;
-      color: white;
-      padding: 8px;
-      border-radius: 20px;
-      width: 100%;
-    }
-  </style>
-</head>
-<body>
-<div class="desktop">
-  <div class="status-bar">
-    <span>⚡ FUSION OS ULTRA</span>
-    <span id="clock">--:--:--</span>
-    <span id="battery">🔋 --%</span>
-  </div>
-
-  <div class="start-btn" id="startBtn">
-    <span>❖</span>
-    <span>INICIAR</span>
-  </div>
-
-  <div class="dock" id="dock"></div>
-
-  <div class="start-menu hide" id="startMenu">
-    <div class="menu-header">
-      <div class="avatar">⚡</div>
-      <div><strong style="color:cyan;">POWER.bit</strong><br><span style="font-size:10px;">Fusion OS</span></div>
-    </div>
-    <div class="apps-list" id="appsList"></div>
-  </div>
-
-  <div class="toast" id="toast" style="opacity:0;">✅</div>
-</div>
-
-<script>
-  // APPS
-  const APPS = [
-    { id: "chrome", nome: "Chrome", icone: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com" },
-    { id: "youtube", nome: "YouTube", icone: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://www.youtube.com/embed?listType=search&query=windows" },
-    { id: "whatsapp", nome: "WhatsApp", icone: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com" },
-    { id: "instagram", nome: "Instagram", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com" },
-    { id: "gmail", nome: "Gmail", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com" },
-    { id: "maps", nome: "Maps", icone: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://www.google.com/maps/embed?pb=!1m18" },
-    { id: "spotify", nome: "Spotify", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" }
-  ];
-
-  let janelaAtual = null;
-
-  function mostrarToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.innerText = msg;
-    toast.style.opacity = '1';
-    setTimeout(() => toast.style.opacity = '0', 2000);
-  }
-
-  function fecharTodasJanelas() {
-    if (janelaAtual) {
-      janelaAtual.remove();
-      janelaAtual = null;
-    }
-  }
-
-  function criarJanela(titulo, iconeUrl, conteudo) {
-    fecharTodasJanelas();
-    const desktop = document.querySelector('.desktop');
-    const win = document.createElement('div');
-    win.className = 'window';
-    win.innerHTML = `
-      <div class="window-bar">
-        <div class="window-title"><img src="${iconeUrl}" width="18"> ${titulo}</div>
-        <div class="window-controls">
-          <div class="win-min">─</div>
-          <div class="win-close">✕</div>
-        </div>
-      </div>
-      <div class="window-content">${conteudo}</div>
-    `;
-    desktop.appendChild(win);
-    janelaAtual = win;
-
-    win.querySelector('.win-close').onclick = () => { win.remove(); janelaAtual = null; };
-    win.querySelector('.win-min').onclick = () => win.classList.toggle('hide');
-
-    // Arrastar
-    const bar = win.querySelector('.window-bar');
-    let arrastando = false, startX, startY, startLeft, startTop;
-    bar.onmousedown = (e) => { arrastando = true; startX = e.clientX; startY = e.clientY; startLeft = win.offsetLeft; startTop = win.offsetTop; };
-    document.onmousemove = (e) => { if(arrastando) { win.style.left = (startLeft + e.clientX - startX) + 'px'; win.style.top = (startTop + e.clientY - startY) + 'px'; } };
-    document.onmouseup = () => arrastando = false;
-    bar.ontouchstart = (e) => { arrastando = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; startLeft = win.offsetLeft; startTop = win.offsetTop; };
-    document.ontouchmove = (e) => { if(arrastando) { win.style.left = (startLeft + e.touches[0].clientX - startX) + 'px'; win.style.top = (startTop + e.touches[0].clientY - startY) + 'px'; } };
-    document.ontouchend = () => arrastando = false;
-  }
-
-  function abrirApp(appId) {
-    const app = APPS.find(a => a.id === appId);
-    if (!app) return;
-    criarJanela(app.nome, app.icone, `<iframe src="${app.url}" title="${app.nome}"></iframe>`);
-    mostrarToast(`📂 Abrindo ${app.nome}`);
-    document.getElementById('startMenu').classList.add('hide');
-  }
-
-  // Relógio
-  function atualizarRelogio() {
-    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-  }
-  setInterval(atualizarRelogio, 1000);
-  atualizarRelogio();
-
-  // Bateria
-  if ('getBattery' in navigator) {
-    navigator.getBattery().then(b => {
-      function att() { document.getElementById('battery').innerText = `${b.charging ? '⚡' : '🔋'} ${Math.floor(b.level*100)}%`; }
-      att();
-      b.addEventListener('levelchange', att);
-      b.addEventListener('chargingchange', att);
-    });
-  } else {
-    document.getElementById('battery').innerText = '🔋 85%';
-  }
-
-  // Renderizar Dock
-  const dockApps = ['chrome', 'youtube', 'whatsapp', 'instagram', 'gmail'];
-  const dockDiv = document.getElementById('dock');
-  dockDiv.innerHTML = dockApps.map(id => {
-    const app = APPS.find(a => a.id === id);
-    return `<div class="dock-icon" data-app="${app.id}"><img src="${app.icone}"></div>`;
+    const app = [...APPS_EXTERNOS, ...APPS_INTERNOS].find(a => a.id === id);
+    return app ? `<div class="dock-icon" data-app="${app.id}"><img src="${app.icone}"></div>` : '';
   }).join('');
   document.querySelectorAll('.dock-icon').forEach(el => {
     el.onclick = () => abrirApp(el.dataset.app);
   });
 
-  // Renderizar Menu Iniciar
+  // ========== RENDERIZAR MENU ==========
+  const TODOS_APPS = [...APPS_EXTERNOS, ...APPS_INTERNOS];
   const appsDiv = document.getElementById('appsList');
-  appsDiv.innerHTML = APPS.map(app => `
+  appsDiv.innerHTML = TODOS_APPS.map(app => `
     <div class="menu-app" data-app="${app.id}">
       <img src="${app.icone}" width="28"><br>
       <span>${app.nome}</span>
@@ -879,21 +586,17 @@
     el.onclick = () => abrirApp(el.dataset.app);
   });
 
-  // Botão Iniciar
-  document.getElementById('startBtn').onclick = () => {
-    document.getElementById('startMenu').classList.toggle('hide');
-  };
-
-  // Fechar menu ao clicar fora
+  // ========== BOTÃO INICIAR ==========
+  const startBtn = document.getElementById('startBtn');
+  const startMenu = document.getElementById('startMenu');
+  startBtn.onclick = (e) => { e.stopPropagation(); startMenu.classList.toggle('hide'); };
   document.addEventListener('click', (e) => {
-    const menu = document.getElementById('startMenu');
-    const btn = document.getElementById('startBtn');
-    if (!menu.contains(e.target) && !btn.contains(e.target) && !menu.classList.contains('hide')) {
-      menu.classList.add('hide');
+    if (!startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
+      startMenu.classList.add('hide');
     }
   });
 
-  mostrarToast('✅ Fusion OS pronto! Toque nos ícones');
+  mostrarToast('✅ Fusion OS pronto! Apps abrem no navegador (sem erro de iframe)');
 </script>
 </body>
 </html>
