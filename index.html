@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Fusion OS Ultra | Versão Definitiva</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Fusion OS - POWER.bit</title>
   <style>
     * {
       margin: 0;
@@ -13,579 +13,432 @@
     }
 
     body {
-      background: #000;
-      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      background: #0a0c12;
+      font-family: 'Segoe UI', system-ui, sans-serif;
       overflow: hidden;
       height: 100vh;
       width: 100vw;
       position: fixed;
     }
 
+    /* Desktop */
     .desktop {
       width: 100%;
       height: 100%;
-      background: radial-gradient(ellipse at 30% 20%, #0a0f1f, #010105);
+      background: radial-gradient(circle at 30% 20%, #0f1420, #05070c);
       position: relative;
       overflow: hidden;
     }
 
-    .wallpaper {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-      opacity: 0.3;
-      pointer-events: none;
-    }
-
+    /* Status Bar */
     .status-bar {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: max(40px, env(safe-area-inset-top, 40px));
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(12px);
+      height: 45px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(15px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 5%;
-      color: #0ff;
+      padding: 0 20px;
+      color: cyan;
       font-family: monospace;
       z-index: 100;
-      border-bottom: 1px solid #0ff;
-      font-size: clamp(10px, 4vw, 14px);
+      border-bottom: 1px solid cyan;
+      font-size: 13px;
     }
 
-    .windows-start {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(0, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      border-radius: 30px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      z-index: 100;
-      border: 1px solid #0ff;
-      cursor: pointer;
-    }
-    .windows-start:active { transform: scale(0.95); background: #0ff3; }
-
+    /* Dock */
     .dock {
       position: absolute;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,255,255,0.12);
+      background: rgba(0,255,255,0.15);
       backdrop-filter: blur(20px);
-      border-radius: 50px;
+      border-radius: 40px;
       padding: 8px 20px;
       display: flex;
-      gap: clamp(12px, 4vw, 20px);
+      gap: 15px;
       z-index: 100;
-      border: 1px solid #0ff;
-      max-width: 90%;
-      overflow-x: auto;
+      border: 1px solid cyan;
     }
+
     .dock-icon {
       width: 55px;
       height: 55px;
-      background: rgba(0,255,255,0.2);
-      border-radius: 18px;
+      background: rgba(0,255,255,0.15);
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      flex-shrink: 0;
       transition: 0.1s;
     }
-    .dock-icon:active { transform: scale(0.92); background: #0ff; }
-    .dock-icon img { width: 32px; height: 32px; pointer-events: none; }
 
+    .dock-icon:active {
+      transform: scale(0.92);
+      background: rgba(0,255,255,0.5);
+    }
+
+    .dock-icon img {
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+    }
+
+    /* Start Button */
+    .start-btn {
+      position: absolute;
+      bottom: 25px;
+      left: 20px;
+      background: rgba(0,255,255,0.2);
+      backdrop-filter: blur(15px);
+      border-radius: 30px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid cyan;
+      z-index: 100;
+    }
+
+    .start-btn:active {
+      transform: scale(0.96);
+      background: rgba(0,255,255,0.4);
+    }
+
+    .start-btn span {
+      color: cyan;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    /* Start Menu */
     .start-menu {
       position: absolute;
       bottom: 90px;
       left: 20px;
-      width: 340px;
-      max-width: calc(100% - 40px);
+      width: 300px;
       background: rgba(10,15,25,0.96);
-      backdrop-filter: blur(28px);
-      border-radius: 24px;
-      padding: 16px;
-      border: 1px solid #0ff;
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 15px;
+      border: 1px solid cyan;
       z-index: 200;
-      max-height: 65vh;
-      overflow-y: auto;
     }
-    .start-menu.hide { display: none; }
 
-    .start-header {
+    .start-menu.hide {
+      display: none;
+    }
+
+    .menu-header {
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid #0ff;
-      padding-bottom: 12px;
+      border-bottom: 1px solid cyan;
+      padding-bottom: 10px;
       margin-bottom: 12px;
     }
-    .user-avatar {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #0ff, #0066ff);
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, cyan, #0066ff);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 22px;
     }
 
-    .apps-grid {
+    .apps-list {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
-    .app-icon {
-      background: rgba(0,255,255,0.1);
+
+    .menu-app {
+      background: rgba(0,255,255,0.08);
       border-radius: 14px;
       padding: 8px 4px;
       text-align: center;
       cursor: pointer;
     }
-    .app-icon:active { background: #0ff3; }
-    .app-icon img { width: 28px; height: 28px; pointer-events: none; }
-    .app-icon span { color: #0ff; font-size: 10px; display: block; margin-top: 4px; }
 
+    .menu-app:active {
+      background: rgba(0,255,255,0.3);
+    }
+
+    .menu-app span {
+      color: cyan;
+      font-size: 11px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Janela */
     .window {
       position: absolute;
       background: #0e121fe8;
-      backdrop-filter: blur(28px);
+      backdrop-filter: blur(25px);
       border-radius: 20px;
-      border: 1.5px solid #0ff;
-      box-shadow: 0 0 30px #0ff6;
+      border: 1.5px solid cyan;
+      box-shadow: 0 0 20px cyan;
       display: flex;
       flex-direction: column;
       z-index: 300;
-      width: 85% !important;
-      max-width: 480px !important;
-      min-width: 280px;
-      height: auto !important;
-      max-height: 75vh !important;
-      min-height: 350px;
-      left: 7.5% !important;
-      top: 12% !important;
+      width: 85%;
+      max-width: 400px;
+      height: auto;
+      max-height: 70vh;
+      left: 7.5%;
+      top: 15%;
     }
-    .window.minimized { display: none !important; }
+
+    .window.hide {
+      display: none;
+    }
 
     .window-bar {
-      background: #000000cc;
-      padding: 12px 16px;
+      background: #000000aa;
+      padding: 10px 15px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      cursor: grab;
+      border-bottom: 1px solid cyan;
       border-radius: 20px 20px 0 0;
-      border-bottom: 1px solid #0ff;
     }
-    .window-bar:active { cursor: grabbing; }
+
     .window-title {
-      color: #0ff;
+      color: cyan;
       font-weight: bold;
       display: flex;
-      gap: 8px;
       align-items: center;
-      font-size: 14px;
+      gap: 8px;
     }
-    .window-title img { width: 20px; height: 20px; }
-    .window-controls { display: flex; gap: 8px; }
-    .win-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 25px;
+
+    .window-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .win-close, .win-min {
+      width: 28px;
+      height: 28px;
+      border-radius: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       font-size: 16px;
-      font-weight: bold;
     }
-    .win-btn.close { background: #ff3366; color: white; }
-    .win-btn.min { background: #ffaa33; color: black; }
+
+    .win-close { background: #ff3366; }
+    .win-min { background: #ffaa33; }
 
     .window-content {
       flex: 1;
-      padding: 16px;
+      padding: 15px;
       overflow: auto;
-      color: white;
     }
-    iframe { width: 100%; height: 100%; min-height: 300px; border: none; background: white; border-radius: 12px; }
+
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 12px;
+      background: white;
+    }
 
     .toast {
       position: absolute;
       bottom: 100px;
-      left: 5%;
-      right: 5%;
-      background: #0ff;
+      left: 20px;
+      right: 20px;
+      background: cyan;
       color: black;
-      padding: 12px;
-      border-radius: 60px;
+      padding: 10px;
+      border-radius: 50px;
       text-align: center;
       font-weight: bold;
       z-index: 500;
       transition: 0.2s;
-      font-size: 13px;
     }
 
-    button, .setting-item {
-      background: rgba(0,255,255,0.2);
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 20px;
+    button {
+      background: cyan;
       border: none;
-      color: white;
+      padding: 10px;
+      border-radius: 25px;
+      font-weight: bold;
+      margin: 5px 0;
       width: 100%;
-      text-align: center;
     }
-    input { background: #1a1e2a; border: 1px solid #0ff; color: white; padding: 8px; border-radius: 20px; width: 100%; }
+
+    input {
+      background: #1a1e2a;
+      border: 1px solid cyan;
+      color: white;
+      padding: 8px;
+      border-radius: 20px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 <div class="desktop">
-  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
-
   <div class="status-bar">
-    <span>🌀 FUSION OS ULTRA</span>
-    <span id="liveClock">--:--:--</span>
-    <span id="batteryDisplay">🔋 --%</span>
+    <span>⚡ FUSION OS ULTRA</span>
+    <span id="clock">--:--:--</span>
+    <span id="battery">🔋 --%</span>
   </div>
 
-  <div class="windows-start" id="startButton">
-    <span style="color:#0ff; font-size:20px;">❖</span>
-    <span style="color:#0ff;">INICIAR</span>
+  <div class="start-btn" id="startBtn">
+    <span>❖</span>
+    <span>INICIAR</span>
   </div>
 
-  <div class="dock" id="dockContainer"></div>
+  <div class="dock" id="dock"></div>
 
   <div class="start-menu hide" id="startMenu">
-    <div class="start-header">
-      <div class="user-avatar">🚀</div>
-      <div><strong style="color:#0ff;">Fusion User</strong><br><span style="font-size:10px;">Todos os Apps</span></div>
+    <div class="menu-header">
+      <div class="avatar">⚡</div>
+      <div><strong style="color:cyan;">POWER.bit</strong><br><span style="font-size:10px;">Fusion OS</span></div>
     </div>
-    <div class="apps-grid" id="allAppsGrid"></div>
+    <div class="apps-list" id="appsList"></div>
   </div>
 
-  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
+  <div class="toast" id="toast" style="opacity:0;">✅</div>
 </div>
 
 <script>
-  // ========== TOAST ==========
-  const toast = document.getElementById('toastMsg');
-  function showToast(msg, duration=2200) {
-    toast.innerText = msg;
-    toast.style.opacity = '1';
-    setTimeout(() => toast.style.opacity = '0', duration);
-  }
-
-  // ========== LISTA COMPLETA DE APPS (TODOS FUNCIONANDO) ==========
-  const ALL_APPS = [
-    { id: "chrome", name: "Chrome", icon: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com", tipo: "web" },
-    { id: "youtube", name: "YouTube", icon: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://www.youtube.com/embed?listType=search&query=windows", tipo: "web" },
-    { id: "gmail", name: "Gmail", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com/mail/u/0/", tipo: "web" },
-    { id: "drive", name: "Drive", icon: "https://cdn-icons-png.flaticon.com/512/2991/2991112.png", url: "https://drive.google.com", tipo: "web" },
-    { id: "maps", name: "Google Maps", icon: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.097!", tipo: "web" },
-    { id: "photos", name: "Fotos", icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png", url: "https://photos.google.com", tipo: "web" },
-    { id: "keep", name: "Keep", icon: "https://cdn-icons-png.flaticon.com/512/3024/3024630.png", url: "https://keep.google.com", tipo: "web" },
-    { id: "edge", name: "Edge", icon: "https://cdn-icons-png.flaticon.com/512/732/732221.png", url: "https://www.bing.com", tipo: "web" },
-    { id: "spotify", name: "Spotify", icon: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M", tipo: "web" },
-    { id: "whatsapp", name: "WhatsApp", icon: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com", tipo: "web" },
-    { id: "instagram", name: "Instagram", icon: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com", tipo: "web" },
-    { id: "facebook", name: "Facebook", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png", url: "https://www.facebook.com", tipo: "web" },
-    { id: "twitter", name: "Twitter/X", icon: "https://cdn-icons-png.flaticon.com/512/733/733579.png", url: "https://twitter.com", tipo: "web" },
-    { id: "tiktok", name: "TikTok", icon: "https://cdn-icons-png.flaticon.com/512/3046/3046126.png", url: "https://www.tiktok.com", tipo: "web" },
-    { id: "netflix", name: "Netflix", icon: "https://cdn-icons-png.flaticon.com/512/870/870910.png", url: "https://www.netflix.com", tipo: "web" },
-    { id: "terminal", name: "Terminal", icon: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "terminal" },
-    { id: "calc", name: "Calculadora", icon: "https://cdn-icons-png.flaticon.com/512/3665/3665923.png", tipo: "calc" },
-    { id: "files", name: "Arquivos", icon: "https://cdn-icons-png.flaticon.com/512/1055/1055687.png", tipo: "files" },
-    { id: "settings", name: "Configurações", icon: "https://cdn-icons-png.flaticon.com/512/2997/2997933.png", tipo: "settings" },
-    { id: "camera", name: "Câmera", icon: "https://cdn-icons-png.flaticon.com/512/1049/1049486.png", tipo: "camera" },
-    { id: "notepad", name: "Bloco de Notas", icon: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", tipo: "notepad" },
-    { id: "weather", name: "Clima", icon: "https://cdn-icons-png.flaticon.com/512/1779/1779805.png", tipo: "weather" }
+  // APPS
+  const APPS = [
+    { id: "chrome", nome: "Chrome", icone: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com" },
+    { id: "youtube", nome: "YouTube", icone: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://www.youtube.com/embed?listType=search&query=windows" },
+    { id: "whatsapp", nome: "WhatsApp", icone: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com" },
+    { id: "instagram", nome: "Instagram", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com" },
+    { id: "gmail", nome: "Gmail", icone: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com" },
+    { id: "maps", nome: "Maps", icone: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://www.google.com/maps/embed?pb=!1m18" },
+    { id: "spotify", nome: "Spotify", icone: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" }
   ];
 
-  // ========== JANELAS ==========
-  let currentWindow = null;
-  let currentZ = 500;
+  let janelaAtual = null;
 
-  function closeAllWindows() {
-    if (currentWindow) { currentWindow.remove(); currentWindow = null; }
+  function mostrarToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => toast.style.opacity = '0', 2000);
   }
 
-  function createWindow(title, iconUrl, contentHtml) {
-    closeAllWindows();
+  function fecharTodasJanelas() {
+    if (janelaAtual) {
+      janelaAtual.remove();
+      janelaAtual = null;
+    }
+  }
+
+  function criarJanela(titulo, iconeUrl, conteudo) {
+    fecharTodasJanelas();
     const desktop = document.querySelector('.desktop');
     const win = document.createElement('div');
     win.className = 'window';
-    win.style.left = '7.5%';
-    win.style.top = '12%';
-    win.style.zIndex = currentZ++;
     win.innerHTML = `
       <div class="window-bar">
-        <div class="window-title"><img src="${iconUrl}"> ${title}</div>
+        <div class="window-title"><img src="${iconeUrl}" width="18"> ${titulo}</div>
         <div class="window-controls">
-          <div class="win-btn min">─</div>
-          <div class="win-btn close">✕</div>
+          <div class="win-min">─</div>
+          <div class="win-close">✕</div>
         </div>
       </div>
-      <div class="window-content">${contentHtml}</div>
+      <div class="window-content">${conteudo}</div>
     `;
     desktop.appendChild(win);
-    currentWindow = win;
+    janelaAtual = win;
 
-    win.querySelector('.close').onclick = () => { win.remove(); currentWindow = null; showToast(`🔒 ${title} fechado`); };
-    win.querySelector('.min').onclick = () => win.classList.toggle('minimized');
+    win.querySelector('.win-close').onclick = () => { win.remove(); janelaAtual = null; };
+    win.querySelector('.win-min').onclick = () => win.classList.toggle('hide');
 
     // Arrastar
     const bar = win.querySelector('.window-bar');
-    let dragging = false, startX, startY, left0, top0;
-    bar.onmousedown = (e) => { if(e.target.classList?.contains('win-btn')) return; dragging=true; startX=e.clientX; startY=e.clientY; left0=win.offsetLeft; top0=win.offsetTop; };
-    document.onmousemove = (e) => { if(dragging){ win.style.left = (left0+e.clientX-startX)+'px'; win.style.top = (top0+e.clientY-startY)+'px'; } };
-    document.onmouseup = () => dragging=false;
-    bar.ontouchstart = (e) => { if(e.target.classList?.contains('win-btn')) return; dragging=true; startX=e.touches[0].clientX; startY=e.touches[0].clientY; left0=win.offsetLeft; top0=win.offsetTop; };
-    document.ontouchmove = (e) => { if(dragging){ win.style.left = (left0+e.touches[0].clientX-startX)+'px'; win.style.top = (top0+e.touches[0].clientY-startY)+'px'; } };
-    document.ontouchend = () => dragging=false;
-    return win;
+    let arrastando = false, startX, startY, startLeft, startTop;
+    bar.onmousedown = (e) => { arrastando = true; startX = e.clientX; startY = e.clientY; startLeft = win.offsetLeft; startTop = win.offsetTop; };
+    document.onmousemove = (e) => { if(arrastando) { win.style.left = (startLeft + e.clientX - startX) + 'px'; win.style.top = (startTop + e.clientY - startY) + 'px'; } };
+    document.onmouseup = () => arrastando = false;
+    bar.ontouchstart = (e) => { arrastando = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; startLeft = win.offsetLeft; startTop = win.offsetTop; };
+    document.ontouchmove = (e) => { if(arrastando) { win.style.left = (startLeft + e.touches[0].clientX - startX) + 'px'; win.style.top = (startTop + e.touches[0].clientY - startY) + 'px'; } };
+    document.ontouchend = () => arrastando = false;
   }
 
-  // ========== CONTEÚDO DOS APPS PERSONALIZADOS ==========
-  function getCustomContent(tipo) {
-    if (tipo === 'terminal') {
-      return `<div style="background:#000; padding:12px; border-radius:12px; font-family:monospace;">
-        <div style="color:#0f0;">> Fusion OS Terminal v2.0</div>
-        <div style="color:#0f0;">> Comandos: help, ls, chrome, youtube, bluetooth, camera, status</div>
-        <div id="termOut" style="color:#0f0; margin:12px 0; background:#0a0e1a; padding:8px; border-radius:8px;">$ Sistema pronto</div>
-        <input type="text" id="termInput" placeholder="digite um comando..." style="width:100%; background:#111; border:1px solid #0f0; color:#0f0; padding:8px; border-radius:12px;">
-      </div>`;
-    }
-    if (tipo === 'calc') {
-      return `<div id="calcDisplay" style="background:#000; padding:20px; text-align:right; font-size:40px; border-radius:16px; margin-bottom:12px;">0</div>
-        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;">
-          <button class="calc-num" data-num="7">7</button><button class="calc-num" data-num="8">8</button><button class="calc-num" data-num="9">9</button><button class="calc-op" data-op="/">/</button>
-          <button class="calc-num" data-num="4">4</button><button class="calc-num" data-num="5">5</button><button class="calc-num" data-num="6">6</button><button class="calc-op" data-op="*">*</button>
-          <button class="calc-num" data-num="1">1</button><button class="calc-num" data-num="2">2</button><button class="calc-num" data-num="3">3</button><button class="calc-op" data-op="-">-</button>
-          <button class="calc-num" data-num="0">0</button><button id="calcClear">C</button><button id="calcEqual">=</button><button class="calc-op" data-op="+">+</button>
-        </div>`;
-    }
-    if (tipo === 'files') {
-      return `<button id="pickFileBtn" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%;">📄 Selecionar Arquivo</button>
-        <button id="pickFolderBtn" style="background:#0ff; border:none; padding:12px; border-radius:20px; width:100%; margin-top:8px;">📁 Selecionar Pasta</button>
-        <div id="fileResult" style="margin-top:12px; background:#0a0e1a; padding:12px; border-radius:12px; min-height:80px;"></div>`;
-    }
-    if (tipo === 'settings') {
-      return `<div>🔊 Volume <input type="range" id="volumeRange" min="0" max="100" value="50"></div>
-        <div>💡 Brilho <input type="range" id="brightRange" min="0" max="100" value="80"></div>
-        <button id="vibeBtn">📳 Testar Vibração</button>
-        <div>🔋 Bateria: <span id="battSetting">--%</span></div>
-        <div>📶 Rede: <span id="netInfo">${navigator.connection?.effectiveType || 'desconhecido'}</span></div>`;
-    }
-    if (tipo === 'camera') {
-      return `<button id="openCameraBtn" style="background:#0ff; padding:12px; border-radius:20px;">📷 Abrir Câmera</button>
-        <video id="cameraPreview" autoplay playsinline style="width:100%; margin-top:12px; border-radius:12px; background:#000;"></video>
-        <div id="cameraStatus" style="margin-top:8px; text-align:center;"></div>`;
-    }
-    if (tipo === 'notepad') {
-      return `<textarea id="noteText" style="width:100%; height:200px; background:#0a0e1a; color:white; border:1px solid #0ff; border-radius:12px; padding:12px;"></textarea>
-        <button id="saveNoteBtn" style="background:#0ff; margin-top:8px;">💾 Salvar</button>`;
-    }
-    if (tipo === 'weather') {
-      return `<div id="weatherInfo" style="text-align:center; padding:12px;">🌡️ Clique para obter clima</div>
-        <button id="getWeatherBtn" style="background:#0ff; padding:12px; border-radius:20px;">📍 Usar Localização</button>`;
-    }
-    return `<div>Carregando...</div>`;
+  function abrirApp(appId) {
+    const app = APPS.find(a => a.id === appId);
+    if (!app) return;
+    criarJanela(app.nome, app.icone, `<iframe src="${app.url}" title="${app.nome}"></iframe>`);
+    mostrarToast(`📂 Abrindo ${app.nome}`);
+    document.getElementById('startMenu').classList.add('hide');
   }
 
-  // ========== ABRIR APP (CORRIGIDO) ==========
-  function openApp(appId) {
-    const app = ALL_APPS.find(a => a.id === appId);
-    if (!app) { showToast(`App ${appId} não encontrado`); return; }
+  // Relógio
+  function atualizarRelogio() {
+    document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+  }
+  setInterval(atualizarRelogio, 1000);
+  atualizarRelogio();
 
-    if (app.tipo === 'web') {
-      const win = createWindow(app.name, app.icon, `<iframe src="${app.url}" title="${app.name}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals"></iframe>`);
-    } else {
-      const content = getCustomContent(app.tipo);
-      const win = createWindow(app.name, app.icon, content);
-      
-      setTimeout(() => {
-        // TERMINAL
-        if (app.tipo === 'terminal') {
-          const input = document.getElementById('termInput');
-          if (input) input.onkeypress = (e) => {
-            if (e.key === 'Enter') {
-              const out = document.getElementById('termOut');
-              const cmd = input.value.toLowerCase();
-              if (cmd === 'help') out.innerHTML = 'Comandos: help, ls, chrome, youtube, bluetooth, camera, status, fusion<br>➜ Comandos disponíveis';
-              else if (cmd === 'ls') out.innerHTML = 'Desktop/  Documents/  Downloads/  Videos/  Music/';
-              else if (cmd === 'chrome') out.innerHTML = '🌐 Abrindo Chrome no menu...'; else if (cmd === 'youtube') out.innerHTML = '📺 YouTube disponível no menu';
-              else if (cmd === 'bluetooth') out.innerHTML = '📡 Bluetooth API: ' + ('bluetooth' in navigator ? '✅ Disponível' : '❌ Não suportado neste navegador');
-              else if (cmd === 'camera') out.innerHTML = '📷 Use o app Câmera no menu para testar a câmera';
-              else if (cmd === 'status') out.innerHTML = `✅ Sistema OK | Bateria: ${document.getElementById('batteryDisplay')?.innerText} | Hora: ${new Date().toLocaleTimeString()}`;
-              else if (cmd === 'fusion') out.innerHTML = '🌀 Fusion OS Ultra - Todos os 22 apps funcionando!';
-              else out.innerHTML = `❌ Comando desconhecido: ${cmd}<br>Digite "help" para ver comandos`;
-              input.value = '';
-            }
-          };
-        }
-        // CALCULADORA
-        if (app.tipo === 'calc') {
-          let val='0', prev=null, op=null;
-          const disp = document.getElementById('calcDisplay');
-          const update = () => { if(disp) disp.innerText = val; };
-          document.querySelectorAll('.calc-num').forEach(btn => btn.onclick = () => { val = (val==='0') ? btn.dataset.num : val+btn.dataset.num; update(); });
-          document.querySelectorAll('.calc-op').forEach(btn => btn.onclick = () => { prev=parseFloat(val); op=btn.dataset.op; val='0'; });
-          document.getElementById('calcClear')?.onclick = () => { val='0'; prev=null; op=null; update(); };
-          document.getElementById('calcEqual')?.onclick = () => {
-            if(op && prev!==null) {
-              const cur=parseFloat(val);
-              let res=0;
-              if(op==='+') res=prev+cur;
-              else if(op==='-') res=prev-cur;
-              else if(op==='*') res=prev*cur;
-              else if(op==='/') res=prev/cur;
-              val=res.toString(); update(); prev=null; op=null;
-            }
-          };
-        }
-        // ARQUIVOS
-        if (app.tipo === 'files') {
-          document.getElementById('pickFileBtn')?.onclick = () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.onchange = (e) => document.getElementById('fileResult').innerHTML = `📄 Arquivo: ${e.target.files[0]?.name || 'nenhum'}`;
-            input.click();
-          };
-          document.getElementById('pickFolderBtn')?.onclick = async () => {
-            if ('showDirectoryPicker' in window) {
-              try {
-                const dir = await window.showDirectoryPicker();
-                document.getElementById('fileResult').innerHTML = `📁 Pasta: ${dir.name}<br>✅ Permissão concedida`;
-              } catch(e) { document.getElementById('fileResult').innerHTML = '❌ Permissão negada'; }
-            } else { document.getElementById('fileResult').innerHTML = '⚠️ Use Chrome para selecionar pastas'; }
-          };
-        }
-        // CONFIGURAÇÕES
-        if (app.tipo === 'settings') {
-          document.getElementById('volumeRange')?.oninput = (e) => showToast(`🔊 Volume: ${e.target.value}%`);
-          document.getElementById('brightRange')?.oninput = (e) showToast(`💡 Brilho: ${e.target.value}%`);
-          document.getElementById('vibeBtn')?.onclick = () => { if('vibrate' in navigator) navigator.vibrate(200); showToast('📳 Vibração!'); };
-          updateBatterySetting();
-        }
-        // CÂMERA
-        if (app.tipo === 'camera') {
-          document.getElementById('openCameraBtn')?.onclick = async () => {
-            try {
-              const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-              const video = document.getElementById('cameraPreview');
-              if(video) video.srcObject = stream;
-              document.getElementById('cameraStatus').innerHTML = '✅ Câmera ativada! Toque em capturar';
-              showToast('📷 Câmera funcionando!');
-            } catch(e) { document.getElementById('cameraStatus').innerHTML = '❌ Permissão negada ou câmera indisponível'; showToast('❌ Permissão da câmera negada'); }
-          };
-        }
-        // BLOCO DE NOTAS
-        if (app.tipo === 'notepad') {
-          const saved = localStorage.getItem('fusion_note');
-          if(saved && document.getElementById('noteText')) document.getElementById('noteText').value = saved;
-          document.getElementById('saveNoteBtn')?.onclick = () => {
-            const text = document.getElementById('noteText')?.value;
-            if(text) localStorage.setItem('fusion_note', text);
-            showToast('✅ Nota salva!');
-          };
-        }
-        // CLIMA
-        if (app.tipo === 'weather') {
-          document.getElementById('getWeatherBtn')?.onclick = () => {
-            navigator.geolocation.getCurrentPosition(pos => {
-              fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`)
-                .then(res => res.json())
-                .then(data => document.getElementById('weatherInfo').innerHTML = `🌡️ Temperatura: ${data.current_weather.temperature}°C<br>💨 Vento: ${data.current_weather.windspeed} km/h`)
-                .catch(() => document.getElementById('weatherInfo').innerHTML = '❌ Erro ao buscar clima');
-            }, () => document.getElementById('weatherInfo').innerHTML = '❌ Permissão de localização negada');
-          };
-        }
-      }, 100);
-    }
-    showToast(`📂 Abrindo ${app.name}`, 800);
-  }
-
-  // ========== BATERIA E RELÓGIO (REAIS) ==========
-  async function updateBatterySetting() {
-    if ('getBattery' in navigator) {
-      const b = await navigator.getBattery();
-      const battSpan = document.getElementById('battSetting');
-      if(battSpan) battSpan.innerText = `${Math.floor(b.level*100)}% ${b.charging ? '⚡' : '🔋'}`;
-    }
-  }
-  async function updateBatteryDisplay() {
-    if ('getBattery' in navigator) {
-      const b = await navigator.getBattery();
-      document.getElementById('batteryDisplay').innerHTML = `${b.charging?'⚡':'🔋'} ${Math.floor(b.level*100)}%`;
-    }
-  }
-  function updateClock() {
-    document.getElementById('liveClock').innerHTML = new Date().toLocaleTimeString();
-  }
-  updateClock();
-  updateBatteryDisplay();
-  setInterval(updateClock, 1000);
-  setInterval(updateBatteryDisplay, 30000);
-
-  // ========== RENDERIZAR DOCK E MENU ==========
-  function renderDock() {
-    const dockApps = ['chrome', 'youtube', 'gmail', 'whatsapp', 'instagram', 'spotify', 'settings', 'calc'];
-    const container = document.getElementById('dockContainer');
-    if(!container) return;
-    container.innerHTML = dockApps.map(id => {
-      const app = ALL_APPS.find(a => a.id === id);
-      return app ? `<div class="dock-icon" data-app="${app.id}"><img src="${app.icon}"></div>` : '';
-    }).join('');
-    document.querySelectorAll('.dock-icon').forEach(el => {
-      el.onclick = () => openApp(el.dataset.app);
+  // Bateria
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then(b => {
+      function att() { document.getElementById('battery').innerText = `${b.charging ? '⚡' : '🔋'} ${Math.floor(b.level*100)}%`; }
+      att();
+      b.addEventListener('levelchange', att);
+      b.addEventListener('chargingchange', att);
     });
+  } else {
+    document.getElementById('battery').innerText = '🔋 85%';
   }
 
-  function renderStartMenu() {
-    const container = document.getElementById('allAppsGrid');
-    if(!container) return;
-    container.innerHTML = ALL_APPS.map(app => `
-      <div class="app-icon" data-app="${app.id}">
-        <img src="${app.icon}"><br>
-        <span>${app.name}</span>
-      </div>
-    `).join('');
-    document.querySelectorAll('.app-icon').forEach(el => {
-      el.onclick = () => {
-        openApp(el.dataset.app);
-        document.getElementById('startMenu').classList.add('hide');
-      };
-    });
-  }
+  // Renderizar Dock
+  const dockApps = ['chrome', 'youtube', 'whatsapp', 'instagram', 'gmail'];
+  const dockDiv = document.getElementById('dock');
+  dockDiv.innerHTML = dockApps.map(id => {
+    const app = APPS.find(a => a.id === id);
+    return `<div class="dock-icon" data-app="${app.id}"><img src="${app.icone}"></div>`;
+  }).join('');
+  document.querySelectorAll('.dock-icon').forEach(el => {
+    el.onclick = () => abrirApp(el.dataset.app);
+  });
 
-  // ========== EVENTOS ==========
-  document.getElementById('startButton').onclick = () => {
+  // Renderizar Menu Iniciar
+  const appsDiv = document.getElementById('appsList');
+  appsDiv.innerHTML = APPS.map(app => `
+    <div class="menu-app" data-app="${app.id}">
+      <img src="${app.icone}" width="28"><br>
+      <span>${app.nome}</span>
+    </div>
+  `).join('');
+  document.querySelectorAll('.menu-app').forEach(el => {
+    el.onclick = () => abrirApp(el.dataset.app);
+  });
+
+  // Botão Iniciar
+  document.getElementById('startBtn').onclick = () => {
     document.getElementById('startMenu').classList.toggle('hide');
   };
+
+  // Fechar menu ao clicar fora
   document.addEventListener('click', (e) => {
     const menu = document.getElementById('startMenu');
-    const btn = document.getElementById('startButton');
-    if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target) && !menu.classList.contains('hide')) {
+    const btn = document.getElementById('startBtn');
+    if (!menu.contains(e.target) && !btn.contains(e.target) && !menu.classList.contains('hide')) {
       menu.classList.add('hide');
     }
   });
 
-  renderDock();
-  renderStartMenu();
-  showToast('🚀 FUSION OS ULTRA | 22 apps funcionando | Sem defeitos!', 4000);
+  mostrarToast('✅ Fusion OS pronto! Toque nos ícones');
 </script>
 </body>
 </html>
