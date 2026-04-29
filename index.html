@@ -1,610 +1,545 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Fusion OS Ultra | Windows + Google + Todos Apps</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fusion OS - POWER.bit | Gabriel Moretti</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    body {
-      background: #000;
-      font-family: 'Segoe UI', 'Roboto', sans-serif;
-      overflow: hidden;
-      height: 100vh;
-      width: 100vw;
-      position: fixed;
-    }
+    <style>
+        /* ESTILOS BASEADOS NA IDENTIDADE POWER.bit
+           [span_4](start_span)Cores: Primary (#3483FA), Secondary (#FF6B6B), Accent (#FFD166)[span_4](end_span)
+        */
+        :root {
+            --primary: #3483FA;
+            --primary-dark: #2a68c8;
+            --secondary: #FF6B6B;
+            --accent: #FFD166;
+            --dark-os: #0a0f1f;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --neon-shadow: 0 0 15px rgba(52, 131, 250, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .desktop {
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(ellipse at 30% 20%, #0a0f1f, #010105);
-      position: relative;
-      overflow: hidden;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    .wallpaper {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-      opacity: 0.3;
-      pointer-events: none;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #0a0f1f 0%, #010105 100%);
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
 
-    .status-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: max(40px, env(safe-area-inset-top, 40px));
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(12px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 5%;
-      color: #0ff;
-      font-family: monospace;
-      z-index: 100;
-      border-bottom: 1px solid #0ff;
-      font-size: clamp(10px, 4vw, 14px);
-    }
+        /* Desktop / Papel de Parede */
+        #desktop {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
 
-    .windows-start {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(0, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      border-radius: 30px;
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      z-index: 100;
-      border: 1px solid #0ff;
-      cursor: pointer;
-    }
-    .windows-start:active { transform: scale(0.95); background: #0ff3; }
+        /* BARRA DE STATUS SUPERIOR (Cyberpunk Style) */
+        .status-bar {
+            height: 30px;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
 
-    .dock {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,255,255,0.12);
-      backdrop-filter: blur(20px);
-      border-radius: 50px;
-      padding: 8px 20px;
-      display: flex;
-      gap: clamp(12px, 4vw, 20px);
-      z-index: 100;
-      border: 1px solid #0ff;
-      max-width: 95%;
-      overflow-x: auto;
-    }
-    .dock-icon {
-      width: 55px;
-      height: 55px;
-      background: rgba(0,255,255,0.2);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: 0.1s;
-    }
-    .dock-icon:active { transform: scale(0.92); background: #0ff; }
+        .status-left { display: flex; gap: 10px; align-items: center; }
+        .status-right { display: flex; gap: 15px; align-items: center; font-weight: 500; }
+        .brand-os { font-family: 'Press Start 2P', cursive; font-size: 0.5rem; color: var(--primary); }
 
-    .start-menu {
-      position: absolute;
-      bottom: 90px;
-      left: 20px;
-      width: 320px;
-      max-width: calc(100% - 40px);
-      background: rgba(10,15,25,0.96);
-      backdrop-filter: blur(24px);
-      border-radius: 24px;
-      padding: 16px;
-      border: 1px solid #0ff;
-      z-index: 200;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-    .start-menu.hide { display: none; }
+        /* DOCK INFERIOR */
+        .dock-container {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            z-index: 900;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-    .start-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid #0ff;
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-    }
-    .user-avatar {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #0ff, #0066ff);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
+        .dock-icon {
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .apps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-    .app-icon {
-      background: rgba(0,255,255,0.1);
-      border-radius: 16px;
-      padding: 10px 4px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .app-icon:active { background: #0ff3; }
+        .dock-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .dock-icon:hover { transform: translateY(-10px) scale(1.2); filter: drop-shadow(0 0 8px var(--primary)); }
+        .dock-icon:active { transform: scale(0.9); }
 
-    .window {
-      position: absolute;
-      background: #0e121fe8;
-      backdrop-filter: blur(28px);
-      border-radius: 20px;
-      border: 1.5px solid #0ff;
-      box-shadow: 0 0 30px #0ff6;
-      display: flex;
-      flex-direction: column;
-      z-index: 300;
-      width: 85% !important;
-      max-width: 500px !important;
-      min-width: 280px;
-      height: auto !important;
-      max-height: 75vh !important;
-      min-height: 350px;
-      left: 7.5% !important;
-      top: 12% !important;
-    }
-    .window.minimized { display: none !important; }
+        /* MENU INICIAR */
+        #start-menu {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120%);
+            width: 90%;
+            max-width: 400px;
+            height: 60vh;
+            background: rgba(10, 15, 31, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+            padding: 20px;
+            z-index: 850;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(52, 131, 250, 0.3);
+        }
 
-    .window-bar {
-      background: #000000aa;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: grab;
-      border-radius: 20px 20px 0 0;
-      border-bottom: 1px solid #0ff;
-    }
-    .window-title {
-      color: #0ff;
-      font-weight: bold;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .window-controls { display: flex; gap: 8px; }
-    .win-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 18px;
-    }
-    .win-btn.close { background: #ff3366; }
-    .win-btn.min { background: #ffaa33; }
+        #start-menu.active { transform: translateX(-50%) translateY(0); }
 
-    .window-content {
-      flex: 1;
-      padding: 16px;
-      overflow: auto;
-      color: white;
-    }
-    iframe { width: 100%; height: 100%; border: none; background: white; border-radius: 12px; min-height: 300px; }
+        .start-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            overflow-y: auto;
+            max-height: calc(100% - 40px);
+            padding-bottom: 20px;
+        }
 
-    .toast {
-      position: absolute;
-      bottom: 100px;
-      left: 5%;
-      right: 5%;
-      background: #0ff;
-      color: black;
-      padding: 12px;
-      border-radius: 60px;
-      text-align: center;
-      font-weight: bold;
-      z-index: 500;
-      transition: 0.2s;
-    }
+        .start-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            text-align: center;
+        }
 
-    input, button { cursor: pointer; }
-  </style>
+        .start-item img { width: 40px; height: 40px; margin-bottom: 5px; }
+
+        /* JANELAS FLUTUANTES */
+        .window {
+            position: absolute;
+            width: 90%;
+            height: 70%;
+            top: 15%;
+            left: 5%;
+            background: var(--dark-os);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            overflow: hidden;
+            animation: windowOpen 0.3s ease-out;
+        }
+
+        @keyframes windowOpen {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .window-header {
+            background: var(--glass);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        .window-title { font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .window-controls { display: flex; gap: 10px; }
+        .win-btn { width: 24px; height: 24px; border-radius: 50%; border: none; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+        .win-close { background: #ff5f56; }
+        .win-min { background: #ffbd2e; }
+
+        .window-content { flex: 1; overflow: auto; padding: 15px; background: #010105; }
+
+        /* APPS INTERNOS ESPECÍFICOS */
+        /* Calculadora */
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; height: 100%; }
+        .calc-display { grid-column: span 4; background: #222; padding: 15px; text-align: right; font-size: 1.5rem; border-radius: 8px; margin-bottom: 10px; font-family: monospace; }
+        .calc-btn { background: #333; border: none; color: white; padding: 15px; border-radius: 8px; font-size: 1.2rem; }
+        .calc-btn.op { background: var(--primary); }
+
+        /* Terminal */
+        .terminal-body { font-family: 'Courier New', Courier, monospace; color: #0f0; height: 100%; overflow-y: auto; }
+        .term-input-line { display: flex; gap: 10px; margin-top: 10px; }
+        .term-input { background: transparent; border: none; color: #0f0; outline: none; flex: 1; font-family: inherit; }
+
+        /* Info Sistema */
+        .sys-info-card { background: var(--glass); padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary); margin-bottom: 10px; }
+
+        /* Scrollbar Custom */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+    </style>
 </head>
 <body>
-<div class="desktop">
-  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
 
-  <div class="status-bar">
-    <span>🌀 FUSION OS ULTRA</span>
-    <span id="liveClock">--:--:--</span>
-    <span id="batteryDisplay">🔋 --%</span>
-  </div>
-
-  <div class="windows-start" id="startButton">
-    <span style="color:#0ff; font-size:20px;">❖</span>
-    <span style="color:#0ff;">INICIAR</span>
-  </div>
-
-  <div class="dock" id="dockContainer"></div>
-
-  <div class="start-menu hide" id="startMenu">
-    <div class="start-header">
-      <div class="user-avatar">👤</div>
-      <div><strong style="color:#0ff;">Fusion User</strong><br><span style="font-size:10px;">Windows + Google + Todos Apps</span></div>
-    </div>
-    <div class="apps-grid" id="allAppsGrid"></div>
-  </div>
-
-  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
-</div>
-
-<script>
-  // ========== TOAST ==========
-  const toast = document.getElementById('toastMsg');
-  function showToast(msg, duration=2000) {
-    toast.innerText = msg;
-    toast.style.opacity = '1';
-    setTimeout(() => toast.style.opacity = '0', duration);
-  }
-
-  // ========== TODOS OS APPS (MAIS DE 30) ==========
-  const ALL_APPS = [
-    // Google Apps
-    { id: "chrome", name: "Chrome", icon: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", url: "https://www.google.com", type: "iframe" },
-    { id: "youtube", name: "YouTube", icon: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", url: "https://www.youtube.com/embed?listType=search&query=windows11", type: "iframe" },
-    { id: "gmail", name: "Gmail", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968534.png", url: "https://mail.google.com/mail/u/0/", type: "iframe" },
-    { id: "drive", name: "Drive", icon: "https://cdn-icons-png.flaticon.com/512/2991/2991112.png", url: "https://drive.google.com", type: "iframe" },
-    { id: "maps", name: "Google Maps", icon: "https://cdn-icons-png.flaticon.com/512/854/854878.png", url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.097!", type: "iframe" },
-    { id: "photos", name: "Fotos", icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png", url: "https://photos.google.com", type: "iframe" },
-    { id: "calendar", name: "Calendar", icon: "https://cdn-icons-png.flaticon.com/512/1828/1828970.png", url: "https://calendar.google.com", type: "iframe" },
-    { id: "keep", name: "Keep", icon: "https://cdn-icons-png.flaticon.com/512/3024/3024630.png", url: "https://keep.google.com", type: "iframe" },
-    // Microsoft/Outros Apps
-    { id: "edge", name: "Edge", icon: "https://cdn-icons-png.flaticon.com/512/732/732221.png", url: "https://www.bing.com", type: "iframe" },
-    { id: "spotify", name: "Spotify", icon: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", url: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M", type: "iframe" },
-    { id: "whatsapp", name: "WhatsApp", icon: "https://cdn-icons-png.flaticon.com/512/124/124034.png", url: "https://web.whatsapp.com", type: "iframe" },
-    { id: "instagram", name: "Instagram", icon: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png", url: "https://www.instagram.com", type: "iframe" },
-    { id: "facebook", name: "Facebook", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968764.png", url: "https://www.facebook.com", type: "iframe" },
-    { id: "twitter", name: "Twitter/X", icon: "https://cdn-icons-png.flaticon.com/512/733/733579.png", url: "https://twitter.com", type: "iframe" },
-    { id: "tiktok", name: "TikTok", icon: "https://cdn-icons-png.flaticon.com/512/3046/3046126.png", url: "https://www.tiktok.com", type: "iframe" },
-    { id: "netflix", name: "Netflix", icon: "https://cdn-icons-png.flaticon.com/512/870/870910.png", url: "https://www.netflix.com", type: "iframe" },
-    { id: "primevideo", name: "Prime Video", icon: "https://cdn-icons-png.flaticon.com/512/888/888848.png", url: "https://www.primevideo.com", type: "iframe" },
-    // Ferramentas/Sistema
-    { id: "terminal", name: "Terminal", icon: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", content: "terminal", type: "custom" },
-    { id: "calc", name: "Calculadora", icon: "https://cdn-icons-png.flaticon.com/512/3665/3665923.png", content: "calc", type: "custom" },
-    { id: "files", name: "Arquivos", icon: "https://cdn-icons-png.flaticon.com/512/1055/1055687.png", content: "files", type: "custom" },
-    { id: "settings", name: "Configurações", icon: "https://cdn-icons-png.flaticon.com/512/2997/2997933.png", content: "settings", type: "custom" },
-    { id: "camera", name: "Câmera", icon: "https://cdn-icons-png.flaticon.com/512/1049/1049486.png", content: "camera", type: "custom" },
-    { id: "notepad", name: "Bloco de Notas", icon: "https://cdn-icons-png.flaticon.com/512/2997/2997922.png", content: "notepad", type: "custom" },
-    { id: "gallery", name: "Galeria", icon: "https://cdn-icons-png.flaticon.com/512/2917/2917995.png", content: "gallery", type: "custom" },
-    { id: "weather", name: "Clima", icon: "https://cdn-icons-png.flaticon.com/512/1779/1779805.png", content: "weather", type: "custom" },
-  ];
-
-  // ========== GERENCIADOR DE JANELAS ==========
-  let currentWindow = null;
-  let currentZ = 500;
-
-  function closeAllWindows() {
-    if (currentWindow) { currentWindow.remove(); currentWindow = null; }
-  }
-
-  function createWindow(title, iconUrl, contentHtml) {
-    closeAllWindows();
-    const desktop = document.querySelector('.desktop');
-    const win = document.createElement('div');
-    win.className = 'window';
-    win.style.left = '7.5%';
-    win.style.top = '12%';
-    win.style.zIndex = currentZ++;
-    win.innerHTML = `
-      <div class="window-bar">
-        <div class="window-title"><img src="${iconUrl}" width="20" height="20"> ${title}</div>
-        <div class="window-controls">
-          <div class="win-btn min">─</div>
-          <div class="win-btn close">✕</div>
+    <div class="status-bar">
+        <div class="status-left">
+            <span class="brand-os">FUSION OS</span>
+            <span id="os-status-text">POWER.bit Systems</span>
         </div>
-      </div>
-      <div class="window-content">${contentHtml}</div>
-    `;
-    desktop.appendChild(win);
-    currentWindow = win;
+        <div class="status-right">
+            <span id="battery-status"><i class="fas fa-battery-three-quarters"></i> 75%</span>
+            <span id="clock">00:00:00</span>
+        </div>
+    </div>
 
-    win.querySelector('.close').onclick = () => { win.remove(); currentWindow = null; showToast(`🔒 ${title} fechado`); };
-    win.querySelector('.min').onclick = () => win.classList.toggle('minimized');
+    <div id="desktop">
+        </div>
 
-    // Arrastar
-    const bar = win.querySelector('.window-bar');
-    let dragging = false, startX, startY, left0, top0;
-    bar.onmousedown = (e) => { if(e.target.classList?.contains('win-btn')) return; dragging=true; startX=e.clientX; startY=e.clientY; left0=win.offsetLeft; top0=win.offsetTop; win.style.cursor='grabbing'; };
-    document.onmousemove = (e) => { if(dragging){ win.style.left = (left0+e.clientX-startX)+'px'; win.style.top = (top0+e.clientY-startY)+'px'; } };
-    document.onmouseup = () => { dragging=false; win.style.cursor=''; };
-    bar.ontouchstart = (e) => { if(e.target.classList?.contains('win-btn')) return; dragging=true; startX=e.touches[0].clientX; startY=e.touches[0].clientY; left0=win.offsetLeft; top0=win.offsetTop; };
-    document.ontouchmove = (e) => { if(dragging){ win.style.left = (left0+e.touches[0].clientX-startX)+'px'; win.style.top = (top0+e.touches[0].clientY-startY)+'px'; } };
-    document.ontouchend = () => dragging=false;
-    return win;
-  }
+    <div id="start-menu">
+        <h3 style="margin-bottom: 20px; font-size: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">Aplicativos</h3>
+        <div class="start-grid" id="start-grid-content">
+            </div>
+    </div>
 
-  // ========== CONTEÚDOS PERSONALIZADOS ==========
-  function getCustomContent(type) {
-    if (type === 'terminal') return `<div style="background:#000; padding:12px; border-radius:12px; font-family:monospace;"><div style="color:#0f0;">> Fusion OS Terminal</div><div style="color:#0f0;">> Digite 'help' para comandos</div><div id="termOut" style="color:#0f0; margin:10px 0;">$ Bem-vindo</div><input type="text" id="termInput" placeholder="comando..." style="width:100%; background:#111; border:1px solid #0ff; color:#0f0; padding:8px; border-radius:12px;"></div>`;
-    if (type === 'calc') return `<div id="calcDisplay" style="background:#000; padding:16px; text-align:right; font-size:36px; border-radius:12px; margin-bottom:12px;">0</div><div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;"><button class="calc-btn" data-val="7">7</button><button class="calc-btn" data-val="8">8</button><button class="calc-btn" data-val="9">9</button><button class="calc-op" data-op="/">/</button><button class="calc-btn" data-val="4">4</button><button class="calc-btn" data-val="5">5</button><button class="calc-btn" data-val="6">6</button><button class="calc-op" data-op="*">*</button><button class="calc-btn" data-val="1">1</button><button class="calc-btn" data-val="2">2</button><button class="calc-btn" data-val="3">3</button><button class="calc-op" data-op="-">-</button><button class="calc-btn" data-val="0">0</button><button id="calcC">C</button><button id="calcEq">=</button><button class="calc-op" data-op="+">+</button></div>`;
-    if (type === 'files') return `<div><button id="pickFile" style="background:#0ff; border:none; padding:10px; border-radius:20px;">📄 Selecionar Arquivo</button><button id="pickFolder" style="background:#0ff; border:none; padding:10px; border-radius:20px; margin-left:8px;">📁 Selecionar Pasta</button><div id="fileResult" style="margin-top:12px; background:#0a0e1a; padding:12px; border-radius:12px;"></div></div>`;
-    if (type === 'settings') return `<div><div class="setting-item">🔊 Volume <input type="range" id="volume" min="0" max="100"></div><div class="setting-item">💡 Brilho <input type="range" id="bright" min="0" max="100"></div><div class="setting-item"><button id="vibeTest">📳 Testar Vibração</button></div><div class="setting-item"><span>🔋 Bateria: <span id="battPct">--%</span></span></div></div>`;
-    if (type === 'camera') return `<div><button id="openCamera" style="background:#0ff; padding:12px; border-radius:20px;">📷 Abrir Câmera</button><video id="cameraPreview" autoplay playsinline style="width:100%; margin-top:12px; border-radius:12px;"></video><div id="cameraResult"></div></div>`;
-    if (type === 'notepad') return `<textarea id="notes" style="width:100%; height:200px; background:#0a0e1a; color:white; border:1px solid #0ff; border-radius:12px; padding:12px;"></textarea><button id="saveNote" style="background:#0ff; margin-top:8px;">💾 Salvar</button>`;
-    if (type === 'gallery') return `<div style="display:flex; gap:8px; flex-wrap:wrap;"><div style="background:#0a0e1a; padding:20px; border-radius:12px;">🖼️ Imagem Demo 1</div><div style="background:#0a0e1a; padding:20px; border-radius:12px;">📸 Imagem Demo 2</div></div>`;
-    if (type === 'weather') return `<div id="weatherData" style="text-align:center;"><div>🌡️ Buscando clima...</div><button id="getWeather" style="background:#0ff; margin-top:12px;">📍 Usar Localização</button></div>`;
-    return `<div>Carregando...</div>`;
-  }
+    <div class="dock-container">
+        <div class="dock-icon" onclick="toggleStart()"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Start" style="filter: hue-rotate(180deg);"></div>
+        <div class="dock-icon" onclick="openApp('chrome')"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png" alt="Chrome"></div>
+        <div class="dock-icon" onclick="openApp('youtube')"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YT"></div>
+        <div class="dock-icon" onclick="openApp('whatsapp')"><img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WA"></div>
+        <div class="dock-icon" onclick="openApp('calc')"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png" alt="Calc"></div>
+        <div class="dock-icon" onclick="openApp('terminal')"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png" alt="Term"></div>
+    </div>
 
-  // ========== ABRIR APP ==========
-  function openApp(app) {
-    const appData = ALL_APPS.find(a => a.id === app);
-    if (!appData) return;
-    
-    if (appData.type === 'iframe') {
-      const win = createWindow(appData.name, appData.icon, `<iframe src="${appData.url}" title="${appData.name}"></iframe>`);
-    } else {
-      const content = getCustomContent(appData.content);
-      const win = createWindow(appData.name, appData.icon, content);
-      
-      setTimeout(() => {
-        // Terminal
-        if (appData.id === 'terminal') {
-          const input = document.getElementById('termInput');
-          if (input) input.onkeypress = (e) => {
-            if (e.key === 'Enter') {
-              const out = document.getElementById('termOut');
-              const cmd = input.value.toLowerCase();
-              if (cmd === 'help') out.innerHTML = 'Comandos: help, ls, fusion, windows, chrome, youtube, bluetooth, camera';
-              else if (cmd === 'ls') out.innerHTML = 'Desktop/ Documents/ Downloads/ Videos/ Music/';
-              else if (cmd === 'fusion') out.innerHTML = '🌀 Fusion OS Ultra - Todos os apps integrados!';
-              else if (cmd === 'windows') out.innerHTML = 'Windows 11 + Linux + macOS + iOS fusionado';
-              else if (cmd === 'chrome') out.innerHTML = 'Abrindo Chrome...'; else if (cmd === 'youtube') out.innerHTML = 'Abrindo YouTube...';
-              else if (cmd === 'bluetooth') out.innerHTML = 'Bluetooth API: ' + ('bluetooth' in navigator ? '✅ Disponível' : '❌ Não suportado');
-              else if (cmd === 'camera') out.innerHTML = 'Use o app Câmera no menu';
-              else out.innerHTML = `Comando desconhecido: ${cmd}`;
-              input.value = '';
+    <script>
+        // CONFIGURAÇÃO DOS APPS
+        const APPS = [
+            { id: 'chrome', name: 'Chrome', icon: 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png', type: 'ext', url: 'https://www.google.com' },
+            { id: 'youtube', name: 'YouTube', icon: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png', type: 'ext', url: 'https://www.youtube.com' },
+            { id: 'whatsapp', name: 'WhatsApp', icon: 'https://cdn-icons-png.flaticon.com/512/124/124034.png', type: 'ext', url: 'https://web.whatsapp.com' },
+            { id: 'instagram', name: 'Instagram', icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png', type: 'ext', url: 'https://www.instagram.com' },
+            { id: 'facebook', name: 'Facebook', icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png', type: 'ext', url: 'https://www.facebook.com' },
+            { id: 'calc', name: 'Calculadora', icon: 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png', type: 'int' },
+            { id: 'terminal', name: 'Terminal', icon: 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png', type: 'int' },
+            { id: 'notes', name: 'Bloco Notas', icon: 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png', type: 'int' },
+            { id: 'sysinfo', name: 'Info Sistema', icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png', type: 'int' },
+            { id: 'settings', name: 'Configurações', icon: 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png', type: 'int' },
+            { id: 'netflix', name: 'Netflix', icon: 'https://cdn-icons-png.flaticon.com/512/870/870910.png', type: 'ext', url: 'https://www.netflix.com' },
+            { id: 'spotify', name: 'Spotify', icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111624.png', type: 'ext', url: 'https://www.spotify.com' },
+            { id: 'twitter', name: 'Twitter/X', icon: 'https://cdn-icons-png.flaticon.com/512/733/733579.png', type: 'ext', url: 'https://www.x.com' },
+            { id: 'tiktok', name: 'TikTok', icon: 'https://cdn-icons-png.flaticon.com/512/3046/3046126.png', type: 'ext', url: 'https://www.tiktok.com' },
+            { id: 'drive', name: 'Google Drive', icon: 'https://cdn-icons-png.flaticon.com/512/2991/2991112.png', type: 'ext', url: 'https://drive.google.com' }
+        ];
+
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStartMenu();
+            updateClock();
+            updateBattery();
+            setInterval(updateClock, 1000);
+            
+            // Drag and Drop Logic para janelas
+            initWindowManager();
+        });
+
+        // RENDERIZAÇÃO DO MENU
+        function renderStartMenu() {
+            const grid = document.getElementById('start-grid-content');
+            APPS.forEach(app => {
+                const item = document.createElement('div');
+                item.className = 'start-item';
+                item.onclick = () => { openApp(app.id); toggleStart(); };
+                item.innerHTML = `
+                    <img src="${app.icon}" alt="${app.name}">
+                    <span>${app.name}</span>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        // LÓGICA DE ABERTURA DE APPS
+        function openApp(id) {
+            const app = APPS.find(a => a.id === id);
+            if (!app) return;
+
+            if (app.type === 'ext') {
+                window.open(app.url, '_blank');
+            } else {
+                createWindow(app);
             }
-          };
         }
-        // Calculadora
-        if (appData.id === 'calc') {
-          let val='0', prev=null, op=null;
-          const disp = document.getElementById('calcDisplay');
-          const update = () => { if(disp) disp.innerText = val; };
-          document.querySelectorAll('.calc-btn').forEach(btn => btn.onclick = () => { val = (val==='0') ? btn.dataset.val : val+btn.dataset.val; update(); });
-          document.querySelectorAll('.calc-op').forEach(btn => btn.onclick = () => { prev=parseFloat(val); op=btn.dataset.op; val='0'; });
-          document.getElementById('calcC')?.onclick = () => { val='0'; prev=null; op=null; update(); };
-          document.getElementById('calcEq')?.onclick = () => { if(op && prev!==null){ const cur=parseFloat(val); let res=0; if(op==='+') res=prev+cur; if(op==='-') res=prev-cur; if(op==='*') res=prev*cur; if(op==='/') res=prev/cur; val=res.toString(); update(); prev=null; op=null; } };
+
+        function toggleStart() {
+            document.getElementById('start-menu').classList.toggle('active');
         }
-        // Arquivos
-        if (appData.id === 'files') {
-          document.getElementById('pickFile')?.onclick = () => { const input=document.createElement('input'); input.type='file'; input.onchange=(e)=>document.getElementById('fileResult').innerHTML=`📄 Arquivo: ${e.target.files[0]?.name}`; input.click(); };
-          document.getElementById('pickFolder')?.onclick = async () => { if('showDirectoryPicker' in window){ const dir=await window.showDirectoryPicker(); document.getElementById('fileResult').innerHTML=`📁 Pasta: ${dir.name}`; } else showToast('Use Chrome para pastas'); };
+
+        // GERENCIADOR DE JANELAS
+        function createWindow(app) {
+            const existing = document.getElementById(`win-${app.id}`);
+            if (existing) {
+                existing.style.display = 'flex';
+                existing.style.zIndex = getTopZ();
+                return;
+            }
+
+            const win = document.createElement('div');
+            win.id = `win-${app.id}`;
+            win.className = 'window';
+            win.style.display = 'flex';
+            win.style.zIndex = getTopZ();
+            
+            win.innerHTML = `
+                <div class="window-header">
+                    <div class="window-title"><img src="${app.icon}" width="16"> ${app.name}</div>
+                    <div class="window-controls">
+                        <button class="win-btn win-min" onclick="closeWin('${app.id}')"><i class="fas fa-minus"></i></button>
+                        <button class="win-btn win-close" onclick="closeWin('${app.id}')"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="window-content" id="content-${app.id}">
+                    ${getAppHTML(app.id)}
+                </div>
+            `;
+
+            document.getElementById('desktop').appendChild(win);
+            initAppLogic(app.id);
         }
-        // Configurações
-        if (appData.id === 'settings') {
-          document.getElementById('volume')?.oninput = (e) => showToast(`🔊 Volume: ${e.target.value}%`);
-          document.getElementById('bright')?.oninput = (e) => showToast(`💡 Brilho: ${e.target.value}%`);
-          document.getElementById('vibeTest')?.onclick = () => { if('vibrate' in navigator) navigator.vibrate(200); showToast('📳 Vibração!'); };
-          updateBattery();
+
+        function closeWin(id) {
+            const win = document.getElementById(`win-${id}`);
+            win.style.display = 'none';
         }
-        // Câmera
-        if (appData.id === 'camera') {
-          document.getElementById('openCamera')?.onclick = async () => {
+
+        function getTopZ() {
+            const wins = document.querySelectorAll('.window');
+            let max = 100;
+            wins.forEach(w => {
+                const z = parseInt(w.style.zIndex);
+                if (z > max) max = z;
+            });
+            return max + 1;
+        }
+
+        // CONTEÚDO DOS APPS INTERNOS
+        function getAppHTML(id) {
+            switch(id) {
+                case 'calc':
+                    return `
+                        <div class="calc-display" id="calc-res">0</div>
+                        <div class="calc-grid">
+                            <button class="calc-btn op" onclick="calcAction('C')">C</button>
+                            <button class="calc-btn op" onclick="calcAction('/')">/</button>
+                            <button class="calc-btn op" onclick="calcAction('*')">×</button>
+                            <button class="calc-btn op" onclick="calcAction('DEL')">⌫</button>
+                            <button class="calc-btn" onclick="calcAction('7')">7</button>
+                            <button class="calc-btn" onclick="calcAction('8')">8</button>
+                            <button class="calc-btn" onclick="calcAction('9')">9</button>
+                            <button class="calc-btn op" onclick="calcAction('-')">-</button>
+                            <button class="calc-btn" onclick="calcAction('4')">4</button>
+                            <button class="calc-btn" onclick="calcAction('5')">5</button>
+                            <button class="calc-btn" onclick="calcAction('6')">6</button>
+                            <button class="calc-btn op" onclick="calcAction('+')">+</button>
+                            <button class="calc-btn" onclick="calcAction('1')">1</button>
+                            <button class="calc-btn" onclick="calcAction('2')">2</button>
+                            <button class="calc-btn" onclick="calcAction('3')">3</button>
+                            <button class="calc-btn op" onclick="calcAction('=')">=</button>
+                            <button class="calc-btn" style="grid-column: span 2" onclick="calcAction('0')">0</button>
+                            <button class="calc-btn" onclick="calcAction('.')">.</button>
+                        </div>
+                    `;
+                case 'terminal':
+                    return `
+                        <div class="terminal-body" id="term-out">
+                            <div>Fusion OS [Versão 1.0.24] - POWER.bit</div>
+                            <div>(c) Gabriel Moretti Corporation. Todos os direitos reservados.</div>
+                            <br>
+                            <div>Digite 'help' para ver os comandos.</div>
+                        </div>
+                        <div class="term-input-line">
+                            <span>C:\\Users\\Guest></span>
+                            <input type="text" class="term-input" id="term-in" autofocus>
+                        </div>
+                    `;
+                case 'sysinfo':
+                    return `
+                        <div class="sys-info-card">
+                            <strong>SISTEMA:</strong> Fusion OS (Android Kernel)
+                        </div>
+                        <div class="sys-info-card">
+                            <strong>PROPRIETÁRIO:</strong> Gabriel Moretti - POWER.bit
+                        </div>
+                        <div class="sys-info-card">
+                            <strong>BATERIA:</strong> <span id="sys-bat">Carregando...</span>
+                        </div>
+                        <div class="sys-info-card">
+                            <strong>RESOLUÇÃO:</strong> ${window.innerWidth}x${window.innerHeight}
+                        </div>
+                        <div class="sys-info-card">
+                            <strong>NAVEGADOR:</strong> ${navigator.vendor}
+                        </div>
+                    `;
+                case 'notes':
+                    return `
+                        <textarea id="note-area" style="width:100%; height:100%; background:transparent; color:white; border:none; outline:none; resize:none; font-family:inherit; font-size:1rem;"></textarea>
+                    `;
+                case 'settings':
+                    return `
+                        <div style="display:flex; flex-direction:column; gap:15px;">
+                            <div>
+                                <label>Brilho da Tela</label>
+                                <input type="range" style="width:100%; accent-color: var(--primary);">
+                            </div>
+                            <div>
+                                <label>Volume do Sistema</label>
+                                <input type="range" style="width:100%; accent-color: var(--secondary);">
+                            </div>
+                            <button onclick="navigator.vibrate(200)" style="padding:10px; background:var(--primary); border:none; border-radius:5px; color:white;">Testar Vibração</button>
+                        </div>
+                    `;
+                default: return 'App em desenvolvimento...';
+            }
+        }
+
+        // LÓGICA DO RELÓGIO E BATERIA
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString();
+        }
+
+        async function updateBattery() {
             try {
-              const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-              const video = document.getElementById('cameraPreview');
-              if(video) video.srcObject = stream;
-              showToast('📷 Câmera ativada!');
-            } catch(e) { showToast('❌ Permissão negada'); }
-          };
+                const battery = await navigator.getBattery();
+                const update = () => {
+                    const level = Math.floor(battery.level * 100);
+                    const icon = battery.charging ? 'fa-bolt' : 'fa-battery-three-quarters';
+                    const text = `<i class="fas ${icon}"></i> ${level}%`;
+                    document.getElementById('battery-status').innerHTML = text;
+                    if(document.getElementById('sys-bat')) document.getElementById('sys-bat').innerText = `${level}% (${battery.charging ? 'Carregando' : 'Descarregando'})`;
+                };
+                battery.addEventListener('levelchange', update);
+                battery.addEventListener('chargingchange', update);
+                update();
+            } catch(e) {
+                document.getElementById('battery-status').innerHTML = '<i class="fas fa-battery-full"></i> 100%';
+            }
         }
-        // Bloco de notas
-        if (appData.id === 'notepad') {
-          document.getElementById('saveNote')?.onclick = () => { const text = document.getElementById('notes')?.value; localStorage.setItem('fusion_note', text); showToast('✅ Nota salva!'); };
-          const saved = localStorage.getItem('fusion_note');
-          if(saved && document.getElementById('notes')) document.getElementById('notes').value = saved;
+
+        // LÓGICA DO TERMINAL
+        function initAppLogic(id) {
+            if (id === 'terminal') {
+                const input = document.getElementById('term-in');
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const cmd = input.value.toLowerCase();
+                        handleTerminal(cmd);
+                        input.value = '';
+                    }
+                });
+            }
+            if (id === 'notes') {
+                const area = document.getElementById('note-area');
+                area.value = localStorage.getItem('fusion_notes') || '';
+                area.oninput = () => localStorage.setItem('fusion_notes', area.value);
+            }
         }
-        // Clima
-        if (appData.id === 'weather') {
-          document.getElementById('getWeather')?.onclick = () => {
-            navigator.geolocation.getCurrentPosition(pos => {
-              fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`)
-                .then(res => res.json())
-                .then(data => document.getElementById('weatherData').innerHTML = `<div>🌡️ Temperatura: ${data.current_weather.temperature}°C</div><div>💨 Vento: ${data.current_weather.windspeed} km/h</div>`)
-                .catch(() => document.getElementById('weatherData').innerHTML = '❌ Erro');
-            }, () => document.getElementById('weatherData').innerHTML = '❌ Permissão negada');
-          };
+
+        function handleTerminal(cmd) {
+            const out = document.getElementById('term-out');
+            let res = '';
+            if (cmd === 'help') res = 'Comandos: help, clear, status, about, calc, exit';
+            else if (cmd === 'about') res = 'POWER.bit - Criada por Gabriel Moretti. Tecnologia e Confiança.';
+            else if (cmd === 'status') res = 'Sistema Fusion OS operacional. Kernel OK. Bateria OK.';
+            else if (cmd === 'clear') { out.innerHTML = ''; return; }
+            else if (cmd === 'calc') { openApp('calc'); res = 'Abrindo calculadora...'; }
+            else res = `Comando '${cmd}' não reconhecido.`;
+
+            out.innerHTML += `<div>C:\\Users\\Guest> ${cmd}</div><div>${res}</div><br>`;
+            out.scrollTop = out.scrollHeight;
         }
-      }, 50);
-    }
-    showToast(`📂 Abrindo ${appData.name}`, 1000);
-  }
 
-  // ========== BATERIA E RELÓGIO ==========
-  async function updateBattery() {
-    if ('getBattery' in navigator) {
-      const b = await navigator.getBattery();
-      document.getElementById('batteryDisplay').innerHTML = `${b.charging?'⚡':'🔋'} ${Math.floor(b.level*100)}%`;
-      document.getElementById('battPct') && (document.getElementById('battPct').innerText = `${Math.floor(b.level*100)}%`);
-    }
-  }
-  function updateClock() {
-    document.getElementById('liveClock').innerText = new Date().toLocaleTimeString();
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-  updateBattery();
-  setInterval(updateBattery, 30000);
+        // LÓGICA DA CALCULADORA
+        let calcExpr = '';
+        function calcAction(val) {
+            const disp = document.getElementById('calc-res');
+            if (val === 'C') calcExpr = '';
+            else if (val === 'DEL') calcExpr = calcExpr.slice(0, -1);
+            else if (val === '=') {
+                try { calcExpr = eval(calcExpr).toString(); } catch { calcExpr = 'Erro'; }
+            } else {
+                if (calcExpr === '0') calcExpr = '';
+                calcExpr += val;
+            }
+            disp.innerText = calcExpr || '0';
+        }
 
-  // ========== RENDERIZAR DOCK E MENU ==========
-  function renderDock() {
-    const dockApps = ['chrome', 'youtube', 'gmail', 'whatsapp', 'instagram', 'spotify', 'settings', 'calc'];
-    const container = document.getElementById('dockContainer');
-    container.innerHTML = dockApps.map(id => {
-      const app = ALL_APPS.find(a => a.id === id);
-      return `<div class="dock-icon" data-app="${app.id}"><img src="${app.icon}" width="32"></div>`;
-    }).join('');
-    document.querySelectorAll('.dock-icon').forEach(el => {
-      el.addEventListener('click', () => openApp(el.dataset.app));
-    });
-  }
+        // DRAG AND DROP (MOBILE E DESKTOP)
+        function initWindowManager() {
+            document.addEventListener('mousedown', startDrag);
+            document.addEventListener('touchstart', startDrag, {passive: false});
 
-  function renderStartMenu() {
-    const container = document.getElementById('allAppsGrid');
-    container.innerHTML = ALL_APPS.map(app => `
-      <div class="app-icon" data-app="${app.id}">
-        <img src="${app.icon}" width="28"><br>
-        <span style="font-size:10px; color:#0ff;">${app.name}</span>
-      </div>
-    `).join('');
-    document.querySelectorAll('.app-icon').forEach(el => {
-      el.addEventListener('click', () => {
-        openApp(el.dataset.app);
-        document.getElementById('startMenu').classList.add('hide');
-      });
-    });
-  }
+            let activeWin = null;
+            let offset = { x: 0, y: 0 };
 
-  // ========== EVENTOS GLOBAIS ==========
-  document.getElementById('startButton').onclick = () => {
-    document.getElementById('startMenu').classList.toggle('hide');
-  };
-  document.addEventListener('click', (e) => {
-    const menu = document.getElementById('startMenu');
-    const btn = document.getElementById('startButton');
-    if (!menu.contains(e.target) && !btn.contains(e.target) && !menu.classList.contains('hide')) {
-      menu.classList.add('hide');
-    }
-  });
+            function startDrag(e) {
+                const header = e.target.closest('.window-header');
+                if (!header) return;
+                
+                activeWin = header.parentElement;
+                activeWin.style.zIndex = getTopZ();
+                
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+                
+                const rect = activeWin.getBoundingClientRect();
+                offset.x = clientX - rect.left;
+                offset.y = clientY - rect.top;
 
-  renderDock();
-  renderStartMenu();
-  showToast('🚀 FUSION OS ULTRA | Mais de 30 apps | Chrome, YouTube, Google Apps e muito mais!', 4000);
-</script>
-</body>
-</html>document.querySelectorAll('.app-item').forEach(el=>{el.onclick=()=>{let a=APPS.find(x=>x.id===el.dataset.id);if(a)abrirApp(a);};});
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('touchmove', drag, {passive: false});
+                document.addEventListener('mouseup', stopDrag);
+                document.addEventListener('touchend', stopDrag);
+            }
 
-let sb=document.getElementById('startBtn'),sm=document.getElementById('startMenu');
-sb.onclick=(e)=>{e.stopPropagation();sm.classList.toggle('hide');};
-document.addEventListener('click',(e)=>{if(!sm.contains(e.target)&&!sb.contains(e.target)&&!sm.classList.contains('hide'))sm.classList.add('hide');});
+            function drag(e) {
+                if (!activeWin) return;
+                e.preventDefault();
+                
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+                
+                activeWin.style.left = (clientX - offset.x) + 'px';
+                activeWin.style.top = (clientY - offset.y) + 'px';
+                activeWin.style.margin = '0';
+            }
 
-toast('✅ POWER.bit pronto! 17 apps');
-</script>
-</body>
-</html>    const bar = win.querySelector('.window-bar');
-    let drag = false, sx, sy, l0, t0;
-    bar.onmousedown = (e) => { if(e.target.classList?.contains('win-close')||e.target.classList?.contains('win-min')) return; drag=true; sx=e.clientX; sy=e.clientY; l0=win.offsetLeft; t0=win.offsetTop; };
-    document.onmousemove = (e) => { if(drag) { win.style.left = (l0+e.clientX-sx)+'px'; win.style.top = (t0+e.clientY-sy)+'px'; } };
-    document.onmouseup = () => drag=false;
-    bar.ontouchstart = (e) => { if(e.target.classList?.contains('win-close')||e.target.classList?.contains('win-min')) return; drag=true; sx=e.touches[0].clientX; sy=e.touches[0].clientY; l0=win.offsetLeft; t0=win.offsetTop; };
-    document.ontouchmove = (e) => { if(drag) { win.style.left = (l0+e.touches[0].clientX-sx)+'px'; win.style.top = (t0+e.touches[0].clientY-sy)+'px'; } };
-    document.ontouchend = () => drag=false;
-  }
-
-  function abrirApp(app) {
-    if (app.url) {
-      window.open(app.url, '_blank');
-      mostrarToast(`🌐 Abrindo ${app.nome} no navegador`);
-    } else if (app.tipo === 'calc') {
-      criarJanela(app.nome, app.icone, `<div id="calcDisplay" style="background:#000; padding:20px; text-align:right; font-size:36px; border-radius:12px; margin-bottom:12px;">0</div><div class="calc-grid"><div class="calc-btn" data-num="7">7</div><div class="calc-btn" data-num="8">8</div><div class="calc-btn" data-num="9">9</div><div class="calc-btn" data-op="/">/</div><div class="calc-btn" data-num="4">4</div><div class="calc-btn" data-num="5">5</div><div class="calc-btn" data-num="6">6</div><div class="calc-btn" data-op="*">*</div><div class="calc-btn" data-num="1">1</div><div class="calc-btn" data-num="2">2</div><div class="calc-btn" data-num="3">3</div><div class="calc-btn" data-op="-">-</div><div class="calc-btn" data-num="0">0</div><div class="calc-btn" id="calcC">C</div><div class="calc-btn" id="calcEq">=</div><div class="calc-btn" data-op="+">+</div></div>`);
-      setTimeout(() => {
-        let val='0', prev=null, op=null;
-        const disp=document.getElementById('calcDisplay');
-        const upd=()=>{if(disp)disp.innerText=val;};
-        document.querySelectorAll('.calc-btn[data-num]').forEach(btn=>btn.onclick=()=>{val=(val==='0')?btn.dataset.num:val+btn.dataset.num;upd();});
-        document.querySelectorAll('.calc-btn[data-op]').forEach(btn=>btn.onclick=()=>{prev=parseFloat(val);op=btn.dataset.op;val='0';});
-        document.getElementById('calcC')?.onclick=()=>{val='0';prev=null;op=null;upd();};
-        document.getElementById('calcEq')?.onclick=()=>{if(op&&prev!==null){const cur=parseFloat(val);let res=0;if(op==='+')res=prev+cur;else if(op==='-')res=prev-cur;else if(op==='*')res=prev*cur;else if(op==='/')res=prev/cur;val=res.toString();upd();prev=null;op=null;}};
-      },50);
-    } else if (app.tipo === 'terminal') {
-      criarJanela(app.nome, app.icone, `<div style="background:#000; padding:12px; border-radius:12px;"><div class="term-line">> Terminal POWER.bit</div><div class="term-line">> Comandos: help, ls, fusion, status, chrome</div><div id="termOut" class="term-line" style="background:#0a0e1a; padding:8px;">$ pronto</div><input type="text" id="termInput" placeholder="digite um comando..." style="background:#111; border:1px solid #0f0; color:#0f0;"></div>`);
-      setTimeout(()=>{
-        const input=document.getElementById('termInput');
-        input.onkeypress=(e)=>{
-          if(e.key==='Enter'){
-            const out=document.getElementById('termOut');
-            const cmd=input.value.toLowerCase();
-            if(cmd==='help') out.innerHTML='Comandos: help, ls, fusion, status, chrome, youtube';
-            else if(cmd==='ls') out.innerHTML='Desktop/ Documents/ Downloads/ Videos/ Music/';
-            else if(cmd==='fusion') out.innerHTML='🌀 POWER.bit Fusion OS - funcionando!';
-            else if(cmd==='status') out.innerHTML=`✅ Sistema OK | ${new Date().toLocaleTimeString()} | Bateria: ${document.getElementById('battery').innerText}`;
-            else if(cmd==='chrome') out.innerHTML='🌐 Abrindo Chrome...'; else if(cmd==='youtube') out.innerHTML='📺 YouTube disponível';
-            else out.innerHTML=`❌ Comando desconhecido: ${cmd} | Digite help`;
-            input.value='';
-          }
-        };
-      },50);
-    } else if (app.tipo === 'notas') {
-      criarJanela(app.nome, app.icone, `<textarea id="noteText" style="width:100%; height:150px; background:#0a0e1a; border:1px solid #0ff; border-radius:12px; padding:10px;"></textarea><button id="saveNote">💾 SALVAR NOTA</button>`);
-      setTimeout(()=>{
-        const saved=localStorage.getItem('powerbit_note');
-        if(saved) document.getElementById('noteText').value=saved;
-        document.getElementById('saveNote').onclick=()=>{localStorage.setItem('powerbit_note',document.getElementById('noteText').value);mostrarToast('✅ Nota salva!');};
-      },50);
-    } else if (app.tipo === 'info') {
-      criarJanela(app.nome, app.icone, `<div style="padding:5px;">📱 Dispositivo: ${navigator.userAgent.includes('Android')?'Android':'Desconhecido'}<br>📐 Tela: ${window.screen.width}x${window.screen.height}<br>🔋 Bateria: <span id="infoBatt">--%</span><br>🌐 Navegador: ${navigator.userAgent.split(' ').slice(-2).join(' ')}<br>📶 Rede: ${navigator.connection?.effectiveType||'desconhecida'}<br><button id="refreshInfo" style="margin-top:10px;">🔄 Atualizar</button></div>`);
-      setTimeout(()=>{
-        if('getBattery' in navigator){navigator.getBattery().then(b=>{document.getElementById('infoBatt').innerText=`${Math.floor(b.level*100)}% ${b.charging?'⚡':''}`;});}
-        document.getElementById('refreshInfo')?.onclick=()=>location.reload();
-      },50);
-    }
-    document.getElementById('startMenu').classList.add('hide');
-  }
-
-  // RELÓGIO
-  function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }
-  setInterval(updateClock, 1000); updateClock();
-
-  // BATERIA REAL
-  if('getBattery' in navigator){
-    navigator.getBattery().then(b=>{
-      function updateBatt(){ document.getElementById('battery').innerHTML = `${b.charging?'⚡':'🔋'} ${Math.floor(b.level*100)}%`; }
-      updateBatt();
-      b.addEventListener('levelchange',updateBatt);
-      b.addEventListener('chargingchange',updateBatt);
-    });
-  } else { document.getElementById('battery').innerHTML = '🔋 85%'; }
-
-  // DOCK
-  const DOCK_IDS = ['chrome','youtube','whatsapp','instagram','gmail'];
-  document.getElementById('dock').innerHTML = DOCK_IDS.map(id=>{const a=APPS.find(x=>x.id===id); return `<div class="dock-icon" data-id="${a.id}"><img src="${a.icone}"></div>`;}).join('');
-  document.querySelectorAll('.dock-icon').forEach(el=>{el.onclick=()=>{const app=APPS.find(a=>a.id===el.dataset.id);if(app)abrirApp(app);};});
-
-  // MENU
-  document.getElementById('appsGrid').innerHTML = APPS.map(app=>`<div class="app-item" data-id="${app.id}"><img src="${app.icone}"><span>${app.nome}</span></div>`).join('');
-  document.querySelectorAll('.app-item').forEach(el=>{el.onclick=()=>{const app=APPS.find(a=>a.id===el.dataset.id);if(app)abrirApp(app);};});
-
-  // BOTÃO INICIAR
-  const startBtn=document.getElementById('startBtn'), startMenu=document.getElementById('startMenu');
-  startBtn.onclick=(e)=>{e.stopPropagation(); startMenu.classList.toggle('hide');};
-  document.addEventListener('click',(e)=>{if(!startMenu.contains(e.target)&&!startBtn.contains(e.target)&&!startMenu.classList.contains('hide')) startMenu.classList.add('hide');});
-
-  mostrarToast('✅ POWER.bit pronto! 17 apps disponíveis');
-</script>
+            function stopDrag() {
+                activeWin = null;
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('touchmove', drag);
+            }
+        }
+    </script>
 </body>
 </html>
