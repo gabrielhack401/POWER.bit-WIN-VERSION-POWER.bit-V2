@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Fusion OS | Windows + Linux + Mac + iOS</title>
+  <title>CyberOS | Fusion Punk - Windows/Linux/Mac/iOS</title>
   <style>
     * {
       margin: 0;
@@ -14,176 +14,185 @@
 
     body {
       background: #000;
-      font-family: -apple-system, 'Segoe UI', 'Ubuntu', 'Roboto', sans-serif;
+      font-family: 'Share Tech Mono', 'Segoe UI', 'Courier New', monospace;
       overflow: hidden;
       height: 100vh;
       width: 100vw;
       position: fixed;
     }
 
-    /* Desktop Fusion */
+    /* Desktop cyberpunk */
     .desktop {
       width: 100%;
       height: 100%;
       position: relative;
-      background: radial-gradient(ellipse at 30% 20%, #1a1a2e, #0a0a0f);
+      background: radial-gradient(ellipse at 30% 20%, #0a0f1f, #020308);
       overflow: hidden;
     }
 
-    /* Wallpaper */
+    /* Wallpaper com efeito grid */
     .wallpaper {
       position: absolute;
       width: 100%;
       height: 100%;
       object-fit: cover;
       z-index: 0;
-      opacity: 0.5;
+      opacity: 0.3;
       pointer-events: none;
+      filter: hue-rotate(10deg) contrast(1.2);
     }
 
-    /* Dock estilo macOS/iOS */
-    .dock {
-      position: absolute;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(30, 32, 44, 0.85);
-      backdrop-filter: blur(28px);
-      border-radius: 32px;
-      padding: 8px 20px;
-      display: flex;
-      gap: 16px;
-      z-index: 100;
-      border: 0.5px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    }
-
-    .dock-icon {
-      width: 55px;
-      height: 55px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .dock-icon:active { transform: scale(0.92); background: rgba(255,255,255,0.25); }
-    .dock-icon img { width: 36px; height: 36px; pointer-events: none; }
-
-    /* Barra de status estilo iOS + Windows */
+    /* Barra de status neon */
     .status-bar {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 44px;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(20px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(16px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 20px;
       z-index: 100;
-      color: white;
-      font-size: 14px;
-      font-weight: 600;
+      color: #0ff;
+      font-family: monospace;
+      font-size: 13px;
+      border-bottom: 1px solid #0ff4;
+      text-shadow: 0 0 3px #0ff;
     }
-    .time-status { font-family: monospace; font-size: 15px; }
-    .battery-status { display: flex; align-items: center; gap: 6px; }
+    .battery-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-    /* Menu Iniciar estilo Windows + Linux */
-    .start-menu-fusion {
+    /* Dock cyberpunk */
+    .dock {
       position: absolute;
-      bottom: 85px;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 255, 255, 0.12);
+      backdrop-filter: blur(28px);
+      border-radius: 48px;
+      padding: 8px 24px;
+      display: flex;
+      gap: 18px;
+      z-index: 100;
+      border: 1px solid #0ff;
+      box-shadow: 0 0 20px #0ff3;
+    }
+
+    .dock-icon {
+      width: 58px;
+      height: 58px;
+      background: rgba(0, 255, 255, 0.1);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.1s;
+      border: 0.5px solid #0ff6;
+    }
+    .dock-icon:active { transform: scale(0.92); background: #0ff4; box-shadow: 0 0 12px #0ff; }
+    .dock-icon img { width: 36px; height: 36px; filter: drop-shadow(0 0 2px cyan); pointer-events: none; }
+
+    /* Menu Iniciar */
+    .start-menu {
+      position: absolute;
+      bottom: 90px;
       left: 20px;
       width: 340px;
-      background: rgba(25, 28, 38, 0.96);
-      backdrop-filter: blur(40px);
-      border-radius: 24px;
+      background: rgba(8, 12, 20, 0.96);
+      backdrop-filter: blur(32px);
+      border-radius: 28px;
       padding: 16px;
       z-index: 200;
-      border: 0.5px solid rgba(255,255,255,0.2);
-      transition: 0.2s;
+      border: 1px solid #0ff;
+      box-shadow: 0 0 28px #0ff3;
     }
-    .start-menu-fusion.hide { display: none; }
+    .start-menu.hide { display: none; }
 
-    .menu-header-fusion {
+    .menu-header {
       display: flex;
       align-items: center;
       gap: 12px;
       padding-bottom: 12px;
-      border-bottom: 0.5px solid rgba(255,255,255,0.15);
-      margin-bottom: 12px;
+      border-bottom: 1px solid #0ff;
+      margin-bottom: 14px;
     }
-    .user-avatar-fusion {
+    .avatar {
       width: 48px;
       height: 48px;
-      background: linear-gradient(135deg, #00b4d8, #0077b6);
+      background: linear-gradient(135deg, #0ff, #00a);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 26px;
+      box-shadow: 0 0 8px cyan;
     }
-    .apps-fusion-grid {
+    .apps-cyber {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
-    .fusion-app {
+    .cyber-app {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 5px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 14px;
+      background: rgba(0, 255, 255, 0.08);
+      border-radius: 16px;
       padding: 10px 4px;
       cursor: pointer;
+      border: 0.5px solid #0ff4;
     }
-    .fusion-app:active { background: rgba(100,200,255,0.3); }
-    .fusion-app img { width: 32px; height: 32px; }
-    .fusion-app span { color: #ddd; font-size: 10px; }
+    .cyber-app:active { background: #0ff3; transform: scale(0.96); }
+    .cyber-app img { width: 34px; height: 34px; filter: drop-shadow(0 0 2px cyan); }
+    .cyber-app span { color: #0ff; font-size: 11px; font-weight: bold; text-shadow: 0 0 2px black; }
 
-    /* JANELAS FLUTUANTES - Estilo Fusion OS */
-    .window-fusion {
+    /* JANELAS FLUTUANTES CYBER */
+    .window {
       position: absolute;
-      min-width: 280px;
-      min-height: 300px;
-      background: rgba(28, 30, 40, 0.96);
+      min-width: 300px;
+      min-height: 280px;
+      background: rgba(10, 15, 25, 0.96);
       backdrop-filter: blur(32px);
-      border-radius: 20px;
-      border: 1px solid rgba(100, 200, 255, 0.4);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+      border-radius: 24px;
+      border: 1.5px solid #0ff;
+      box-shadow: 0 0 24px #0ff6;
       z-index: 300;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      transition: box-shadow 0.1s;
     }
-    .window-fusion.hide { display: none; }
+    .window.hide { display: none; }
 
     .window-bar {
-      background: rgba(20, 22, 32, 0.9);
+      background: rgba(0, 30, 40, 0.9);
       padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: grab;
-      border-bottom: 0.5px solid rgba(100,200,255,0.3);
+      border-bottom: 1px solid #0ff;
     }
     .window-bar:active { cursor: grabbing; }
-    .window-title-fusion {
-      color: #00b4d8;
-      font-weight: 600;
+    .window-title {
+      color: #0ff;
+      font-weight: bold;
       display: flex;
       align-items: center;
       gap: 8px;
+      text-shadow: 0 0 3px cyan;
     }
     .window-controls {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
     .win-btn {
       width: 28px;
@@ -194,41 +203,37 @@
       justify-content: center;
       cursor: pointer;
       font-size: 16px;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.2);
     }
-    .win-btn.close { background: #ff5f5f; }
-    .win-btn.max { background: #2d8c5a; }
-    .win-btn.min { background: #ffa500; }
-    .win-content-fusion {
+    .win-btn.close { background: #ff3366; box-shadow: 0 0 5px red; }
+    .win-btn.min { background: #ffaa33; }
+    .window-content {
       flex: 1;
       padding: 16px;
       overflow: auto;
-      color: white;
+      color: #ccf;
     }
-    iframe { width: 100%; height: 100%; border: none; border-radius: 12px; background: white; }
+    iframe { width: 100%; height: 100%; border: none; border-radius: 16px; background: #fff; }
 
-    /* Terminal estilo Linux */
+    /* Terminal */
     .terminal-body {
-      background: #0a0e1a;
-      font-family: 'Courier New', monospace;
+      background: #03060c;
+      font-family: monospace;
       padding: 12px;
-      border-radius: 12px;
+      border-radius: 16px;
       height: 100%;
       overflow-y: auto;
+      border: 0.5px solid #0ff;
     }
-    .terminal-line {
-      color: #0f0;
-      margin: 4px 0;
-      font-size: 12px;
-    }
+    .terminal-line { color: #0f0; margin: 4px 0; font-size: 12px; text-shadow: 0 0 2px #0f0; }
     .terminal-input-line {
       display: flex;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
     .terminal-input {
-      background: #1a1e2a;
-      border: none;
+      background: #111;
+      border: 1px solid #0ff;
       color: #0f0;
       font-family: monospace;
       flex: 1;
@@ -236,35 +241,48 @@
       border-radius: 8px;
     }
 
+    /* Calculadora */
+    .calc-display {
+      font-size: 42px;
+      background: #000c;
+      padding: 12px;
+      border-radius: 16px;
+      text-align: right;
+      margin-bottom: 16px;
+      border: 1px solid cyan;
+    }
+    .calc-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .calc-btn {
+      background: cyan;
+      color: black;
+      padding: 12px;
+      border-radius: 40px;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 4px cyan;
+    }
+    .calc-btn:active { background: white; transform: scale(0.94); }
+
     /* Toast */
-    .toast-fusion {
+    .toast {
       position: absolute;
       bottom: 100px;
       left: 20px;
       right: 20px;
-      background: rgba(0,0,0,0.85);
+      background: #0ffc;
       backdrop-filter: blur(20px);
       padding: 12px;
-      border-radius: 30px;
+      border-radius: 40px;
       text-align: center;
-      color: #00ffcc;
+      color: black;
+      font-weight: bold;
       z-index: 500;
       transition: 0.2s;
-      font-size: 13px;
-    }
-
-    /* iOS Style Home Indicator */
-    .home-indicator {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 130px;
-      height: 5px;
-      background: white;
-      border-radius: 10px;
-      opacity: 0.6;
-      z-index: 101;
     }
   </style>
 </head>
@@ -272,85 +290,77 @@
 <div class="desktop">
   <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
 
-  <!-- Status Bar iOS style -->
+  <!-- Status Bar com bateria REAL -->
   <div class="status-bar">
-    <span>📶 Fusion OS</span>
-    <div class="time-status" id="fusionClock">--:--</div>
-    <div class="battery-status">🔋 100%</div>
+    <span>⚡ CYBERPUNK OS</span>
+    <div class="time-status" id="cyberClock">--:--:--</div>
+    <div class="battery-status" id="batteryArea">🔋 --%</div>
   </div>
 
-  <!-- Dock estilo macOS -->
+  <!-- DOCK -->
   <div class="dock">
     <div class="dock-icon" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"></div>
     <div class="dock-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
     <div class="dock-icon" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"></div>
     <div class="dock-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
     <div class="dock-icon" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"></div>
+    <div class="dock-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"></div>
   </div>
 
-  <!-- Menu Iniciar Fusion -->
-  <div class="start-menu-fusion hide" id="fusionStartMenu">
-    <div class="menu-header-fusion">
-      <div class="user-avatar-fusion">🐧</div>
-      <div><strong style="color:white;">Fusion User</strong><br><span style="font-size:10px; color:#00b4d8;">Windows • Linux • Mac • iOS</span></div>
+  <!-- MENU INICIAR -->
+  <div class="start-menu hide" id="startMenu">
+    <div class="menu-header">
+      <div class="avatar">🤘</div>
+      <div><strong style="color:cyan;">CYBER USER</strong><br><span style="font-size:10px;">FUSION EDITION</span></div>
     </div>
-    <div class="apps-fusion-grid" id="startMenuApps">
-      <div class="fusion-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-      <div class="fusion-app" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"><span>Terminal</span></div>
-      <div class="fusion-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Store</span></div>
-      <div class="fusion-app" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"><span>Settings</span></div>
-      <div class="fusion-app" data-app="notes"><img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png"><span>Notes</span></div>
-      <div class="fusion-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
+    <div class="apps-cyber">
+      <div class="cyber-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
+      <div class="cyber-app" data-app="terminal"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997922.png"><span>Terminal</span></div>
+      <div class="cyber-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Store</span></div>
+      <div class="cyber-app" data-app="settings"><img src="https://cdn-icons-png.flaticon.com/512/2997/2997933.png"><span>Settings</span></div>
+      <div class="cyber-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
+      <div class="cyber-app" data-app="finder"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png"><span>Finder</span></div>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="toast-fusion" id="fusionToast" style="opacity:0;">✅</div>
-
-  <!-- Home Indicator iOS -->
-  <div class="home-indicator"></div>
+  <div class="toast" id="cyberToast" style="opacity:0;">✅</div>
 </div>
 
 <script>
-  // Gerenciamento de janelas
-  let windows = [];
-  let nextZIndex = 300;
-  let activeWindow = null;
-
+  // ==================== UTILITÁRIOS ====================
+  const toast = document.getElementById('cyberToast');
   function showToast(msg, duration=2000) {
-    const toast = document.getElementById('fusionToast');
     toast.style.opacity = '1';
     toast.innerText = msg;
     setTimeout(() => toast.style.opacity = '0', duration);
   }
 
-  function bringToFront(winElement) {
-    nextZIndex++;
-    winElement.style.zIndex = nextZIndex;
-    activeWindow = winElement;
+  // Fechar todas as janelas
+  function closeAllWindows() {
+    document.querySelectorAll('.window').forEach(w => w.remove());
   }
 
-  function createWindow(title, iconUrl, contentHtml, width=320, height=400) {
+  // Criar janela flutuante (apenas uma por vez)
+  function createWindow(title, iconUrl, contentHtml, width=380, height=450) {
+    closeAllWindows();
     const desktop = document.querySelector('.desktop');
-    const winId = 'win_' + Date.now() + '_' + Math.random();
     const winDiv = document.createElement('div');
-    winDiv.className = 'window-fusion';
-    winDiv.id = winId;
+    winDiv.className = 'window';
     winDiv.style.width = width + 'px';
     winDiv.style.height = height + 'px';
-    winDiv.style.left = (Math.random() * (window.innerWidth - width - 50) + 30) + 'px';
-    winDiv.style.top = (Math.random() * (window.innerHeight - height - 100) + 60) + 'px';
-    winDiv.style.zIndex = nextZIndex;
+    winDiv.style.left = Math.max(20, (window.innerWidth/2 - width/2)) + 'px';
+    winDiv.style.top = Math.max(40, (window.innerHeight/2 - height/2)) + 'px';
+    winDiv.style.zIndex = 500;
     
     winDiv.innerHTML = `
       <div class="window-bar">
-        <div class="window-title-fusion"><img src="${iconUrl}" width="18"> ${title}</div>
+        <div class="window-title"><img src="${iconUrl}" width="22"> ${title}</div>
         <div class="window-controls">
           <div class="win-btn min">─</div>
           <div class="win-btn close">✕</div>
         </div>
       </div>
-      <div class="win-content-fusion">${contentHtml}</div>
+      <div class="window-content">${contentHtml}</div>
     `;
     
     desktop.appendChild(winDiv);
@@ -363,68 +373,58 @@
     closeBtn.addEventListener('click', () => winDiv.remove());
     minBtn.addEventListener('click', () => winDiv.classList.toggle('hide'));
     
-    // Arrastar
-    let isDragging = false;
-    let dragOffsetX = 0, dragOffsetY = 0;
-    bar.addEventListener('mousedown', (e) => {
+    // Arrastar (mouse + toque)
+    let drag = false, startX, startY, startLeft, startTop;
+    function onStart(e) {
       if (e.target === closeBtn || e.target === minBtn) return;
-      isDragging = true;
-      dragOffsetX = e.clientX - winDiv.offsetLeft;
-      dragOffsetY = e.clientY - winDiv.offsetTop;
-      bringToFront(winDiv);
-    });
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      let newLeft = e.clientX - dragOffsetX;
-      let newTop = e.clientY - dragOffsetY;
-      newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - winDiv.offsetWidth));
-      newTop = Math.max(0, Math.min(newTop, window.innerHeight - winDiv.offsetHeight - 50));
-      winDiv.style.left = newLeft + 'px';
-      winDiv.style.top = newTop + 'px';
-    });
-    document.addEventListener('mouseup', () => isDragging = false);
-    
-    // Para mobile
-    bar.addEventListener('touchstart', (e) => {
-      if (e.target === closeBtn || e.target === minBtn) return;
-      const touch = e.touches[0];
-      isDragging = true;
-      dragOffsetX = touch.clientX - winDiv.offsetLeft;
-      dragOffsetY = touch.clientY - winDiv.offsetTop;
-      bringToFront(winDiv);
+      drag = true;
+      const cx = e.clientX ?? e.touches[0].clientX;
+      const cy = e.clientY ?? e.touches[0].clientY;
+      startX = cx;
+      startY = cy;
+      startLeft = winDiv.offsetLeft;
+      startTop = winDiv.offsetTop;
+      winDiv.style.cursor = 'grabbing';
       e.preventDefault();
-    });
-    document.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      const touch = e.touches[0];
-      let newLeft = touch.clientX - dragOffsetX;
-      let newTop = touch.clientY - dragOffsetY;
+    }
+    function onMove(e) {
+      if (!drag) return;
+      const cx = e.clientX ?? e.touches[0].clientX;
+      const cy = e.clientY ?? e.touches[0].clientY;
+      let newLeft = startLeft + (cx - startX);
+      let newTop = startTop + (cy - startY);
       newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - winDiv.offsetWidth));
       newTop = Math.max(0, Math.min(newTop, window.innerHeight - winDiv.offsetHeight - 50));
       winDiv.style.left = newLeft + 'px';
       winDiv.style.top = newTop + 'px';
-    });
-    document.addEventListener('touchend', () => isDragging = false);
+    }
+    function onEnd() { drag = false; winDiv.style.cursor = ''; }
+    bar.addEventListener('mousedown', onStart);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+    bar.addEventListener('touchstart', onStart);
+    document.addEventListener('touchmove', onMove);
+    document.addEventListener('touchend', onEnd);
     
-    bringToFront(winDiv);
-    showToast(`📂 ${title} aberto`, 1000);
+    showToast(`🔓 ${title} aberto`, 800);
     return winDiv;
   }
 
-  // Conteúdo dos apps
+  // ==================== CONTEÚDO DOS APPS ====================
   function getAppContent(appType) {
     if (appType === 'chrome') {
-      return `<iframe src="https://www.google.com/webhp?igu=1"></iframe>`;
+      return `<iframe src="https://www.google.com/webhp?igu=1" title="Chrome"></iframe>`;
     }
     if (appType === 'terminal') {
       return `
-        <div class="terminal-body" id="terminalBody">
-          <div class="terminal-line">Fusion OS v1.0 - Linux Kernel 6.1</div>
-          <div class="terminal-line">Windows 11 + macOS Ventura + iOS 17 Fusion</div>
-          <div class="terminal-line">user@fusion:~$ <span id="terminalOutput">Bem-vindo ao sistema híbrido!</span></div>
+        <div class="terminal-body" id="termBody">
+          <div class="terminal-line">> CyberOS Terminal v2.0 [Fusion Kernel]</div>
+          <div class="terminal-line">> Windows 11 + Linux 6.1 + macOS + iOS</div>
+          <div class="terminal-line">> Digite 'help' para comandos</div>
+          <div class="terminal-line" id="terminalOutput">user@cyber:~$ Bem-vindo</div>
           <div class="terminal-input-line">
-            <span style="color:#0f0;">$&nbsp;</span>
-            <input type="text" id="terminalInput" class="terminal-input" placeholder="digite help ou ls">
+            <span style="color:#0f0;">➜</span>
+            <input type="text" id="termInput" class="terminal-input" placeholder="comando...">
           </div>
         </div>
       `;
@@ -432,11 +432,11 @@
     if (appType === 'store') {
       return `
         <div style="text-align:center;">
-          <h2 style="color:cyan;">📦 Fusion Store</h2>
+          <h2 style="color:cyan;">🌀 CYBER STORE</h2>
           <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
-            <div style="background:#252540; padding:12px; border-radius:16px;">🐧 App 1 - Linux Tools <button class="install-fake" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
-            <div style="background:#252540; padding:12px; border-radius:16px;">🪟 App 2 - Windows Apps <button class="install-fake" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
-            <div style="background:#252540; padding:12px; border-radius:16px;">🍎 App 3 - macOS Utilities <button class="install-fake" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
+            <div style="background:#000c; padding:12px; border-radius:20px; border:0.5px solid cyan;">💾 NEO-TOOLKIT <button class="installBtn" data-app="Neo Toolkit" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
+            <div style="background:#000c; padding:12px; border-radius:20px; border:0.5px solid cyan;">🔥 HACKER SUITE <button class="installBtn" data-app="Hacker Suite" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
+            <div style="background:#000c; padding:12px; border-radius:20px; border:0.5px solid cyan;">🎮 CYBER GAME PACK <button class="installBtn" data-app="Cyber Game" style="float:right; background:cyan; border:none; padding:4px 12px; border-radius:20px;">Instalar</button></div>
           </div>
         </div>
       `;
@@ -444,44 +444,34 @@
     if (appType === 'settings') {
       return `
         <div>
-          <h3>⚙️ Configurações Fusion</h3>
+          <h3 style="color:cyan;">⚙️ CONFIGURAÇÕES CYBER</h3>
           <div style="margin-top:16px;">
-            <div>🎨 Tema: <span style="color:cyan;">Híbrido (Windows/Linux/Mac)</span></div>
-            <div>🔊 Sons: Ativado</div>
-            <div>📱 Modo iOS: Landscape</div>
-            <div>🐧 Terminal Linux: Integrado</div>
-            <button id="resetToastBtn" style="background:cyan; color:black; border:none; margin-top:16px; padding:8px; border-radius:20px;">Testar Notificação</button>
+            <div>🔋 <span id="settingsBattery">Bateria: ...</span></div>
+            <div>🧠 Tema: Cyberpunk Neon</div>
+            <div>🐧 Modo Fusion: Ativo</div>
+            <div>📱 Interface Híbrida</div>
+            <button id="testNotifyBtn" style="margin-top:16px; background:cyan; border:none; padding:8px; border-radius:28px;">🔔 Testar Notificação</button>
           </div>
         </div>
       `;
     }
-    if (appType === 'notes') {
-      return `
-        <textarea style="width:100%; height:200px; background:#1a1e2a; color:white; border:1px solid cyan; border-radius:12px; padding:12px;">📝 Notas Fusion OS - Windows + Linux + Mac + iOS</textarea>
-      `;
-    }
     if (appType === 'calc') {
       return `
-        <div style="text-align:center;">
-          <div style="font-size:42px; background:#0a0e18; padding:16px; border-radius:20px; margin-bottom:16px;" id="calcDisplayFusion">0</div>
-          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
-            <button class="calc-num-fusion" data-num="7">7</button><button class="calc-num-fusion" data-num="8">8</button><button class="calc-num-fusion" data-num="9">9</button><button class="calc-op-fusion" data-op="/">/</button>
-            <button class="calc-num-fusion" data-num="4">4</button><button class="calc-num-fusion" data-num="5">5</button><button class="calc-num-fusion" data-num="6">6</button><button class="calc-op-fusion" data-op="*">*</button>
-            <button class="calc-num-fusion" data-num="1">1</button><button class="calc-num-fusion" data-num="2">2</button><button class="calc-num-fusion" data-num="3">3</button><button class="calc-op-fusion" data-op="-">-</button>
-            <button class="calc-num-fusion" data-num="0">0</button><button id="calcClearFusion">C</button><button id="calcEqualFusion">=</button><button class="calc-op-fusion" data-op="+">+</button>
-          </div>
+        <div class="calc-display" id="calcDisplayCyber">0</div>
+        <div class="calc-buttons">
+          <div class="calc-btn" data-val="7">7</div><div class="calc-btn" data-val="8">8</div><div class="calc-btn" data-val="9">9</div><div class="calc-btn" data-op="/">/</div>
+          <div class="calc-btn" data-val="4">4</div><div class="calc-btn" data-val="5">5</div><div class="calc-btn" data-val="6">6</div><div class="calc-btn" data-op="*">*</div>
+          <div class="calc-btn" data-val="1">1</div><div class="calc-btn" data-val="2">2</div><div class="calc-btn" data-val="3">3</div><div class="calc-btn" data-op="-">-</div>
+          <div class="calc-btn" data-val="0">0</div><div class="calc-btn" id="calcClearCyber">C</div><div class="calc-btn" id="calcEqualCyber">=</div><div class="calc-btn" data-op="+">+</div>
         </div>
       `;
     }
     if (appType === 'finder') {
       return `
         <div>
-          <h3>📁 Finder - Fusion OS</h3>
-          <div style="display:flex; flex-wrap:wrap; gap:16px; margin-top:16px;">
-            <div>📄 Documentos</div>
-            <div>🖼️ Imagens</div>
-            <div>🎵 Músicas</div>
-            <div>💾 Aplicativos</div>
+          <h3>📁 FINDER FUSION</h3>
+          <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:14px;">
+            <div>📄 Documentos</div><div>🖼️ Wallpapers</div><div>🎵 Músicas</div><div>💾 Apps</div><div>🐧 Linux FS</div>
           </div>
         </div>
       `;
@@ -489,1172 +479,64 @@
     return `<div>App em desenvolvimento</div>`;
   }
 
-  // Abrir aplicativo
+  // ==================== ABRIR APPS ====================
   function openApp(appType) {
-    let title = '';
-    let icon = '';
-    let width = 400;
-    let height = 500;
-    
+    let title = '', icon = '', w = 400, h = 480;
     switch(appType) {
-      case 'chrome': title = 'Google Chrome'; icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png'; width = 420; height = 550; break;
-      case 'terminal': title = 'Terminal Linux'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; width = 500; height = 400; break;
-      case 'store': title = 'Fusion Store'; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png'; width = 420; height = 480; break;
-      case 'settings': title = 'Configurações Fusion'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; width = 380; height = 400; break;
-      case 'notes': title = 'Notas'; icon = 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png'; width = 350; height = 350; break;
-      case 'calc': title = 'Calculadora'; icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png'; width = 320; height = 450; break;
-      case 'finder': title = 'Finder'; icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; width = 380; height = 400; break;
-      default: title = appType; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png';
+      case 'chrome': title = 'Chrome Cyber'; icon = 'https://cdn-icons-png.flaticon.com/512/6124/6124999.png'; w=420; h=520; break;
+      case 'terminal': title = 'Terminal Linux'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997922.png'; w=480; h=400; break;
+      case 'store': title = 'Cyber Store'; icon = 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png'; w=420; h=460; break;
+      case 'settings': title = 'Config Cyber'; icon = 'https://cdn-icons-png.flaticon.com/512/2997/2997933.png'; w=380; h=420; break;
+      case 'calc': title = 'Cyber Calc'; icon = 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png'; w=360; h=460; break;
+      case 'finder': title = 'Finder'; icon = 'https://cdn-icons-png.flaticon.com/512/1828/1828970.png'; w=380; h=400; break;
+      default: return;
     }
-    
     const content = getAppContent(appType);
-    const win = createWindow(title, icon, content, width, height);
+    const win = createWindow(title, icon, content, w, h);
     
-    // Configurar eventos específicos após criar
+    // Configurar eventos específicos após janela criada
     setTimeout(() => {
       if (appType === 'terminal') {
-        const input = document.getElementById('terminalInput');
+        const input = document.getElementById('termInput');
         if (input) {
           input.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-              const output = document.getElementById('terminalOutput');
               const cmd = input.value;
-              if (cmd === 'help') output.innerText = 'Comandos: help, ls, fusion, windows, linux, mac, ios';
-              else if (cmd === 'ls') output.innerText = 'Documentos/ Vídeos/ Músicas/ Apps/';
-              else if (cmd === 'fusion') output.innerText = 'Fusion OS - A fusão perfeita!';
-              else if (cmd === 'windows') output.innerText = 'Windows 11 mode: Ativo';
-              else if (cmd === 'linux') output.innerText = 'Ubuntu Kernel 6.1';
-              else if (cmd === 'mac') output.innerText = 'macOS Sonoma style';
-              else if (cmd === 'ios') output.innerText = 'iOS 17 widgets integrados';
-              else output.innerText = `Comando não reconhecido: ${cmd}`;
+              const output = document.getElementById('terminalOutput');
+              if (cmd === 'help') output.innerText = 'Comandos: help, ls, cyber, windows, linux, mac, ios, fusion';
+              else if (cmd === 'ls') output.innerText = 'Desktop/ Downloads/ Documents/';
+              else if (cmd === 'cyber') output.innerText = '💀 CyberOS Fusion - Modo punk ativado';
+              else if (cmd === 'windows') output.innerText = 'Windows 11 mode: GUI integrada';
+              else if (cmd === 'linux') output.innerText = 'Kernel 6.1 - Arch + Ubuntu mix';
+              else if (cmd === 'mac') output.innerText = 'macOS Sonoma style dock';
+              else if (cmd === 'ios') output.innerText = 'iOS 17 status bar + gestures';
+              else if (cmd === 'fusion') output.innerText = 'Fusion OS: Win+Linux+Mac+iOS';
+              else output.innerText = `Comando inválido: ${cmd}`;
               input.value = '';
             }
           });
         }
       }
-      
       if (appType === 'calc') {
-        let calcVal = '0', calcPrev = null, calcOp = null;
-        const display = document.getElementB      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      border: 0.5px solid cyan;
-    }
-    .start-btn:active { transform: scale(0.95); background: rgba(0, 200, 255, 0.4); }
-    .start-btn svg { width: 18px; fill: cyan; pointer-events: none; }
-    .start-btn span { color: cyan; font-weight: bold; font-size: 12px; pointer-events: none; }
-
-    .taskbar-middle {
-      display: flex;
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px 16px;
-      border-radius: 40px;
-      overflow-x: auto;
-      max-width: 55%;
-    }
-
-    .taskbar-app {
-      width: 42px;
-      height: 42px;
-      background: rgba(0, 200, 255, 0.15);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .taskbar-app:active { background: rgba(0, 200, 255, 0.5); transform: scale(0.94); }
-    .taskbar-app img { width: 24px; height: 24px; pointer-events: none; }
-
-    .time-area {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 5px 12px;
-      border-radius: 28px;
-      color: cyan;
-      font-family: monospace;
-      font-weight: bold;
-      font-size: 13px;
-      letter-spacing: 1px;
-      white-space: nowrap;
-      cursor: default;
-    }
-
-    /* Start Menu */
-    .start-menu {
-      position: absolute;
-      bottom: 78px;
-      left: 12px;
-      right: 12px;
-      background: rgba(10, 14, 24, 0.98);
-      backdrop-filter: blur(48px);
-      border-radius: 28px;
-      padding: 16px;
-      z-index: 1100;
-      transition: 0.2s;
-      border: 1px solid cyan;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-    .start-menu.hide { display: none; }
-
-    .menu-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid cyan;
-      margin-bottom: 16px;
-    }
-    .avatar-win12 {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, cyan, #0066ff);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-    .menu-header-text { color: white; font-size: 14px; }
-
-    .apps-grid-full {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-    .menu-app {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      background: rgba(0, 200, 255, 0.1);
-      border-radius: 16px;
-      padding: 8px 4px;
-      cursor: pointer;
-    }
-    .menu-app:active { background: rgba(0, 200, 255, 0.3); }
-    .menu-app img { width: 32px; height: 32px; pointer-events: none; }
-    .menu-app span { color: #ccf; font-size: 10px; }
-
-    /* Janelas */
-    .app-window {
-      position: absolute;
-      top: 5%;
-      left: 3%;
-      width: 94%;
-      height: 86%;
-      background: #0f1320ee;
-      backdrop-filter: blur(40px);
-      border-radius: 28px;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid cyan;
-      box-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
-    }
-    .app-window.hide { display: none; }
-
-    .win-header {
-      background: #0a0e18cc;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid cyan;
-      border-radius: 28px 28px 0 0;
-    }
-    .win-title {
-      color: cyan;
-      font-weight: bold;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .win-title img { width: 22px; height: 22px; }
-    .close-win {
-      background: #ff4444;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 30px;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .win-content {
-      flex: 1;
-      overflow: auto;
-      padding: 12px;
-      color: white;
-    }
-    iframe { width: 100%; height: 100%; border: none; background: white; border-radius: 16px; }
-
-    .internal-ui {
-      background: #1a1e2c;
-      border-radius: 24px;
-      padding: 20px;
-      text-align: center;
-      height: 100%;
-      overflow-y: auto;
-    }
-
-    .toast {
-      position: absolute;
-      bottom: 85px;
-      left: 16px;
-      right: 16px;
-      background: #000000cc;
-      backdrop-filter: blur(24px);
-      padding: 10px 16px;
-      border-radius: 40px;
-      color: #00ffcc;
-      text-align: center;
-      z-index: 300;
-      transition: 0.2s;
-      font-size: 12px;
-    }
-  </style>
-</head>
-<body>
-<div class="desktop">
-  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
-
-  <!-- Desktop Icons -->
-  <div class="desktop-icons" id="desktopIcons">
-    <div class="desktop-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-    <div class="desktop-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>MS Store</span></div>
-    <div class="desktop-icon" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
-    <div class="desktop-icon" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"><span>Spotify</span></div>
-    <div class="desktop-icon" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"><span>YouTube</span></div>
-    <div class="desktop-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
-  </div>
-
-  <!-- Taskbar -->
-  <div class="taskbar">
-    <div class="start-btn" id="startBtn">
-      <svg viewBox="0 0 24 24" width="18"><path d="M4 4h16v16H4z" fill="cyan"/><rect x="8" y="8" width="3" height="3" fill="#000"/><rect x="13" y="8" width="3" height="3" fill="#000"/><rect x="8" y="13" width="3" height="3" fill="#000"/><rect x="13" y="13" width="3" height="3" fill="#000"/></svg>
-      <span>Win12</span>
-    </div>
-    <div class="taskbar-middle" id="taskbarApps">
-      <div class="taskbar-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
-      <div class="taskbar-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
-      <div class="taskbar-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"></div>
-      <div class="taskbar-app" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"></div>
-      <div class="taskbar-app" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></div>
-      <div class="taskbar-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"></div>
-    </div>
-    <div class="time-area" id="clock">--:--:--</div>
-  </div>
-
-  <!-- Start Menu -->
-  <div class="start-menu hide" id="startMenu">
-    <div class="menu-header">
-      <div class="avatar-win12">⚡</div>
-      <div class="menu-header-text">Windows 12 Hyper-Version<br><span style="font-size: 10px; color: cyan;">Pré-instalado</span></div>
-    </div>
-    <div class="apps-grid-full" id="menuApps">
-      <div class="menu-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-      <div class="menu-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>MS Store</span></div>
-      <div class="menu-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
-      <div class="menu-app" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"><span>Spotify</span></div>
-      <div class="menu-app" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"><span>YouTube</span></div>
-      <div class="menu-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calculadora</span></div>
-    </div>
-  </div>
-
-  <!-- Windows dos Apps -->
-  <div class="app-window hide" id="chromeWindow">
-    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png">Google Chrome</div><button class="close-win" data-win="chrome">✕</button></div>
-    <div class="win-content"><iframe src="https://www.google.com/webhp?igu=1"></iframe></div>
-  </div>
-  <div class="app-window hide" id="edgeWindow">
-    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png">Microsoft Edge</div><button class="close-win" data-win="edge">✕</button></div>
-    <div class="win-content"><iframe src="https://www.bing.com"></iframe></div>
-  </div>
-  <div class="app-window hide" id="storeWindow">
-    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png">Microsoft Store</div><button class="close-win" data-win="store">✕</button></div>
-    <div class="win-content" id="storeContent"></div>
-  </div>
-  <div class="app-window hide" id="spotifyWindow">
-    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png">Spotify</div><button class="close-win" data-win="spotify">✕</button></div>
-    <div class="win-content"><iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"></iframe></div>
-  </div>
-  <div class="app-window hide" id="youtubeWindow">
-    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">YouTube</div><button class="close-win" data-win="youtube">✕</button></div>
-    <div class="win-content"><iframe src="https://www.youtube.com/embed?listType=search&query=windows12"></iframe></div>
-  </div>
-  <div class="app-window hide" id="calcWindow">
-    <div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png">Calculadora</div><button class="close-win" data-win="calc">✕</button></div>
-    <div class="win-content"><div class="internal-ui"><div style="font-size:48px; text-align:center;" id="calcDisplayCalc">0</div><div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:20px;"><button class="calc-num" data-num="7">7</button><button class="calc-num" data-num="8">8</button><button class="calc-num" data-num="9">9</button><button class="calc-op" data-op="/">/</button><button class="calc-num" data-num="4">4</button><button class="calc-num" data-num="5">5</button><button class="calc-num" data-num="6">6</button><button class="calc-op" data-op="*">*</button><button class="calc-num" data-num="1">1</button><button class="calc-num" data-num="2">2</button><button class="calc-num" data-num="3">3</button><button class="calc-op" data-op="-">-</button><button class="calc-num" data-num="0">0</button><button id="calcClear">C</button><button id="calcEqual">=</button><button class="calc-op" data-op="+">+</button></div></div></div></div>
-  </div>
-
-  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
-</div>
-
-<script>
-  // Toast
-  const toast = document.getElementById('toastMsg');
-  function showToast(msg, duration=2000) {
-    toast.style.opacity = '1';
-    toast.innerText = msg;
-    setTimeout(() => toast.style.opacity = '0', duration);
-  }
-
-  // Fechar todas janelas
-  function closeAllWindows() {
-    document.querySelectorAll('.app-window').forEach(w => w.classList.add('hide'));
-  }
-
-  // Abrir janela específica
-  function openWindow(windowId) {
-    closeAllWindows();
-    const win = document.getElementById(windowId);
-    if (win) win.classList.remove('hide');
-    document.getElementById('startMenu').classList.add('hide');
-    showToast(`✅ Abrindo ${windowId.replace('Window', '')}...`, 1000);
-  }
-
-  // Abrir app baseado no tipo
-  function openApp(appType) {
-    if (appType === 'chrome') openWindow('chromeWindow');
-    else if (appType === 'edge') openWindow('edgeWindow');
-    else if (appType === 'store') {
-      renderStore();
-      openWindow('storeWindow');
-    }
-    else if (appType === 'spotify') openWindow('spotifyWindow');
-    else if (appType === 'youtube') openWindow('youtubeWindow');
-    else if (appType === 'calc') openWindow('calcWindow');
-    else showToast(`📱 ${appType} abrindo...`);
-  }
-
-  // Renderizar Microsoft Store
-  function renderStore() {
-    const container = document.getElementById('storeContent');
-    if (!container) return;
-    container.innerHTML = `
-      <div class="internal-ui">
-        <h2 style="color:cyan;">📦 Microsoft Store</h2>
-        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:16px; margin-top:16px;">
-          <div style="background:#252540; border-radius:20px; padding:12px; text-align:center;"><img src="https://cdn-icons-png.flaticon.com/512/870/870910.png" width="50"><h4>Netflix</h4><button class="install-store" data-app="Netflix" style="background:cyan; border:none; margin-top:8px; padding:6px 12px; border-radius:20px;">Instalar</button></div>
-          <div style="background:#252540; border-radius:20px; padding:12px; text-align:center;"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="50"><h4>Instagram</h4><button class="install-store" data-app="Instagram" style="background:cyan; border:none; margin-top:8px; padding:6px 12px; border-radius:20px;">Instalar</button></div>
-          <div style="background:#252540; border-radius:20px; padding:12px; text-align:center;"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" width="50"><h4>TikTok</h4><button class="install-store" data-app="TikTok" style="background:cyan; border:none; margin-top:8px; padding:6px 12px; border-radius:20px;">Instalar</button></div>
-        </div>
-      </div>
-    `;
-    document.querySelectorAll('.install-store').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showToast(`✅ ${btn.getAttribute('data-app')} instalado com sucesso!`);
-      });
-    });
-  }
-
-  // ========== RELÓGIO FUNCIONAL ==========
-  function updateClock() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-    const clockElement = document.getElementById('clock');
-    if (clockElement) {
-      clockElement.innerText = `${hours}:${minutes}:${seconds}`;
-    }
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  // ========== CALCULADORA ==========
-  let calcValue = '0';
-  let calcPrev = null;
-  let calcOp = null;
-  
-  function updateCalcDisplay() {
-    const display = document.getElementById('calcDisplayCalc');
-    if (display) display.innerText = calcValue;
-  }
-  
-  function attachCalcEvents() {
-    document.querySelectorAll('.calc-num').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const num = btn.getAttribute('data-num');
-        calcValue = calcValue === '0' ? num : calcValue + num;
-        updateCalcDisplay();
-      });
-    });
-    document.querySelectorAll('.calc-op').forEach(btn => {
-      btn.addEventListener('click', () => {
-        calcPrev = parseFloat(calcValue);
-        calcOp = btn.getAttribute('data-op');
-        calcValue = '0';
-      });
-    });
-    const clearBtn = document.getElementById('calcClear');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        calcValue = '0';
-        calcPrev = null;
-        calcOp = null;
-        updateCalcDisplay();
-      });
-    }
-    const equalBtn = document.getElementById('calcEqual');
-    if (equalBtn) {
-      equalBtn.addEventListener('click', () => {
-        if (calcOp && calcPrev !== null) {
-          const current = parseFloat(calcValue);
-          let result = 0;
-          if (calcOp === '+') result = calcPrev + current;
-          else if (calcOp === '-') result = calcPrev - current;
-          else if (calcOp === '*') result = calcPrev * current;
-          else if (calcOp === '/') result = calcPrev / current;
-          calcValue = result.toString();
-          updateCalcDisplay();
-          calcOp = null;
-          calcPrev = null;
-        }
-      });
-    }
-  }
-
-  // ========== EVENTOS DOS BOTÕES ==========
-  
-  // Botão Iniciar
-  const startBtn = document.getElementById('startBtn');
-  const startMenu = document.getElementById('startMenu');
-  if (startBtn) {
-    startBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      startMenu.classList.toggle('hide');
-    });
-  }
-
-  // Fechar menu ao clicar fora
-  document.addEventListener('click', (e) => {
-    if (startMenu && !startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
-      startMenu.classList.add('hide');
-    }
-  });
-
-  // Fechar janelas com botão X
-  document.querySelectorAll('.close-win').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const winId = btn.getAttribute('data-win');
-      const win = document.getElementById(`${winId}Window`);
-      if (win) win.classList.add('hide');
-    });
-  });
-
-  // Adicionar eventos a todos os elementos com data-app (desktop, taskbar, menu)
-  function bindAppEvents() {
-    document.querySelectorAll('[data-app]').forEach(el => {
-      // Remove eventos antigos para evitar duplicação
-      el.removeEventListener('click', el._clickHand      border-radius: 24px;
-      padding: 6px 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      border: 0.5px solid cyan;
-    }
-    .start-btn:active { transform: scale(0.95); background: cyan; }
-    .start-btn svg { width: 18px; fill: cyan; }
-    .start-btn span { color: cyan; font-weight: bold; font-size: 12px; }
-
-    .taskbar-middle {
-      display: flex;
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px 16px;
-      border-radius: 40px;
-      overflow-x: auto;
-      max-width: 55%;
-    }
-
-    .taskbar-app {
-      width: 42px;
-      height: 42px;
-      background: rgba(0, 200, 255, 0.15);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .taskbar-app:active { background: rgba(0, 200, 255, 0.5); transform: scale(0.94); }
-    .taskbar-app img { width: 24px; height: 24px; }
-
-    .time-area {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 5px 12px;
-      border-radius: 28px;
-      color: cyan;
-      font-family: monospace;
-      font-weight: bold;
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    /* START MENU - Mais opções */
-    .start-menu {
-      position: absolute;
-      bottom: 78px;
-      left: 12px;
-      right: 12px;
-      background: rgba(10, 14, 24, 0.98);
-      backdrop-filter: blur(48px);
-      border-radius: 28px;
-      padding: 16px;
-      z-index: 1100;
-      transition: 0.2s;
-      border: 1px solid cyan;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-    .start-menu.hide { transform: scale(0.9); opacity: 0; visibility: hidden; }
-
-    .menu-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid cyan;
-      margin-bottom: 16px;
-    }
-    .avatar-win12 {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, cyan, #0066ff);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-    .menu-header-text { color: white; font-size: 14px; }
-
-    .apps-grid-full {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-    .menu-app {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      background: rgba(0, 200, 255, 0.1);
-      border-radius: 16px;
-      padding: 8px 4px;
-      cursor: pointer;
-    }
-    .menu-app:active { background: rgba(0, 200, 255, 0.3); }
-    .menu-app img { width: 32px; height: 32px; }
-    .menu-app span { color: #ccf; font-size: 10px; text-align: center; }
-
-    /* Janela flutuante estilo Win12 - otimizada mobile horizontal */
-    .app-window {
-      position: absolute;
-      top: 5%;
-      left: 3%;
-      width: 94%;
-      height: 86%;
-      background: #0f1320ee;
-      backdrop-filter: blur(40px);
-      border-radius: 28px;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid cyan;
-      box-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
-      transition: 0.2s;
-    }
-    .app-window.hide { display: none; }
-
-    .win-header {
-      background: #0a0e18cc;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid cyan;
-      border-radius: 28px 28px 0 0;
-    }
-    .win-title {
-      color: cyan;
-      font-weight: bold;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .win-title img { width: 22px; height: 22px; }
-    .close-win {
-      background: #ff4444;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 30px;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .win-content {
-      flex: 1;
-      overflow: auto;
-      padding: 12px;
-      color: white;
-    }
-    iframe { width: 100%; height: 100%; border: none; background: white; border-radius: 16px; }
-
-    /* Apps internos */
-    .internal-ui {
-      background: #1a1e2c;
-      border-radius: 24px;
-      padding: 20px;
-      text-align: center;
-      height: 100%;
-      overflow-y: auto;
-    }
-    .calculator-display {
-      font-size: 48px;
-      font-family: monospace;
-      background: #0a0e18;
-      padding: 20px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      text-align: right;
-      color: cyan;
-    }
-    .calc-buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-    .calc-btn {
-      background: cyan;
-      color: black;
-      padding: 14px;
-      border-radius: 40px;
-      font-weight: bold;
-      font-size: 18px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .calc-btn:active { background: white; transform: scale(0.95); }
-
-    .toast {
-      position: absolute;
-      bottom: 85px;
-      left: 16px;
-      right: 16px;
-      background: #000000cc;
-      backdrop-filter: blur(24px);
-      padding: 10px 16px;
-      border-radius: 40px;
-      color: #00ffcc;
-      text-align: center;
-      z-index: 300;
-      transition: 0.2s;
-      font-size: 12px;
-    }
-
-    /* Scrollbar personalizada */
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #1a1e2c; }
-    ::-webkit-scrollbar-thumb { background: cyan; border-radius: 10px; }
-  </style>
-</head>
-<body>
-<div class="desktop">
-  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
-
-  <!-- Desktop Icons - TODOS OS APPS PRÉ-INSTALADOS -->
-  <div class="desktop-icons">
-    <div class="desktop-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-    <div class="desktop-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>MS Store</span></div>
-    <div class="desktop-icon" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
-    <div class="desktop-icon" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"><span>Spotify</span></div>
-    <div class="desktop-icon" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"><span>YouTube</span></div>
-    <div class="desktop-icon" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calc</span></div>
-    <div class="desktop-icon" data-app="whatsapp"><img src="https://cdn-icons-png.flaticon.com/512/124/124034.png"><span>WhatsApp</span></div>
-    <div class="desktop-icon" data-app="photos"><img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png"><span>Fotos</span></div>
-  </div>
-
-  <div class="taskbar">
-    <div class="start-btn" id="startWin12Btn"><svg viewBox="0 0 24 24" width="18"><path d="M4 4h16v16H4z" fill="cyan"/><rect x="8" y="8" width="3" height="3" fill="#000"/><rect x="13" y="8" width="3" height="3" fill="#000"/><rect x="8" y="13" width="3" height="3" fill="#000"/><rect x="13" y="13" width="3" height="3" fill="#000"/></svg><span>Win12</span></div>
-    <div class="taskbar-middle">
-      <div class="taskbar-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
-      <div class="taskbar-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
-      <div class="taskbar-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"></div>
-      <div class="taskbar-app" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"></div>
-      <div class="taskbar-app" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></div>
-      <div class="taskbar-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"></div>
-    </div>
-    <div class="time-area" id="clock">--:--:--</div>
-  </div>
-
-  <!-- START MENU -->
-  <div class="start-menu hide" id="startMenu">
-    <div class="menu-header">
-      <div class="avatar-win12">⚡</div>
-      <div class="menu-header-text">Windows 12 Hyper-Version<br><span style="font-size: 10px; color: cyan;">Pré-instalado | Modo Horizontal</span></div>
-    </div>
-    <div class="apps-grid-full">
-      <div class="menu-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-      <div class="menu-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>MS Store</span></div>
-      <div class="menu-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
-      <div class="menu-app" data-app="spotify"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png"><span>Spotify</span></div>
-      <div class="menu-app" data-app="youtube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"><span>YouTube</span></div>
-      <div class="menu-app" data-app="calc"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calculadora</span></div>
-      <div class="menu-app" data-app="whatsapp"><img src="https://cdn-icons-png.flaticon.com/512/124/124034.png"><span>WhatsApp</span></div>
-      <div class="menu-app" data-app="photos"><img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png"><span>Fotos</span></div>
-      <div class="menu-app" data-app="maps"><img src="https://cdn-icons-png.flaticon.com/512/854/854878.png"><span>Mapas</span></div>
-      <div class="menu-app" data-app="office"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Office</span></div>
-    </div>
-  </div>
-
-  <!-- JANELAS DOS APPS -->
-  <div class="app-window hide" id="chromeWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png">Google Chrome</div><button class="close-win" data-win="chrome">✕</button></div><div class="win-content"><iframe src="https://www.google.com/webhp?igu=1"></iframe></div></div>
-  <div class="app-window hide" id="edgeWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png">Microsoft Edge</div><button class="close-win" data-win="edge">✕</button></div><div class="win-content"><iframe src="https://www.bing.com"></iframe></div></div>
-  <div class="app-window hide" id="storeWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png">Microsoft Store</div><button class="close-win" data-win="store">✕</button></div><div class="win-content" id="storeContent"></div></div>
-  <div class="app-window hide" id="spotifyWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111624.png">Spotify</div><button class="close-win" data-win="spotify">✕</button></div><div class="win-content"><iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"></iframe></div></div>
-  <div class="app-window hide" id="youtubeWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">YouTube</div><button class="close-win" data-win="youtube">✕</button></div><div class="win-content"><iframe src="https://www.youtube.com/embed?listType=search&query=windows12"></iframe></div></div>
-  <div class="app-window hide" id="calcWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png">Calculadora</div><button class="close-win" data-win="calc">✕</button></div><div class="win-content"><div class="internal-ui"><div class="calculator-display" id="calcDisplay">0</div><div class="calc-buttons"><div class="calc-btn" data-num="7">7</div><div class="calc-btn" data-num="8">8</div><div class="calc-btn" data-num="9">9</div><div class="calc-btn" data-op="/">÷</div><div class="calc-btn" data-num="4">4</div><div class="calc-btn" data-num="5">5</div><div class="calc-btn" data-num="6">6</div><div class="calc-btn" data-op="*">×</div><div class="calc-btn" data-num="1">1</div><div class="calc-btn" data-num="2">2</div><div class="calc-btn" data-num="3">3</div><div class="calc-btn" data-op="-">-</div><div class="calc-btn" data-num="0">0</div><div class="calc-btn" data-clear="1">C</div><div class="calc-btn" data-equals="1">=</div><div class="calc-btn" data-op="+">+</div></div></div></div></div></div>
-  <div class="app-window hide" id="whatsappWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/124/124034.png">WhatsApp Web</div><button class="close-win" data-win="whatsapp">✕</button></div><div class="win-content"><iframe src="https://web.whatsapp.com"></iframe></div></div>
-  <div class="app-window hide" id="photosWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png">Fotos</div><button class="close-win" data-win="photos">✕</button></div><div class="win-content"><div class="internal-ui"><h3 style="color:cyan;">📸 Galeria de Fotos</h3><div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;"><div style="background:#252540; padding:20px; border-radius:20px;">🖼️ Imagem 1</div><div style="background:#252540; padding:20px; border-radius:20px;">📷 Imagem 2</div><div style="background:#252540; padding:20px; border-radius:20px;">🎬 Vídeo</div></div></div></div></div>
-  <div class="app-window hide" id="mapsWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/854/854878.png">Mapas</div><button class="close-win" data-win="maps">✕</button></div><div class="win-content"><iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-46.6,-23.6,-46.5,-23.5&layer=mapnik"></iframe></div></div>
-  <div class="app-window hide" id="officeWindow"><div class="win-header"><div class="win-title"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png">Microsoft Office</div><button class="close-win" data-win="office">✕</button></div><div class="win-content"><div class="internal-ui"><h3>📄 Word, Excel, PowerPoint</h3><p style="margin-top:20px;">Suíte Office pronta para usar</p><button id="officeDemoBtn" style="background:cyan; border:none; padding:12px; border-radius:28px; margin-top:20px;">Criar Documento</button></div></div></div>
-
-  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
-</div>
-
-<script>
-  const toast = document.getElementById('toastMsg');
-  function showToast(msg, duration=2000) {
-    toast.style.opacity = '1';
-    toast.innerText = msg;
-    setTimeout(() => toast.style.opacity = '0', duration);
-  }
-
-  function closeAllWindows() {
-    document.querySelectorAll('.app-window').forEach(w => w.classList.add('hide'));
-  }
-
-  function openWindow(windowId) {
-    closeAllWindows();
-    const win = document.getElementById(windowId);
-    if (win) win.classList.remove('hide');
-    document.getElementById('startMenu').classList.add('hide');
-  }
-
-  // Renderizar Store
-  const storeApps = [
-    { name: "Netflix", icon: "https://cdn-icons-png.flaticon.com/512/870/870910.png" },
-    { name: "Instagram", icon: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png" },
-    { name: "TikTok", icon: "https://cdn-icons-png.flaticon.com/512/3046/3046126.png" },
-    { name: "Twitter", icon: "https://cdn-icons-png.flaticon.com/512/733/733579.png" }
-  ];
-  function renderStore() {
-    const container = document.getElementById('storeContent');
-    if (!container) return;
-    container.innerHTML = `<div class="internal-ui"><h2 style="color:cyan;">📦 Microsoft Store</h2><div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:16px; margin-top:16px;">${storeApps.map(app => `<div style="background:#252540; border-radius:20px; padding:12px; text-align:center;"><img src="${app.icon}" width="50"><h4>${app.name}</h4><button class="install-store-btn" data-app="${app.name}" style="background:cyan; border:none; margin-top:8px; padding:6px 12px; border-radius:20px;">Instalar</button></div>`).join('')}</div></div>`;
-    document.querySelectorAll('.install-store-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        showToast(`✅ ${btn.getAttribute('data-app')} instalado com sucesso!`);
-      });
-    });
-  }
-
-  // Abrir apps
-  function openApp(appType) {
-    if (appType === 'chrome') openWindow('chromeWindow');
-    else if (appType === 'edge') openWindow('edgeWindow');
-    else if (appType === 'store') { renderStore(); openWindow('storeWindow'); }
-    else if (appType === 'spotify') openWindow('spotifyWindow');
-    else if (appType === 'youtube') openWindow('youtubeWindow');
-    else if (appType === 'calc') openWindow('calcWindow');
-    else if (appType === 'whatsapp') openWindow('whatsappWindow');
-    else if (appType === 'photos') openWindow('photosWindow');
-    else if (appType === 'maps') openWindow('mapsWindow');
-    else if (appType === 'office') openWindow('officeWindow');
-    else showToast(`📱 Abrindo ${appType}...`);
-  }
-
-  // Eventos
-  document.querySelectorAll('[data-app]').forEach(el => {
-    el.addEventListener('c      cursor: pointer;
-    }
-
-    .start-btn:active { background: rgba(0, 120, 212, 0.6); transform: scale(0.96); }
-    .start-btn svg { width: 18px; fill: white; }
-    .start-btn span { color: white; font-size: 13px; }
-
-    .taskbar-middle {
-      display: flex;
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 5px 20px;
-      border-radius: 35px;
-    }
-
-    .taskbar-app {
-      width: 42px;
-      height: 42px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .taskbar-app:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.94); }
-    .taskbar-app img { width: 24px; height: 24px; }
-
-    .time-area {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 5px 14px;
-      border-radius: 25px;
-      color: white;
-      font-size: 13px;
-      font-family: monospace;
-    }
-
-    /* Start Menu */
-    .start-menu {
-      position: absolute;
-      bottom: 78px;
-      left: 16px;
-      width: 440px;
-      max-width: calc(100% - 32px);
-      background: rgba(20, 24, 36, 0.97);
-      backdrop-filter: blur(40px);
-      border-radius: 26px;
-      padding: 18px 14px;
-      z-index: 1100;
-      transition: 0.2s;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .start-menu.hide { transform: scale(0.9); opacity: 0; visibility: hidden; pointer-events: none; }
-
-    .user-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 16px;
-    }
-    .avatar {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, #0078d4, #2b5797);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-    .apps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-    .app-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 16px;
-      padding: 10px 4px;
-      cursor: pointer;
-    }
-    .app-item:active { background: rgba(255,255,255,0.2); }
-    .app-item img { width: 34px; height: 34px; }
-    .app-item span { color: #eef2ff; font-size: 10px; }
-
-    /* Janelas flutuantes (Apps internos) */
-    .window {
-      position: absolute;
-      top: 10%;
-      left: 5%;
-      width: 90%;
-      height: 75%;
-      background: #1e1e2e;
-      border-radius: 20px;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      border: 1px solid #3a3a4a;
-      overflow: hidden;
-      transition: 0.2s;
-    }
-    .window.hide { display: none; }
-
-    .window-header {
-      background: #2d2d3a;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: move;
-    }
-    .window-title {
-      color: white;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .window-title img { width: 20px; height: 20px; }
-    .close-window {
-      background: #ff5f5f;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 20px;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .window-content {
-      flex: 1;
-      background: white;
-      overflow: auto;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* Store interno */
-    .internal-store {
-      background: #0f0f1a;
-      padding: 16px;
-      overflow-y: auto;
-      height: 100%;
-    }
-    .store-header { color: white; margin-bottom: 16px; }
-    .store-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 16px;
-    }
-    .store-card {
-      background: #252530;
-      border-radius: 16px;
-      padding: 12px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .store-card:active { background: #3a3a4a; }
-    .store-card img { width: 60px; height: 60px; border-radius: 16px; }
-    .store-card h4 { color: white; font-size: 14px; margin: 8px 0; }
-    .install-internal {
-      background: #0078d4;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 20px;
-      color: white;
-      margin-top: 8px;
-    }
-    .toast {
-      position: absolute;
-      bottom: 85px;
-      left: 16px;
-      right: 16px;
-      background: #202020e6;
-      backdrop-filter: blur(20px);
-      padding: 12px 20px;
-      border-radius: 40px;
-      color: #00ff88;
-      text-align: center;
-      z-index: 300;
-      transition: 0.2s;
-      font-size: 13px;
-    }
-  </style>
-</head>
-<body>
-<div class="desktop">
-  <div class="wallpaper" style="background: url('https://images.pexels.com/photos/956999/microsoft-windows-build-msi-956999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;"></div>
-
-  <div class="desktop-icons">
-    <div class="desktop-icon" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-    <div class="desktop-icon" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Microsoft Store</span></div>
-    <div class="desktop-icon" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
-  </div>
-
-  <div class="taskbar">
-    <div class="start-btn" id="startBtn"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z" fill="currentColor"/><rect x="8" y="8" width="3" height="3" fill="#fff"/><rect x="13" y="8" width="3" height="3" fill="#fff"/><rect x="8" y="13" width="3" height="3" fill="#fff"/><rect x="13" y="13" width="3" height="3" fill="#fff"/></svg><span>Iniciar</span></div>
-    <div class="taskbar-middle">
-      <div class="taskbar-app" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"></div>
-      <div class="taskbar-app" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"></div>
-      <div class="taskbar-app" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"></div>
-    </div>
-    <div class="time-area" id="clock">--:--</div>
-  </div>
-
-  <div class="start-menu hide" id="startMenu">
-    <div class="user-area"><div class="avatar">🪟</div><div style="color:white">Windows 11</div></div>
-    <div class="apps-grid">
-      <div class="app-item" data-app="chrome"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"><span>Chrome</span></div>
-      <div class="app-item" data-app="store"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"><span>Microsoft Store</span></div>
-      <div class="app-item" data-app="edge"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"><span>Edge</span></div>
-      <div class="app-item" data-app="calculator"><img src="https://cdn-icons-png.flaticon.com/512/3665/3665923.png"><span>Calculadora</span></div>
-    </div>
-  </div>
-
-  <!-- Chrome Window (Navegador interno) -->
-  <div class="window hide" id="chromeWindow">
-    <div class="window-header"><div class="window-title"><img src="https://cdn-icons-png.flaticon.com/512/6124/6124999.png"> Google Chrome</div><button class="close-window" data-window="chrome">✕</button></div>
-    <div class="window-content"><iframe src="https://www.google.com/webhp?igu=1" title="Chrome Browser"></iframe></div>
-  </div>
-
-  <!-- Edge Window -->
-  <div class="window hide" id="edgeWindow">
-    <div class="window-header"><div class="window-title"><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png"> Microsoft Edge</div><button class="close-window" data-window="edge">✕</button></div>
-    <div class="window-content"><iframe src="https://www.bing.com" title="Edge Browser"></iframe></div>
-  </div>
-
-  <!-- Microsoft Store Window (Loja interna com apps) -->
-  <div class="window hide" id="storeWindow">
-    <div class="window-header"><div class="window-title"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"> Microsoft Store</div><button class="close-window" data-window="store">✕</button></div>
-    <div class="window-content" id="storeContent"></div>
-  </div>
-
-  <div class="toast" id="toastMsg" style="opacity:0;">✅</div>
-</div>
-
-<script>
-  // Lista de apps da loja interna
-  const storeApps = [
-    { name: "Chrome Browser", icon: "https://cdn-icons-png.flaticon.com/512/6124/6124999.png", desc: "Navegador Google" },
-    { name: "Edge Browser", icon: "https://cdn-icons-png.flaticon.com/512/732/732221.png", desc: "Microsoft Edge" },
-    { name: "Calculadora", icon: "https://cdn-icons-png.flaticon.com/512/3665/3665923.png", desc: "Calculadora Win11" },
-    { name: "Spotify", icon: "https://cdn-icons-png.flaticon.com/512/2111/2111624.png", desc: "Música e podcasts" },
-    { name: "YouTube", icon: "https://cdn-icons-png.flaticon.com/512/1384/1384060.png", desc: "Vídeos" },
-    { name: "WhatsApp", icon: "https://cdn-icons-png.flaticon.com/512/124/124034.png", desc: "Mensagens" }
-  ];
-
-  const toast = document.getElementById('toastMsg');
-  function showToast(msg, duration = 2000) {
-    toast.style.opacity = '1';
-    toast.innerText = msg;
-    setTimeout(() => toast.style.opacity = '0', duration);
-  }
-
-  // Controle de janelas
-  function closeAllWindows() {
-    document.querySelectorAll('.window').forEach(w => w.classList.add('hide'));
-  }
-
-  function openWindow(windowId) {
-    closeAllWindows();
-    const win = document.getElementById(windowId);
-    if (win) win.classList.remove('hide');
-    document.getElementById('startMenu').classList.add('hide');
-  }
-
-  // Renderizar Microsoft Store interna
-  function renderInternalStore() {
-    const container = document.getElementById('storeContent');
-    if (!container) return;
-    container.innerHTML = `
-      <div class="internal-store">
-        <div class="store-header"><h2 style="color:cyan;">📦 Microsoft Store</h2><p style="color:#aaa;">Apps disponíveis para instalar</p></div>
-        <div class="store-grid" id="storeGridInternal"></div>
-      </div>
-    `;
-    const grid = document.getElementById('storeGridInternal');
-    storeApps.forEach(app => {
-      const card = document.createElement('div');
-      card.className = 'store-card';
-      card.innerHTML = `
-        <img src="${app.icon}" alt="${app.name}">
-        <h4>${app.name}</h4>
-        <p style="color:#888; font-size:11px;">${app.desc}</p>
-        <button class="install-internal" data-app="${app.name}">Instalar</button>
-      `;
-      const btn = card.querySelector('.install-internal');
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showToast(`✅ ${app.name} foi instalado com sucesso!`);
-      });
-      grid.appendChild(card);
-    });
-  }
-
-  // Eventos para abrir apps
-  function openApp(appType) {
-    if (appType === 'chrome') openWindow('chromeWindow');
-    else if (appType === 'edge') openWindow('edgeWindow');
-    else if (appType === 'store') {
-      renderInternalStore();
-      openWindow('storeWindow');
-    } else if (appType === 'calculator') {
-      showToast('🧮 Calculadora: 2 + 2 = 4 (simulação)');
-    }
-  }
-
-  // Fechar janelas
-  document.querySelectorAll('.close-window').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const winId = btn.getAttribute('data-window');
-      const win = document.getElementById(`${winId}Window`);
-      if (win) win.classList.add('hide');
-    });
-  });
-
-  // Adicionar eventos a todos os elementos com data-app
-  function bindAppEvents() {
-    document.querySelectorAll('[data-app]').forEach(el => {
-      el.addEventListener('click', (e) => {
-        const app = el.getAttribute('data-app');
-        openApp(app);
-      });
-    });
-  }
-
-  // Menu Iniciar
-  const startBtn = document.getElementById('startBtn');
-  const startMenu = document.getElementById('startMenu');
-  startBtn.addEventListener('click', () => {
-    startMenu.classList.toggle('hide');
-  });
-
-  // Fechar menu ao clicar fora
-  document.addEventListener('click', (e) => {
-    if (!startMenu.contains(e.target) && !startBtn.contains(e.target) && !startMenu.classList.contains('hide')) {
-      startMenu.classList.add('hide');
-    }
-  });
-
-  // Relógio
-  function updateClock() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    document.getElementById('clock').innerText = `${hours}:${minutes}`;
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  bindAppEvents();
-  showToast('✅ Windows 11 pronto! Clique no Chrome ou na Microsoft Store - TUDO ABRE DENTRO DA PÁGINA', 3500);
-</script>
-</body>
-  </html>
+        let calcVal = '0', prev = null, op = null;
+        const disp = document.getElementById('calcDisplayCyber');
+        const update = () => { if(disp) disp.innerText = calcVal; };
+        document.querySelectorAll('.calc-btn[data-val]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const v = btn.getAttribute('data-val');
+            calcVal = calcVal === '0' ? v : calcVal + v;
+            update();
+          });
+        });
+        document.querySelectorAll('.calc-btn[data-op]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            prev = parseFloat(calcVal);
+            op = btn.getAttribute('data-op');
+            calcVal = '0';
+          });
+        });
+        document.getElementById('calcClearCyber')?.addEventListener('click', () => {
+          calcVal = '0'; prev = null; op = null; update();
+        });
+        document.getElementById('calcEqualCyber')?.addEventListener('click', () => {
+          if (op &&
